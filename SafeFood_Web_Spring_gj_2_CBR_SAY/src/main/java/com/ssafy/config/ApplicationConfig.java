@@ -16,32 +16,16 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.ssafy.aop.DayTimeCheckAOP;
-import com.ssafy.model.repository.FoodRepository;
 import com.ssafy.model.repository.UserRepository;
-import com.ssafy.model.service.FoodService;
-import com.ssafy.model.service.FoodServiceImpl;
 import com.ssafy.model.service.UserService;
-import com.ssafy.model.service.UserServiceImpl;
 
 @Configuration
-@ComponentScan(basePackageClasses = { UserRepository.class, DayTimeCheckAOP.class })
+@ComponentScan(basePackageClasses = { UserRepository.class, UserService.class})
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @PropertySource({ "classpath:/config.properties" })
 public class ApplicationConfig {
 
-	@Bean
-	public UserService userService(UserRepository repo) {
-		UserService service = new UserServiceImpl(repo);
-		return service;
-	}
-
-	@Bean
-	public FoodService bookService(FoodRepository repo) {
-		FoodService service = new FoodServiceImpl(repo);
-		return service;
-	}
 
 	@Bean
 	public DataSource ds(@Value("${db.driverClassName}") String driver,

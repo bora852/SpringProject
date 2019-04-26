@@ -5,6 +5,7 @@ package com.ssafy.model.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,13 +17,12 @@ import com.ssafy.model.repository.FoodRepository;
 public class FoodServiceImpl implements FoodService {
 
 	private FoodRepository foodRepo;
-
+	@Autowired
 	public FoodServiceImpl(FoodRepository repo) {
 		foodRepo = repo;
 	}
 
 	@Override
-	@Transactional
 	public int insert(Food book) {
 		return foodRepo.insert(book);
 	}

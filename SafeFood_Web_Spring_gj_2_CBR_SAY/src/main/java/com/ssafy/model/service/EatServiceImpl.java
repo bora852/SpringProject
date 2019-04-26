@@ -5,6 +5,7 @@ package com.ssafy.model.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +19,12 @@ import com.ssafy.model.repository.FoodRepository;
 public class EatServiceImpl implements EatService {
 
 	private EatRepository eatRepo;
-
+	@Autowired
 	public EatServiceImpl(EatRepository repo) {
 		eatRepo = repo;
 	}
 
 	@Override
-	@Transactional
 	public int insert(Eat eat) {
 		return eatRepo.insert(eat);
 	}

@@ -8,12 +8,14 @@
 		<setting name="jdbcTypeForNull" value="NULL" />
 	</settings>
 	<typeAliases>
-		<typeAlias type="com.ssafy.model.dto.UserInfo" alias="userInfo" />
-		<typeAlias type="com.ssafy.model.dto.Book" alias="book" />
+		<typeAlias type="com.ssafy.model.dto.UserVO" alias="userInfo" />
+		<typeAlias type="com.ssafy.model.dto.Food" alias="food" />
+		<typeAlias type="com.ssafy.model.dto.Eat" alias="eat" />
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="mybatis/usermapper.xml" />
-		<mapper resource="mybatis/bookmapper.xml" />
+		<mapper resource="mybatis/foodmapper.xml" />
+		<mapper resource="mybatis/eatmapper.xml" />
 	</mappers>
 </configuration>

@@ -21,7 +21,7 @@
 		select * from user_info
 	</select>
 
-	<select id="select" resultType="userInfo" parameterType="string">
+	<select id="select" resultType="userInfo" parameterType="Map">
 		select *
 		from user_info where user_id=#{id}
 	</select>

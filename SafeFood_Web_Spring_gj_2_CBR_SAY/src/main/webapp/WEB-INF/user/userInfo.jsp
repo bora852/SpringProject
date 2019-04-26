@@ -1,5 +1,5 @@
 <%@page import="java.util.Arrays"%>
-<%@page import="com.ssafy.model.UserVO"%>
+<%@page import="com.ssafy.model.dto.UserVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -100,7 +100,7 @@
 						<div id="input_allergy">
 
 							<%
-								String[] s = user.getAllergy();
+								String[] s = null;//user.getAllergy();
 								String al = "";
 								for (int i = 0; i < s.length; i++) {
 									al += s[i];

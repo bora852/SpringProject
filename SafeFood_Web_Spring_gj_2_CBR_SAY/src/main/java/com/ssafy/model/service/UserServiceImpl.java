@@ -3,10 +3,9 @@
  */
 package com.ssafy.model.service;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +17,13 @@ import com.ssafy.model.repository.UserRepository;
  * @Date : 2019. 4. 14.
  */
 @Service
-@Transactional
+//@Transactional
 public class UserServiceImpl implements UserService {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 	private UserRepository userRepo;
-
+	
+	@Autowired
 	public UserServiceImpl(UserRepository repo) {
 		userRepo = repo;
 	}
