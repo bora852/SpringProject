@@ -15,7 +15,7 @@ import com.ssafy.model.dto.Food;
 public class EatRepositoryImpl implements EatRepository {
 	private static final Logger logger = LoggerFactory.getLogger(EatRepositoryImpl.class);
 
-	private static final String ns = "com.ssafy.model.mapper.Food.";
+	private static final String ns = "com.ssafy.model.mapper.Eat.";
 	@Autowired
 	SqlSessionTemplate template;
 
