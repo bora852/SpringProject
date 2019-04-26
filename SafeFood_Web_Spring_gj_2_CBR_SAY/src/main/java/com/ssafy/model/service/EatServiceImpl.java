@@ -5,7 +5,6 @@ package com.ssafy.model.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +18,13 @@ import com.ssafy.model.repository.FoodRepository;
 public class EatServiceImpl implements EatService {
 
 	private EatRepository eatRepo;
-	@Autowired
+
 	public EatServiceImpl(EatRepository repo) {
 		eatRepo = repo;
 	}
 
 	@Override
+	@Transactional
 	public int insert(Eat eat) {
 		return eatRepo.insert(eat);
 	}
@@ -35,18 +35,18 @@ public class EatServiceImpl implements EatService {
 	}
 
 	@Override
-	public List<Food> selectName(String name) {
-		return eatRepo.selectName(name);
+	public List<Food> selectName(String name, String id) {
+		return eatRepo.selectName(name,id);
 	}
 	
 	@Override
-	public List<Food> selectMaterial(String material) {
-		return eatRepo.selectMaterial(material);
+	public List<Food> selectMaterial(String material, String id) {
+		return eatRepo.selectMaterial(material,id);
 	}
 	
 	@Override
-	public List<Food> selectMaker(String maker) {
-		return eatRepo.selectMaker(maker);
+	public List<Food> selectMaker(String maker, String id) {
+		return eatRepo.selectMaker(maker,id);
 	}
 
 }

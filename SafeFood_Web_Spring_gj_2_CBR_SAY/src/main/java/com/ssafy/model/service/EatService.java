@@ -14,10 +14,11 @@ public interface EatService {
 
 	List<Food> searchMyList(String id);
 
-	List<Food> selectName(String name);
+	public List<Food> selectName(String name, String id);
+	
+	public List<Food> selectMaterial(String material, String id);
+	
+	public List<Food> selectMaker(String maker, String id);
 
-	List<Food> selectMaterial(String material);
-
-	List<Food> selectMaker(String maker);
 
 }

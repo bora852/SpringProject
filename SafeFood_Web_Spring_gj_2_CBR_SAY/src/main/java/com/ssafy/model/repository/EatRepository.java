@@ -9,8 +9,9 @@ public interface EatRepository {
 
 	public int insert(Eat eat);
 	public List<Food> searchMyList(String id);
-	public List<Food> selectName(String name);
-	public List<Food> selectMaterial(String material);
-	public List<Food> selectMaker(String maker);
+	public List<Food> selectName(String name, String id);
+	public List<Food> selectMaterial(String material, String id);
+	public List<Food> selectMaker(String maker, String id);
 
 }
+

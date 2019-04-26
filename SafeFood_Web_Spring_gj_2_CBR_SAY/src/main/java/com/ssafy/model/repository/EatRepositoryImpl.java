@@ -1,6 +1,8 @@
 package com.ssafy.model.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -31,20 +33,29 @@ public class EatRepositoryImpl implements EatRepository {
 	}
 	
 	@Override
-	public List<Food> selectName(String name) {
+	public List<Food> selectName(String name, String id) {
 		String statement = ns + "selectName";
-		return template.selectList(statement, name);
+		Map<String, String> map = new HashMap<>();
+		map.put("id", id);
+		map.put("name", name);
+		return template.selectList(statement, map);
 	}
 
 	@Override
-	public List<Food> selectMaterial(String material) {
+	public List<Food> selectMaterial(String material, String id) {
 		String statement = ns + "selectMaterial";
-		return template.selectList(statement, material);
+		Map<String, String> map = new HashMap<>();
+		map.put("id", id);
+		map.put("material", material);
+		return template.selectList(statement, map);
 	}
 
 	@Override
-	public List<Food> selectMaker(String maker) {
+	public List<Food> selectMaker(String maker, String id) {
 		String statement = ns + "selectMaker";
-		return template.selectList(statement, maker);
+		Map<String, String> map = new HashMap<>();
+		map.put("id", id);
+		map.put("maker", maker);
+		return template.selectList(statement, map);
 	}
 }

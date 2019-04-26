@@ -8,30 +8,21 @@
 		insert into usereat(user_id,
 		food_code) values(#{userId}, #{foodCode})
 	</insert>
-
-	<select id="selectMaterial" resultType="food" parameterType="string">
-		select * from food where material like '%{material}%'
+	
+	<select id="searchMyList" resultType="food" parameterType="string">
+		select f.* from usereat e, food f where e.food_code = f.code and e.user_id=#{id}
+	</select>
+	
+	<select id="searchName" resultType="food" parameterType="map">
+		select f.* from usereat e, food f where e.user_id = #{id} and e.food_code = f.code and f.name like '%#{name}%'
+	</select>
+	
+	<select id="selectMaterial" resultType="food" parameterType="map">
+		select f.* from usereat e, food f where e.user_id = #{id} and e.food_code = f.code and f.material like '%#{mateerial}%'?"
 	</select>
 
-	<select id="selectMaker" resultType="userInfo" parameterType="string">
-		select f.* from usereat e, food f where e.user_id = #{userId} and e.food_code = f.code and f.maker like '%%'
+	<select id="selectMaker" resultType="food" parameterType="map">
+		select f.* from usereat e, food f where e.user_id = #{id} and e.food_code = f.code and f.maker like '%#{maker}%'?"
 	</select>
 
-	<select id="selectAllUsers" resultType="userInfo">
-		select * from user_info
-	</select>
-
-	<select id="select" resultType="userInfo" parameterType="Map">
-		select *
-		from user_info where user_id=#{id}
-	</select>
-
-	<update id="update" parameterType="userInfo">
-		update user_info set
-		name=#{name}, password=#{password} where user_id=#{userId}
-	</update>
-	<delete id="delete" parameterType="string">
-		delete from user_info where
-		user_id=#{userId}
-	</delete>
 </mapper>
