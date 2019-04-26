@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.model.dto.UserInfo;
+import com.ssafy.model.dto.UserVO;
 import com.ssafy.model.repository.UserRepository;
 
 /**
@@ -29,47 +30,38 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserInfo login(String id, String pass) {
-		UserInfo info = userRepo.select(id);
-		if (info != null && info.getPassword().equals(pass)) {
-			return info;
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	public UserInfo select(String id) {
-		return userRepo.select(id);
-	}
-
-	@Override
-	public List<UserInfo> selectAll() {
-		return userRepo.selectAllUsers();
-	}
-
-	@Override
-	public int joinDayTime(UserInfo info) {
-		int result = userRepo.insert(info);
-		UserInfo selected = userRepo.select(info.getUserId());
-		logger.trace("조회 결과: {}", selected);
+	public int insertUser(UserVO user) {
+		int result = userRepo.insertUser(user);
 		return result;
 	}
 
 	@Override
-	@Transactional
-	public int updateDayTime(UserInfo info) {
-		return userRepo.update(info);
+	public UserVO login(UserVO user) {
+		return userRepo.login(user);
 	}
 
 	@Override
-	@Transactional
-	public int leaveDayTime(String id) {
-		return userRepo.delete(id);
+	public UserVO selectUser(UserVO user) {
+		return userRepo.selectUser(user);
 	}
 
 	@Override
-	public UserRepository getUserRepo() {
-		return userRepo;
+	public int updateUser(UserVO user) {
+		return userRepo.updateUser(user);
+	}
+
+	@Override
+	public int deleteUser(UserVO user) {
+		return userRepo.deleteUser(user);
+	}
+
+	@Override
+	public int findPw(UserVO user) {
+		return userRepo.findPw(user);
+	}
+
+	@Override
+	public int updatePw(UserVO user) {
+		return userRepo.updatePw(user);
 	}
 }

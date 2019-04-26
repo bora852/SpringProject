@@ -3,22 +3,34 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.model.mapper.UserInfo">
-	<select id="selectAllUsers" resultType="userInfo">
-		select * from user_info
-	</select>
-
-	<select id="select" resultType="userInfo" parameterType="string">
-		select * from user_info where user_id=#{id}
-	</select>
-
-	<insert id="insert" parameterType="userInfo">
-		insert into user_info values(#{userId}, #{name}, #{password})
+	
+	<insert id="insertUser" parameterType="userInfo">
+		insert into user values (#{id}, #{pw}, #{name}, #{addr}, #{tel}, #{allergy})
 	</insert>
 
-	<update id="update" parameterType="userInfo">
-		update user_info set name=#{name}, password=#{password} where user_id=#{userId}
+	<select id="login" resultType="userInfo" parameterType="userInfo">
+		select * from user where id = #{id} and pw = #{pw}
+	</select>
+
+	<select id="selectUser" resultType="userInfo" parameterType="userInfo">
+		select * from user where id = #{id}
+	</select>
+	
+	<update id="updateUser" parameterType="userInfo">
+		update user set pw = #{pw}, name = #{name}, addr = #{addr}, tel = #{tel}, allergy = #{allergy}
+		            where id = #{id}
 	</update>
-	<delete id="delete" parameterType="string">
-		delete from user_info where user_id=#{userId}
+	
+	<delete id="deleteUser" parameterType="userInfo">
+		delete from user where id = #{id}
 	</delete>
+	
+	<select id="findPw" parameterType="userInfo">
+		select * from user where id = #{id} and tel = #{tel}
+	</select>
+	
+	<update id="updatePw" parameterType="userInfo">
+		update user set pw = #{pw} where id = #{id}
+	</update>
+	
 </mapper>

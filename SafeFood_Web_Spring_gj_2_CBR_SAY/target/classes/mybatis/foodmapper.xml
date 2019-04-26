@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.model.mapper.Food">
+	<select id="selectAll" resultType="food">
+		select * from food
+	</select>
+
+	<select id="selectName1" resultType="food" parameterType="string">
+		select * from food where name=#{name}
+	</select>
+	
+	<select id="selectName2" resultType="food" parameterType="string">
+		select * from food where name like '%#{name}%'
+	</select>
+	
+	<select id="selectMaterial" resultType="food" parameterType="string">
+		select * from food where material like '%{material}%'
+	</select>
+
+	<select id="selectMaker" resultType="food" parameterType="string">
+		select * from food where maker like '%{maker}%'
+	</select>
+
+	<insert id="insert" parameterType="food">
+		insert into food (code, name, supportpereat,calory,carbo,protein,fat,sugar,natrium,chole,fattyacid,transfat,maker,material,img) values (#{code}, #{name}, #{supportpereat}, #{calory}, #{carbo}, #{protein}, #{fat}, #{sugar}, #{natrium}, #{chole}, #{fattyacid}, #{transfat}, #{maker}, #{material}, #{img})
+	</insert>
+
+</mapper>

@@ -12,46 +12,65 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ssafy.model.dto.UserInfo;
+import com.ssafy.model.dto.UserVO;
 
 /**
  * @author itsme
  * @Date : 2019. 4. 14.
  */
 @Repository
-public class UserRepositoryMysqlImpl implements UserRepository {
+public class UserRepositoryMysqlImpl implements UserRepository{
 	private static final Logger logger = LoggerFactory.getLogger(UserRepositoryMysqlImpl.class);
 	private static final String ns = "com.ssafy.model.mapper.UserInfo.";
 	@Autowired
 	SqlSessionTemplate template;
 
 	@Override
-	public List<UserInfo> selectAllUsers() {
-		String statement = ns+"selectAllUsers";
-		return template.selectList(statement);
+	public int insertUser(UserVO user) {
+		logger.trace("회원가입(insertUser): {}", user);
+		String statement = ns+"insertUser";
+		return template.insert(statement, user);
 	}
 
 	@Override
-	public UserInfo select(String id) {
-		logger.trace("사용자 조사: {}", id);
-		String statement = ns+"select";
-		return template.selectOne(statement, id);
+	public UserVO login(UserVO user) {
+		logger.trace("로그인(select): {}", user);
+		String statement = ns+"login";
+		return template.selectOne(statement, user);
 	}
-
+	
 	@Override
-	public int insert(UserInfo info) {
-		String statement = ns+"insert";
-		return template.insert(statement, info);
+	public UserVO selectUser(UserVO user) {
+		logger.trace("회원정보 불러오기(selectUser): {}", user);
+		String statement = ns+"selectUser";
+		return template.selectOne(statement, user);
 	}
-
+	
 	@Override
-	public int update(UserInfo info) {
-		String statement = ns+"update";
-		return template.update(statement, info);
+	public int updateUser(UserVO user) {
+		logger.trace("회원정보 수정(updateUser): {}", user);
+		String statement = ns+"updateUser";
+		return template.update(statement, user);
 	}
-
+	
 	@Override
-	public int delete(String userId) {
-		String statement = ns+"delete";
-		return template.update(statement, userId);
+	public int deleteUser(UserVO user) {
+		logger.trace("회원탈퇴(deleteUser): {}", user);
+		String statement = ns+"deleteUser";
+		return template.update(statement, user);
+	}
+	
+	@Override
+	public int findPw(UserVO user) {
+		logger.trace("비밀번호 찾기(findPw): {}", user);
+		String statement = ns+"findPw";
+		return template.update(statement, user);
+	}
+	
+	@Override
+	public int updatePw(UserVO user) {
+		logger.trace("비밀번호 찾기 -> 비밀번호 수정(updatePw): {}", user);
+		String statement = ns+"updatePw";
+		return template.update(statement, user);
 	}
 }

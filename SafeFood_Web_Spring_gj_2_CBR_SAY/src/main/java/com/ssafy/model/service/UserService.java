@@ -6,6 +6,7 @@ package com.ssafy.model.service;
 import java.util.List;
 
 import com.ssafy.model.dto.UserInfo;
+import com.ssafy.model.dto.UserVO;
 import com.ssafy.model.repository.UserRepository;
 
 /**
@@ -13,11 +14,11 @@ import com.ssafy.model.repository.UserRepository;
  * @Date : 2019. 4. 14.
  */
 public interface UserService {
-	UserRepository getUserRepo();
-	UserInfo login(String id, String pass);
-	UserInfo select(String id);
-	List<UserInfo> selectAll();
-	int joinDayTime(UserInfo info);
-	int updateDayTime(UserInfo info);
-	int leaveDayTime(String id);
+	public int insertUser(UserVO user);
+	public UserVO login(UserVO user);
+	public UserVO selectUser(UserVO user);
+	public int updateUser(UserVO user);
+	public int deleteUser(UserVO user);
+	public int findPw(UserVO user);
+	public int updatePw(UserVO user);
 }
