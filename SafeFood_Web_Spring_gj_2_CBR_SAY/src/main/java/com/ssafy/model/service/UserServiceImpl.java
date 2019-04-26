@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.model.dto.UserInfo;
 import com.ssafy.model.dto.UserVO;
 import com.ssafy.model.repository.UserRepository;
 

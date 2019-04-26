@@ -5,7 +5,6 @@ package com.ssafy.model.repository;
 
 import java.util.List;
 
-import com.ssafy.model.dto.UserInfo;
 import com.ssafy.model.dto.UserVO;
 
 /**
