@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.model.mapper.Eat">
+
+	<insert id="insert" parameterType="eat">
+		insert into usereat(user_id,
+		food_code) values(#{userId}, #{foodCode})
+	</insert>
+
+	<select id="selectMaterial" resultType="food" parameterType="string">
+		select * from food where material like '%{material}%'
+	</select>
+
+	<select id="selectMaker" resultType="userInfo" parameterType="string">
+		select f.* from usereat e, food f where e.user_id = #{userId} and e.food_code = f.code and f.maker like '%%'
+	</select>
+
+	<select id="selectAllUsers" resultType="userInfo">
+		select * from user_info
+	</select>
+
+	<select id="select" resultType="userInfo" parameterType="string">
+		select *
+		from user_info where user_id=#{id}
+	</select>
+
+	<update id="update" parameterType="userInfo">
+		update user_info set
+		name=#{name}, password=#{password} where user_id=#{userId}
+	</update>
+	<delete id="delete" parameterType="string">
+		delete from user_info where
+		user_id=#{userId}
+	</delete>
+</mapper>

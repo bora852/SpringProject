@@ -17,10 +17,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.ssafy.aop.DayTimeCheckAOP;
-import com.ssafy.model.repository.BookRepository;
+import com.ssafy.model.repository.FoodRepository;
 import com.ssafy.model.repository.UserRepository;
-import com.ssafy.model.service.BookService;
-import com.ssafy.model.service.BookServiceImpl;
+import com.ssafy.model.service.FoodService;
+import com.ssafy.model.service.FoodServiceImpl;
 import com.ssafy.model.service.UserService;
 import com.ssafy.model.service.UserServiceImpl;
 
@@ -38,8 +38,8 @@ public class ApplicationConfig {
 	}
 
 	@Bean
-	public BookService bookService(BookRepository repo) {
-		BookService service = new BookServiceImpl(repo);
+	public FoodService bookService(FoodRepository repo) {
+		FoodService service = new FoodServiceImpl(repo);
 		return service;
 	}
 
