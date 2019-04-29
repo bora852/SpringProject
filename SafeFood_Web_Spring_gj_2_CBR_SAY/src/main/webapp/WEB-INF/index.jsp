@@ -71,11 +71,48 @@ div.jumbotron:hover div.for_hover {
 	<!-- Navigation -->
 	<header>
 		<div id="header_place" w3-include-html="Navbar.jsp"></div>
+		<jsp:include page="include/Navbar.jsp"/>
 	</header>
  
 	<!-- Page Content -->
 	<div class="container main_block">
-		<%
+	<c:choose>
+			<c:when test="${list == null }">
+				<div style="text-align:center;">
+					<br>
+					<h1>조회 결과가 없습니다.</h1>
+				</div>
+			</c:when>
+			<c:when test="${list ne null }">
+			<c:forEach var="food" items="${list }">
+				 <div id="container" style='width: 960px; margin:0 auto;'>
+				    <div id="content">
+				
+				    <br>
+				    <c:url value="/detail/${food.code }" var="detail"></c:url>
+				    <div class="card mb-3" id="${food.code }"  onclick="location.href='${detail }';">
+				    <div class="row">
+				    <div class="col-6 col-md-4">
+				    <img class="card-img-top" src="static/${food.img }" alt="Card image cap"></div>
+				    <div class="col-12 col-md-8">
+				    <div class="card-body">
+				   	<h5 class="card-title">${food.name }</h5>
+				   	<h6 class="card-subtitle" style="color:red;">
+				   		<%-- <c:if test="${food.check!=null }">${food.check }</c:if> --%>
+				   	</h6>
+				   	<p class="card-text">${food.material }</p>
+				   	<c:if test="${user != null }">
+				   		<div id="${food.code }" class="btn btn-primary add">추가하기</div>
+				   	</c:if>
+				    </div></div></div></div> 
+				    
+				    </div>
+				  </div>
+			</c:forEach>
+		  </c:when>
+ 	 </c:choose>
+	
+		<%-- <%
 			ArrayList<String> alg = new ArrayList<>();
 			if (session.getAttribute("allergy") != null) {
 				alg = (ArrayList) session.getAttribute("allergy");
@@ -131,7 +168,7 @@ div.jumbotron:hover div.for_hover {
 				</div>
 		<%
 			}
-		%> 
+		%>  --%>
 	</div>
 	<!-- /.container -->
 	<!-- Footer -->
