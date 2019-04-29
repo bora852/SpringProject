@@ -4,8 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import java.awt.print.Book;
-
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -20,8 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ssafy.config.ApplicationConfig;
 import com.ssafy.model.repository.UserRepository;
-import com.ssafy.model.service.UserServiceImpl;
-
+import com.ssafy.model.service.UserService;
 // TODO: 테스트 환경을 구축한다.
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
@@ -61,7 +58,7 @@ public class DataTest {
 		assertThat(users, is(notNullValue()));
 	}
 	@Autowired
-	UserServiceImpl users;
+	UserService users;
 	
 	
 

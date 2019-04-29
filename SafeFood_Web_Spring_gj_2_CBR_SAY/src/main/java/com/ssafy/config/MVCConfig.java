@@ -18,7 +18,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter{
 	@Bean
 	public ViewResolver internalResourceViewResolver() {
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setPrefix("/WEB-INF/view/");
+		resolver.setPrefix("/WEB-INF/");
 		resolver.setSuffix(".jsp");
 		return resolver;
 	}
