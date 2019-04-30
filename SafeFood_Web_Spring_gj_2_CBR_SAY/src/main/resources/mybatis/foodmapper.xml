@@ -12,15 +12,18 @@
 	</select>
 	
 	<select id="selectName2" resultType="food" parameterType="string">
-		select * from food where name like '%#{name}%'
+		<bind name="pattern" value="'%' + _parameter + '%'" />
+		select * from food where name like #{pattern}
 	</select>
 	
 	<select id="selectMaterial" resultType="food" parameterType="string">
-		select * from food where material like '%{material}%'
+		<bind name="pattern" value="'%' + _parameter + '%'" />
+		select * from food where material like #{pattern}
 	</select>
 
 	<select id="selectMaker" resultType="food" parameterType="string">
-		select * from food where maker like '%{maker}%'
+		<bind name="pattern" value="'%' + _parameter + '%'" />
+		select * from food where maker like #{pattern}
 	</select>
 
 	<insert id="insert" parameterType="food">

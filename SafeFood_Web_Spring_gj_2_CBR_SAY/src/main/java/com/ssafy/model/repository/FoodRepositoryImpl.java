@@ -19,9 +19,9 @@ public class FoodRepositoryImpl implements FoodRepository {
 	SqlSessionTemplate template;
 
 	@Override
-	public int insert(Food book) {
+	public int insert(Food food) {
 		String statement = ns + "insert";
-		return template.insert(statement, book);
+		return template.insert(statement, food);
 	}
 
 	@Override

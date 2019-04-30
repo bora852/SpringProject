@@ -34,18 +34,19 @@ public class MainController2 {
 	@Autowired
 	FoodService food;
 	
-	@GetMapping("/search")
+	@PostMapping("/search")
 	public String search(Model model, HttpServletRequest req, RedirectAttributes redir) {
+		logger.trace("search 방문.");
 		String by = req.getParameter("by");
 		List<Food> result = null;
 		if (by.equals("상품명")) {
-			String name = req.getParameter("name");
+			String name = req.getParameter("search_input");;
 			result = food.selectName2(name);
 		} else if (by.equals("제조사")) {
-			String maker = req.getParameter("name");
+			String maker = req.getParameter("search_input");
 			result = food.selectMaker(maker);
 		} else if (by.equals("재료명")) {
-			String material = req.getParameter("name");
+			String material = req.getParameter("search_input");
 			result = food.selectMaterial(material);
 		}
 		model.addAttribute("list", result);

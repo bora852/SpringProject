@@ -107,12 +107,14 @@
 	</div>
 </div>
 
+<c:url value="/search" var="searchUrl"></c:url>
+<form action = "${searchUrl}" method="post">
 	<div id="search_place">
 		<div class="container">
 			<div id="search_box">
 				<div id="condition" class="search_div">
 					<h5>검색 조건</h5>
-					<select id="selected" style="width: 100px; height: 30px; font-size: 15px;">
+					<select id="selected" name="by" style="width: 100px; height: 30px; font-size: 15px;">
 						<option class="s_option" style="width: 100px; height: 30px; font-size: 15px;">상품명</option>
 						<option class="s_option" style="width: 100px; height: 30px; font-size: 15px;">제조사</option>
 						<option class="s_option" style="width: 100px; height: 30px; font-size: 15px;">재료명</option>
@@ -121,56 +123,18 @@
 				<div id="search_word" class="search_div">
 					<h5>검색 단어</h5>
 					<div id="text_button">
-						<input id="search_input" type="text" class="float_left" size="40" style="width: 300px; height: 30px; font-size: 15px;"> 
-						<input id="search_bt" type="button" class="float_left" value="검색" style="width: 80px; height: 30px; margin-left: 15px;">
+						<input id="search_input" name = "search_input" type="text" class="float_left" size="40" style="width: 300px; height: 30px; font-size: 15px;"> 
+						<button id="search_bt" type="submit" class="float_left"  style="width: 80px; height: 30px; margin-left: 15px;">검색</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</form>
 <script>
 	let alarm = "${alarm}";
 	if(alarm){
 		alert(alarm);
 	}
-	$(document).on('click','#search_bt',function() {
-		console.log("들어감")
-		$.ajax({
-			<c:url value="/search" var="search"></c:url>
-		/* 	url : "${search}" */
-			type : "get",
-			dataType : "json",
-			data : {
-				"select" : "$('#selected option:selected').val()",
-				"input" : "$('#search_input').val()"
-			},
-			success : function(res) {
-				$(".main_block").empty();
-				$.each(res,function(idx, data) {
-					var str2 = '<div class="jumbotron my-4 row">'
-					+ '<div class="col-lg-3 main_img_box">'
-					+ '<img class="main_img" src="' + data.img + '">'
-					+ '<div class="for_hover"><h2 style="color:white; margin-top:14px;">'
-					+ data.maker
-					+ '</h2></div></div>'
-					+ '<div class="col-lg-9"><div class="main_name border_line row">'
-					+ '<h2 class="p_name">'
-					+ data.name
-					+ '</h2></div><div class="main_mat row">'
-					+ '<a>'+ data.material+ '</a></div><div class="main_bt">'
-					+ '<div class="info_bt row">'
-					+'<c:if test="${not empty loginId }">'
-					+ '<div class="info_bt"><button type="button" class="btn btn-outline-info" style="margin-left:5px;" >추가</button><button type="button" class="btn btn-outline-info" style="margin-left:5px;">찜</button>'
-					+'</c:if>'
-					+'</div></div></div></div>';
-					
-					$(".main_block").append(str2);
-					});
-				},
-				error : function(e) {
-					alert("ajax error");
-					}
-				});
 	
-	});
 </script>
