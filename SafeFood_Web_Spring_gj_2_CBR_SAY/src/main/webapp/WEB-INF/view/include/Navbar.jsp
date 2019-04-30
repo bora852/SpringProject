@@ -11,9 +11,7 @@
 				class="btn btn-outline-light login_btn login_nav_btn"
 				data-toggle="modal" data-target="#myModal">Login</button>
 			<c:url value="/signUp" var="signUp"/>
-			<button type="button"
-				class="btn btn-outline-light login_btn login_nav_btn"
-				onclick="${signUp}">회원가입</button>
+			<button type="button" class="btn btn-outline-light login_btn login_nav_btn" onclick="location.href='${signUp }'">회원가입</button>
 			<%
 				} else {
 			%>
