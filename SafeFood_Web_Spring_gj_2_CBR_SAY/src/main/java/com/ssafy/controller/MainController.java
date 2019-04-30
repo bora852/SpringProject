@@ -2,7 +2,6 @@ package com.ssafy.controller;
 
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.model.dto.Food;
@@ -95,8 +95,26 @@ public class MainController {
 	}
 	
 	//로그아웃
+	@GetMapping("/logout")
+	public String doLogout(Model model, HttpSession session, RedirectAttributes redir) {
+		User info = (User) session.getAttribute("loginUser");
+		logger.trace("logout: {}", info.getId());
+		redir.addFlashAttribute("alarm", "로그아웃 되었습니다.");
+		session.invalidate();
+		return "redirect:/home";
+	}
+	
+	//회원수정
+	@GetMapping("/userInfo")
+	public String userInfoForm(Model model, HttpSession session, RedirectAttributes redir) {
+		return "user/userinfo";
+	}
 	
 	//에러 페이지 연결
+	@RequestMapping("/error")
+	public String errorHandling(Model model) {
+		return "include/Error";
+	}
 	
 
 }

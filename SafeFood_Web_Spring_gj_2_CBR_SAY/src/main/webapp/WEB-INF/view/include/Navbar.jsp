@@ -13,12 +13,14 @@
 			</c:if>
 			
 			<c:if test="${!empty loginUser}">
+				<c:url value="/userInfo" var="userInfo"/>
 				<button type="button"
 					class="btn btn-outline-light login_btn login_nav_btn"
-					onclick="location.href='userInfo.do?action=userInfo'">회원정보</button>
+					onclick="location.href='${userInfo }'">회원정보</button>
+				<c:url value="/logout" var="logout"/>	
 				<button type="button"
 					class="btn btn-outline-light login_btn login_nav_btn"
-					onclick="location.href='Logout.do?action=logout'">Logout</button>
+					onclick="location.href='${logout }'">Logout</button>
 			</c:if>
 		</div>
 	</div>

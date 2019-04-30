@@ -1,4 +1,4 @@
-<%@page import="com.ssafy.model.dto.User"%>
+<%-- <%@page import="com.ssafy.model.dto.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -74,7 +74,7 @@
 							style="width: 300px; height: 30px; font-size: 15px;"
 							placeholder="아이디를 입력해주세요." value="${user.getId()}"
 							disabled="disabled"> <input type="hidden" name="id"
-							<%-- value="<%=user.getId()%>"> --%>
+							value="<%=user.getId()%>">
 							value="${user.getId()}">
 					</div>
 					<div class="input_info">
@@ -95,12 +95,12 @@
 					<div class="input_info">
 						<span>전화번호</span> <input type="tel" name="tel"
 							style="width: 300px; height: 30px; font-size: 15px;"
-							<%-- placeholder="010-xxxx-xxxx" value="<%=user.getTel()%>"> --%>
+							placeholder="010-xxxx-xxxx" value="<%=user.getTel()%>">
 							placeholder="010-xxxx-xxxx" value="${user.getTel()}">
 					</div>
 					<div class="input_info">
 						<span>알레르기</span> <input type="hidden" id="allvalue"
-							<%-- value="<%=user.getAllergy()%>"> --%>
+							value="<%=user.getAllergy()%>">
 							value="${user.getAllergy()}">
 						<div id="input_allergy">
 
@@ -297,4 +297,4 @@
 	</footer>
 
 </body>
-</html>
+</html> --%>
