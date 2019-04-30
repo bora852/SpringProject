@@ -63,7 +63,7 @@ public class MainController {
 		User result = userService.login(user.getId(), user.getPw());
 		if (result != null) {
 			String[] allergy_user = result.getAllergy().split(",");
-			redir.addFlashAttribute("alarm", "반갑습니다. "+result.getId()+"님");
+//			redir.addFlashAttribute("alarm", "반갑습니다. "+result.getId()+"님");
 			session.setAttribute("loginUser", result);
 			session.setAttribute("allergy", allergy_user);
 		} else{ 
@@ -107,7 +107,7 @@ public class MainController {
 	//회원수정
 	@GetMapping("/userInfo")
 	public String userInfoForm(Model model, HttpSession session, RedirectAttributes redir) {
-		return "user/userinfo";
+		return "user/userInfo";
 	}
 	
 	//에러 페이지 연결

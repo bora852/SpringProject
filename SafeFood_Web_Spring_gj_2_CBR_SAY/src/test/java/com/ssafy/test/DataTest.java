@@ -66,7 +66,7 @@ public class DataTest {
 	
 	@Test
 	public void testInsert() {
-		User user = new User("id3","pw2","name2","addr2","tel2", new String[] {"all1","all2","all3"});
+		User user = new User("id1","pw2","name2","addr2","tel2", new String[] {"all1","all2","all3"});
 		int result = service.insertUser(user);
 		assertThat(result, is(1));
 	}
@@ -84,8 +84,10 @@ public class DataTest {
 	}
 	
 	@Test
-	public void login() {
-//		User user = service.
+	public void updateUser() {
+		User user = new User("id3","u_pw2","u_name2","u_addr2","u_tel2", new String[] {"u_all1","u_all2","u_all3"});
+		int result = service.updateUser(user);
+		assertThat(result, is(1));
 	}
 	
 //	

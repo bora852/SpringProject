@@ -48,6 +48,7 @@ public class User implements Serializable{
 		this.addr = addr;
 		this.tel = tel;
 		this.allergy_arr = allergy;
+		this.setAllergy_arr(allergy);
 	}
 	
 	public User(String id, String pw, String name, String addr, String tel, String allergy) {
@@ -102,6 +103,7 @@ public class User implements Serializable{
 				this.allergy += allergy[i]+",";
 			}
 			this.allergy += getAllergy().substring(0, getAllergy().length());
+			System.out.println(">>>>>>>"+allergy);
 		}
 	}
 
