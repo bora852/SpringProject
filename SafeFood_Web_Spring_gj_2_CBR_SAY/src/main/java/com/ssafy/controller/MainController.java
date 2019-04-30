@@ -2,6 +2,10 @@ package com.ssafy.controller;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,31 +16,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.model.dto.Food;
+import com.ssafy.model.dto.User;
 import com.ssafy.model.service.EatService;
 import com.ssafy.model.service.FoodService;
 import com.ssafy.model.service.UserService;
 
-//@Controller
+@Controller
 public class MainController {
 	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 	
 	@Autowired 
-	UserService user;
+	UserService userService;
 	
 	@Autowired 
 	EatService eat;
 	
 	@Autowired
 	FoodService food;
-	
-	@GetMapping("/home")
-	public String home(Model model) {
-		logger.trace("home 방문.");
-		List<Food> foods = food.selectAll();
-		logger.trace("foods :: "+foods);
-		model.addAttribute("list", foods);
-		return "food/foodHome";
-	}
 	
 	@GetMapping("/index")
 	public String index(Model model) {
@@ -47,28 +43,31 @@ public class MainController {
 		return "index";
 	}
 	
-//	@PostMapping("/login")
-//	public String login(Model model, User user, RedirectAttributes redir, HttpServletResponse res,
-//			HttpSession session) {
-//
-//		// 3.뷰 연결
-//		User result = userService.login(user.getId(), user.getPassword());
-//
-//		logger.trace("result :{}", result);
-//		if (result != null
-//				&& (result.getId().equals(user.getId()) && result.getPassword().equals(user.getPassword()))) {
-//
-//			Cookie cookie = new Cookie("loginUser", user.getId());
-//			cookie.setPath("/");
-//			cookie.setMaxAge(60 * 2);
-//			res.addCookie(cookie);
-//			session.setAttribute("loginUser", user.getId());
-//			// redir.addFlashAttribute("alarm", "로그인 되었습니다.");
-//
-//			return "redirect:index";
-//		} else
-//			return "index";
-//
-//	}
+	//로그인
+	@PostMapping("/login")
+	public String login(Model model, User user, RedirectAttributes redir, HttpServletResponse res,
+			HttpSession session) {
+
+		logger.trace("user : {}", user);
+		User result = userService.login(user.getId(), user.getPw());
+
+		if (result != null) {
+			redir.addFlashAttribute("alarm", "반갑습니다. "+result.getId()+"님");
+			session.setAttribute("loginUser", user.getId());
+		}else{ 
+			redir.addFlashAttribute("alarm", "아이디와 비밀번호를 확인해 주세요!");
+		}
+		return "redirect:index";
+
+	}
+	
+	//회원가입
+	@GetMapping("/signUp")
+	public String signUpForm(Model model){
+		return "/";
+	}
+	
+	//로그아웃
+	
 
 }

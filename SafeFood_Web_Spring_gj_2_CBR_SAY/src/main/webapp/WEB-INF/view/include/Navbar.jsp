@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <nav id="login_place">
 	<div class="container">
 		<div id="login_nav">
@@ -37,7 +37,8 @@
 						aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">
-					<form action="user.do" method="post" id="loginForm">
+					<c:url value="/login" var="login"/>
+					<form action="${login}" method="post" id="loginForm">
 						<input type="hidden" name="action" value="login">
 						<div class="form-group">
 							<div class="input-group">
@@ -75,8 +76,7 @@
 <nav id="menu_place">
 	<div class="container">
 		<div id="img_place">
-		<c:url value="/static/img/ssafy_Mark.jpg" var="imgurl"></c:url>
-			<a href="index.jsp"><img src="${imgurl }" width=100px
+			<a href="index.jsp"><img src="./img/ssafy_Mark.jpg" width=100px
 				height=70px></a>
 		</div>
 
@@ -110,31 +110,34 @@
 
 <div id="search_place">
 	<div class="container">
-	
-		<form >
-			<div id="search_box">
-				<div id="condition" class="search_div">
-					<h5>검색 조건</h5>
-					<select id="selected"
-						style="width: 100px; height: 30px; font-size: 15px;">
-						<option class="s_option"
-							style="width: 100px; height: 30px; font-size: 15px;">상품명</option>
-						<option class="s_option"
-							style="width: 100px; height: 30px; font-size: 15px;">제조사</option>
-						<option class="s_option"
-							style="width: 100px; height: 30px; font-size: 15px;">재료명</option>
-					</select>
-				</div>
-				<div id="search_word" class="search_div">
-					<h5>검색 단어</h5>
-					<div id="text_button">
-						<input id="search_input" type="text" class="float_left" size="40"
-							style="width: 300px; height: 30px; font-size: 15px;"> <input
-							id="search_bt" type="button" class="float_left" value="검색"
-							style="width: 80px; height: 30px; margin-left: 15px;">
-					</div>
+		<div id="search_box">
+			<div id="condition" class="search_div">
+				<h5>검색 조건</h5>
+				<select id="selected"
+					style="width: 100px; height: 30px; font-size: 15px;">
+					<option class="s_option"
+						style="width: 100px; height: 30px; font-size: 15px;">상품명</option>
+					<option class="s_option"
+						style="width: 100px; height: 30px; font-size: 15px;">제조사</option>
+					<option class="s_option"
+						style="width: 100px; height: 30px; font-size: 15px;">재료명</option>
+				</select>
+			</div>
+			<div id="search_word" class="search_div">
+				<h5>검색 단어</h5>
+				<div id="text_button">
+					<input id="search_input" type="text" class="float_left" size="40"
+						style="width: 300px; height: 30px; font-size: 15px;"> <input
+						id="search_bt" type="button" class="float_left" value="검색"
+						style="width: 80px; height: 30px; margin-left: 15px;">
 				</div>
 			</div>
-		</form>
+		</div>
 	</div>
 </div>
+<script>
+	let alarm = "${alarm}";
+	if(alarm){
+		alert(alarm);
+	}
+</script>
