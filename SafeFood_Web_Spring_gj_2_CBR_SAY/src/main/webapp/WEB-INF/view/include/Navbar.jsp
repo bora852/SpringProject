@@ -110,28 +110,31 @@
 
 <div id="search_place">
 	<div class="container">
-		<div id="search_box">
-			<div id="condition" class="search_div">
-				<h5>검색 조건</h5>
-				<select id="selected"
-					style="width: 100px; height: 30px; font-size: 15px;">
-					<option class="s_option"
-						style="width: 100px; height: 30px; font-size: 15px;">상품명</option>
-					<option class="s_option"
-						style="width: 100px; height: 30px; font-size: 15px;">제조사</option>
-					<option class="s_option"
-						style="width: 100px; height: 30px; font-size: 15px;">재료명</option>
-				</select>
-			</div>
-			<div id="search_word" class="search_div">
-				<h5>검색 단어</h5>
-				<div id="text_button">
-					<input id="search_input" type="text" class="float_left" size="40"
-						style="width: 300px; height: 30px; font-size: 15px;"> <input
-						id="search_bt" type="button" class="float_left" value="검색"
-						style="width: 80px; height: 30px; margin-left: 15px;">
+	
+		<form >
+			<div id="search_box">
+				<div id="condition" class="search_div">
+					<h5>검색 조건</h5>
+					<select id="selected"
+						style="width: 100px; height: 30px; font-size: 15px;">
+						<option class="s_option"
+							style="width: 100px; height: 30px; font-size: 15px;">상품명</option>
+						<option class="s_option"
+							style="width: 100px; height: 30px; font-size: 15px;">제조사</option>
+						<option class="s_option"
+							style="width: 100px; height: 30px; font-size: 15px;">재료명</option>
+					</select>
+				</div>
+				<div id="search_word" class="search_div">
+					<h5>검색 단어</h5>
+					<div id="text_button">
+						<input id="search_input" type="text" class="float_left" size="40"
+							style="width: 300px; height: 30px; font-size: 15px;"> <input
+							id="search_bt" type="button" class="float_left" value="검색"
+							style="width: 80px; height: 30px; margin-left: 15px;">
+					</div>
 				</div>
 			</div>
-		</div>
+		</form>
 	</div>
 </div>

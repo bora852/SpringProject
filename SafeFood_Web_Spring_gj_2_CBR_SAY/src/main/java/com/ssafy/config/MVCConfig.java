@@ -10,10 +10,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.ssafy.controller.MainController;
+import com.ssafy.controller.MainController2;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = {MainController.class })
+@ComponentScan(basePackageClasses = {MainController2.class })
 public class MVCConfig extends WebMvcConfigurerAdapter{
 	@Bean
 	public ViewResolver internalResourceViewResolver() {

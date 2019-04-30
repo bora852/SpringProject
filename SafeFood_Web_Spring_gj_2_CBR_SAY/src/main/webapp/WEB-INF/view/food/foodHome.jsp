@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page
 	import="java.sql.*,javax.sql.*,java.io.*,java.net.*,javax.xml.parsers.*,org.w3c.dom.*,javax.xml.xpath.*,org.xml.sax.InputSource"%>
 <%@ page import="com.ssafy.model.service.*"%>
@@ -35,8 +36,14 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 <!-- Bootstrap core CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
 
 <!-- Custom styles for this template -->
 <c:url value="/static/css/heroic-features.css" var="heroiccss"></c:url>
@@ -74,162 +81,68 @@ div.jumbotron:hover div.for_hover {
 <body>
 	<!-- Navigation -->
 	<header>
-		<jsp:include page="../include/Navbar.jsp"/>
+		<jsp:include page="../include/Navbar.jsp" />
 	</header>
- 
+	
 	<!-- Page Content -->
-	<%--<div class="container main_block">
-	<%-- <c:choose>
-			<c:when test="${list == null }">
-				<div style="text-align:center;">
-					<br>
-					<h1>조회 결과가 없습니다.</h1>
-				</div>
-			</c:when>
+	<div class="container main_block">
+		<c:choose>
 			<c:when test="${list ne null }">
-			<c:forEach var="food" items="${list }">
-				 <div id="container" style='width: 960px; margin:0 auto;'>
-				    <div id="content" >
-				
-				    <br>
-				    <c:url value="/detail/${food.code }" var="detail"></c:url>
-				    <div class="card mb-3" id="${food.code }"  onclick="location.href='${detail }';">
-				    <div class="row">
-				    <div class="col-6 col-md-4">
-				    <c:url value="/static/${food.img }" var="foodimg"></c:url>
-				    <img class="card-img-top" src="${foodimg }" alt="Card image cap"></div>
-				    <div class="col-12 col-md-8">
-				    <div class="card-body">
-				   	<h5 class="card-title">${food.name }</h5>
-				   	<h6 class="card-subtitle" style="color:red;">
-				   		<c:if test="${food.check!=null }">${food.check }</c:if>
-				   	</h6>
-				   	<p class="card-text">${food.material }</p>
-				   	<c:if test="${user != null }">
-				   		<div id="${food.code }" class="btn btn-primary add">추가하기</div>
-				   	</c:if>
-				    </div></div></div></div> 
-				    
-				    </div>
-				  </div>
-			</c:forEach>
-		  </c:when>
- 	 </c:choose> --%>
- 	 <c:choose>
- 	 <c:when test="${list ne null }">
-			<c:forEach var="food" items="${list }">
-				<div class="jumbotron my-4 row">
-					<div class="col-lg-3 main_img_box">
-					<c:url value="/static/${food.img }" var="foodimg"></c:url>
-						<img class="main_img"  src="${foodimg }">
-						<div class="for_hover">
-							<h2 style="color: white; margin-top: 14px;">${food.maker }
-							</h2>
+				<c:forEach var="food" items="${list }">
+					<div class="jumbotron my-4 row">
+						<div class="col-lg-3 main_img_box">
+							<c:url value="/static/${food.img }" var="foodimg"></c:url>
+							<img class="main_img" src="${foodimg }">
+							<div class="for_hover">
+								<h2 style="color: white; margin-top: 14px;">${food.maker }</h2>
+							</div>
 						</div>
-					</div>
-					<div class="col-lg-9">
-						<div class="main_name border_line row">
-							<h2 class="p_name">${food.name }</h2>
-							<%-- <%
-								if (alg != null) {
-										String s = foods.get(i).getMaterial();
-										for (int j = 0; j < alg.size(); j++) {
-											if (!"".contains(alg.get(j)) && s.contains(alg.get(j))) {
-							%> --%>
-							<span class="label label-danger">알레르기주의</span>
-						</div>
-						<div class="main_mat row">
-							<a>${food.material }</a>
-						</div>
-						<div class="main_bt">
-							<div class="info_bt row">
-							<c:if test="${not empty loginId }">
-								<button type="button" id = "addButton" class="btn btn_d btn-outline-info" onclick="location.href='main.eat?action=add&code=${food.code }'">추가</button>
-								<button type="button" class="btn btn_d btn-outline-info">찜</button>
-							</c:if>
+						<div class="col-lg-9">
+							<div class="main_name border_line row">
+								<h2 class="p_name">${food.name }</h2>
+								<c:if test="${!empty loginUser.allergy }">
+									<c:forEach var="allergy" items="${loginUser.allergy_arr }">
+										<c:if test="${fn:contains(allergy, food.material)}">
+											<span class="label label-danger">알레르기주의</span>
+										</c:if>
+									</c:forEach>
+								</c:if>
+	
+							</div>
+							<div class="main_mat row">
+								<a>${food.material }</a>
+							</div>
+							<div class="main_bt">
+								<div class="info_bt row">
+									<c:if test="${not empty loginId }">
+										<button type="button" id="addButton"
+											class="btn btn_d btn-outline-info"
+											onclick="location.href='main.eat?action=add&code=${food.code }'">추가</button>
+										<button type="button" class="btn btn_d btn-outline-info">찜</button>
+									</c:if>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</c:forEach>
-		  </c:when>
-		  </c:choose>
-		<%-- <%
-			ArrayList<String> alg = new ArrayList<>();
-			if (session.getAttribute("allergy") != null) {
-				alg = (ArrayList) session.getAttribute("allergy");
-			}
-			FoodService fs = FoodService.getFs();
-			List<Food> foods = fs.getList();
-			for (int i = 0; i < foods.size(); i++) {
-		%>
-				<%
-					String msg = (String) request.getAttribute("msg");
-						if (msg != null && msg.equals("loginFail")) {
-							out.println("<script>alert('로그인에 실패하였습니다.');</script>");
-							request.setAttribute("msg","true");
-						}
-				%>
-				<div class="jumbotron my-4 row">
-					<div class="col-lg-3 main_img_box">
-						<img class="main_img" src="<%=foods.get(i).getImg()%>">
-						<div class="for_hover">
-							<h2 style="color: white; margin-top: 14px;"><%=foods.get(i).getMaker()%>
-							</h2>
-						</div>
-					</div>
-					<div class="col-lg-9">
-						<div class="main_name border_line row">
-							<h2 class="p_name"><%=foods.get(i).getName()%></h2>
-							<%
-								if (alg != null) {
-										String s = foods.get(i).getMaterial();
-										for (int j = 0; j < alg.size(); j++) {
-											if (!"".contains(alg.get(j)) && s.contains(alg.get(j))) {
-							%>
-							<span class="label label-danger">알레르기주의</span>
-							<%
-												break;
-											}
-										}
-									}
-							%>
-						</div>
-						<div class="main_mat row">
-							<a><%=foods.get(i).getMaterial()%></a>
-						</div>
-						<div class="main_bt">
-							<div class="info_bt row">
-							<c:if test="${not empty loginId }">
-								<button type="button" id = "addButton" class="btn btn_d btn-outline-info" onclick="location.href='main.eat?action=add&code=<%=foods.get(i).getCode() %>'">추가</button>
-								<button type="button" class="btn btn_d btn-outline-info">찜</button>
-							</c:if>
-							</div>
-						</div>
-					</div>
-				</div>
-		<%
-			}
-		%>  --%>
+				</c:forEach>
+			</c:when>
+		</c:choose>
 	</div>
-	<!-- /.container -->
-	<!-- Footer -->
-	<!--   <footer class="py-5 bg-dark"> -->
+	
 	<footer>
-		<jsp:include page="../include/footer.jsp"/>
-	</footer> 
+		<jsp:include page="../include/footer.jsp" />
+	</footer>
 
 </body>
 <script>
-	/* w3IncludeHTML();
 
-	$(document).ready(function() {
+/* 	$(document).ready(function() {
 		$(document).on('click', 'h2.p_name', function() {
 			var url = 'detailinfo.food?action=detail&name=' + $(this).text();
 			location.href = encodeURI(url);
 		});
-	});
-	$(document).on('click','#search_bt',function() {
+	}); */
+/* 	$(document).on('click','#search_bt',function() {
 				var name = $("#search_input").val();
 				var option = $("#selected option:selected").val();
 				if (name) {
@@ -267,8 +180,8 @@ div.jumbotron:hover div.for_hover {
 								}
 							});
 					}
-	});
+	}); */
 	
- */
+	 
 </script>
 </html>

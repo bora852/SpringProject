@@ -16,9 +16,9 @@ import com.ssafy.model.service.EatService;
 import com.ssafy.model.service.FoodService;
 import com.ssafy.model.service.UserService;
 
-//@Controller
-public class MainController {
-	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+@Controller
+public class MainController2 {
+	private static final Logger logger = LoggerFactory.getLogger(MainController2.class);
 	
 	@Autowired 
 	UserService user;
