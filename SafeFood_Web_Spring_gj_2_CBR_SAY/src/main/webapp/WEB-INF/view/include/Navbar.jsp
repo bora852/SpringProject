@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <nav id="login_place">
 	<div class="container">
 		<div id="login_nav">
@@ -74,7 +75,8 @@
 <nav id="menu_place">
 	<div class="container">
 		<div id="img_place">
-			<a href="index.jsp"><img src="./img/ssafy_Mark.jpg" width=100px
+		<c:url value="/static/img/ssafy_Mark.jpg" var="imgurl"></c:url>
+			<a href="index.jsp"><img src="${imgurl }" width=100px
 				height=70px></a>
 		</div>
 

@@ -29,6 +29,15 @@ public class MainController {
 	@Autowired
 	FoodService food;
 	
+	@GetMapping("/home")
+	public String home(Model model) {
+		logger.trace("home 방문.");
+		List<Food> foods = food.selectAll();
+		logger.trace("foods :: "+foods);
+		model.addAttribute("list", foods);
+		return "food/foodHome";
+	}
+	
 	@GetMapping("/index")
 	public String index(Model model) {
 		logger.trace("index 방문.");

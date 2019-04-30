@@ -35,12 +35,16 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 <!-- Bootstrap core CSS -->
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <!-- Custom styles for this template -->
-<link href="css/heroic-features.css" rel="stylesheet">
-<link href="css/main.css" rel="stylesheet">
-<link href="css/modal.css" rel="stylesheet">
+<c:url value="/static/css/heroic-features.css" var="heroiccss"></c:url>
+<c:url value="/static/css/main.css" var="maincss"></c:url>
+<c:url value="/static/css/modal.css" var="modalcss"></c:url>
+<link href="${heroiccss }" rel="stylesheet">
+<link href="${maincss }" rel="stylesheet">
+<link href="${modalcss }" rel="stylesheet">
 <script src="http://www.w3schools.com/lib/w3data.js"></script>
 <style>
 div.jumbotron:hover div.for_hover {
@@ -70,13 +74,12 @@ div.jumbotron:hover div.for_hover {
 <body>
 	<!-- Navigation -->
 	<header>
-		<div id="header_place" w3-include-html="Navbar.jsp"></div>
-		<jsp:include page="include/Navbar.jsp"/>
+		<jsp:include page="../include/Navbar.jsp"/>
 	</header>
  
 	<!-- Page Content -->
-	<div class="container main_block">
-	<c:choose>
+	<%--<div class="container main_block">
+	<%-- <c:choose>
 			<c:when test="${list == null }">
 				<div style="text-align:center;">
 					<br>
@@ -86,19 +89,20 @@ div.jumbotron:hover div.for_hover {
 			<c:when test="${list ne null }">
 			<c:forEach var="food" items="${list }">
 				 <div id="container" style='width: 960px; margin:0 auto;'>
-				    <div id="content">
+				    <div id="content" >
 				
 				    <br>
 				    <c:url value="/detail/${food.code }" var="detail"></c:url>
 				    <div class="card mb-3" id="${food.code }"  onclick="location.href='${detail }';">
 				    <div class="row">
 				    <div class="col-6 col-md-4">
-				    <img class="card-img-top" src="static/${food.img }" alt="Card image cap"></div>
+				    <c:url value="/static/${food.img }" var="foodimg"></c:url>
+				    <img class="card-img-top" src="${foodimg }" alt="Card image cap"></div>
 				    <div class="col-12 col-md-8">
 				    <div class="card-body">
 				   	<h5 class="card-title">${food.name }</h5>
 				   	<h6 class="card-subtitle" style="color:red;">
-				   		<%-- <c:if test="${food.check!=null }">${food.check }</c:if> --%>
+				   		<c:if test="${food.check!=null }">${food.check }</c:if>
 				   	</h6>
 				   	<p class="card-text">${food.material }</p>
 				   	<c:if test="${user != null }">
@@ -110,8 +114,46 @@ div.jumbotron:hover div.for_hover {
 				  </div>
 			</c:forEach>
 		  </c:when>
- 	 </c:choose>
-	
+ 	 </c:choose> --%>
+ 	 <c:choose>
+ 	 <c:when test="${list ne null }">
+			<c:forEach var="food" items="${list }">
+				<div class="jumbotron my-4 row">
+					<div class="col-lg-3 main_img_box">
+					<c:url value="/static/${food.img }" var="foodimg"></c:url>
+						<img class="main_img"  src="${foodimg }">
+						<div class="for_hover">
+							<h2 style="color: white; margin-top: 14px;">${food.maker }
+							</h2>
+						</div>
+					</div>
+					<div class="col-lg-9">
+						<div class="main_name border_line row">
+							<h2 class="p_name">${food.name }</h2>
+							<%-- <%
+								if (alg != null) {
+										String s = foods.get(i).getMaterial();
+										for (int j = 0; j < alg.size(); j++) {
+											if (!"".contains(alg.get(j)) && s.contains(alg.get(j))) {
+							%> --%>
+							<span class="label label-danger">알레르기주의</span>
+						</div>
+						<div class="main_mat row">
+							<a>${food.material }</a>
+						</div>
+						<div class="main_bt">
+							<div class="info_bt row">
+							<c:if test="${not empty loginId }">
+								<button type="button" id = "addButton" class="btn btn_d btn-outline-info" onclick="location.href='main.eat?action=add&code=${food.code }'">추가</button>
+								<button type="button" class="btn btn_d btn-outline-info">찜</button>
+							</c:if>
+							</div>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+		  </c:when>
+		  </c:choose>
 		<%-- <%
 			ArrayList<String> alg = new ArrayList<>();
 			if (session.getAttribute("allergy") != null) {
@@ -174,15 +216,12 @@ div.jumbotron:hover div.for_hover {
 	<!-- Footer -->
 	<!--   <footer class="py-5 bg-dark"> -->
 	<footer>
-		<div w3-include-html="Footer.html"></div>
-	</footer>
+		<jsp:include page="../include/footer.jsp"/>
+	</footer> 
 
-	<!-- Bootstrap core JavaScript -->
-	<script src="vendor/jquery/jquery.min.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 <script>
-	w3IncludeHTML();
+	/* w3IncludeHTML();
 
 	$(document).ready(function() {
 		$(document).on('click', 'h2.p_name', function() {
@@ -230,6 +269,6 @@ div.jumbotron:hover div.for_hover {
 					}
 	});
 	
-
+ */
 </script>
 </html>
