@@ -10,9 +10,10 @@
 			<button type="button"
 				class="btn btn-outline-light login_btn login_nav_btn"
 				data-toggle="modal" data-target="#myModal">Login</button>
+			<c:url value="/signUp" var="signUp"/>
 			<button type="button"
 				class="btn btn-outline-light login_btn login_nav_btn"
-				onclick="location.href='SignUp.jsp'">회원가입</button>
+				onclick="${signUp}">회원가입</button>
 			<%
 				} else {
 			%>
@@ -65,7 +66,7 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					아직 계정이 없으신가요? <a href="./SignUp.jsp">회원가입</a>
+					아직 계정이 없으신가요? <a href="${signUp}">회원가입</a>
 				</div>
 			</div>
 		</div>

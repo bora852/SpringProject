@@ -60,12 +60,12 @@ public class MainController {
 
 		logger.trace("user : {}", user);
 		User result = userService.login(user.getId(), user.getPw());
-		String[] allergy_user = result.getAllergy().split(",");
 		if (result != null) {
+			String[] allergy_user = result.getAllergy().split(",");
 			redir.addFlashAttribute("alarm", "반갑습니다. "+result.getId()+"님");
 			session.setAttribute("loginUser", result);
 			session.setAttribute("allergy", allergy_user);
-		}else{ 
+		} else{ 
 			redir.addFlashAttribute("alarm", "아이디와 비밀번호를 확인해 주세요!");
 		}
 		return "redirect:home";
@@ -75,8 +75,13 @@ public class MainController {
 	//회원가입
 	@GetMapping("/signUp")
 	public String signUpForm(Model model){
-		return "/";
+		return "user/signUp";
 	}
+	
+//	@PostMapping("/signUp")
+//	public String doSignUp(Model model) {
+//		
+//	}
 	
 	//로그아웃
 	
