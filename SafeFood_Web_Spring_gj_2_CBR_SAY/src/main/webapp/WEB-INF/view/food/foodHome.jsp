@@ -100,14 +100,18 @@ div.jumbotron:hover div.for_hover {
 						<div class="col-lg-9">
 							<div class="main_name border_line row">
 								<h2 class="p_name">${food.name }</h2>
-								<c:if test="${!empty loginUser.allergy }">
-									<c:forEach var="allergy" items="${loginUser.allergy_arr }">
-										<c:if test="${fn:contains(allergy, food.material)}">
-											<span class="label label-danger">알레르기주의</span>
+								<c:if test="${!empty loginUser }">
+									<c:set var="loop_flag" value="false" />
+									<c:forEach var="allergyitem" items="${allergy }" >
+										<c:if test="${not loop_flag }">
+											<c:if test="${fn:contains(food.material,allergyitem)}">
+												<span class="label label-danger">알레르기주의</span>
+												<c:set var="loop_flag" value="true" />
+											</c:if>
 										</c:if>
 									</c:forEach>
 								</c:if>
-	
+
 							</div>
 							<div class="main_mat row">
 								<a>${food.material }</a>

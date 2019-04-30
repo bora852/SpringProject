@@ -34,13 +34,23 @@ public class MainController {
 	@Autowired
 	FoodService food;
 	
+	@GetMapping("/home")
+	public String home(Model model) {
+		logger.trace("home 방문.");
+		List<Food> foods = food.selectAll();
+		logger.trace("foods :: "+foods);
+		model.addAttribute("list", foods);
+		return "food/foodHome";
+	}
+	
+	
 	@GetMapping("/index")
 	public String index(Model model) {
 		logger.trace("index 방문.");
 		List<Food> foods = food.selectAll();
 		logger.trace("foods :: "+foods);
 		model.addAttribute("list", foods);
-		return "index";
+		return "home";
 	}
 	
 	//로그인
@@ -50,14 +60,15 @@ public class MainController {
 
 		logger.trace("user : {}", user);
 		User result = userService.login(user.getId(), user.getPw());
-
+		String[] allergy_user = result.getAllergy().split(",");
 		if (result != null) {
 			redir.addFlashAttribute("alarm", "반갑습니다. "+result.getId()+"님");
-			session.setAttribute("loginUser", user.getId());
+			session.setAttribute("loginUser", result);
+			session.setAttribute("allergy", allergy_user);
 		}else{ 
 			redir.addFlashAttribute("alarm", "아이디와 비밀번호를 확인해 주세요!");
 		}
-		return "redirect:index";
+		return "redirect:home";
 
 	}
 	

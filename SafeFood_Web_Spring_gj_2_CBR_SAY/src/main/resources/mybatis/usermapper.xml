@@ -8,10 +8,6 @@
 		insert into user values (#{id}, #{pw}, #{name}, #{addr}, #{tel}, #{allergy})
 	</insert>
 
-	<select id="login" resultType="userInfo" parameterType="userInfo">
-		select * from user where id = #{id} and pw = #{pw}
-	</select>
-
 	<select id="selectUser" resultType="userInfo" parameterType="String">
 		select * from user where id = #{id}
 	</select>

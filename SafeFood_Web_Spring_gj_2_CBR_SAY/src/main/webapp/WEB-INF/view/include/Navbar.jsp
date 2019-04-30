@@ -76,7 +76,9 @@
 <nav id="menu_place">
 	<div class="container">
 		<div id="img_place">
-			<a href="index.jsp"><img src="./img/ssafy_Mark.jpg" width=100px
+		
+		<c:url value="/static/img/ssafy_Mark.jpg" var="image"></c:url>
+			<a href="index.jsp"><img src="${image }" width=100px
 				height=70px></a>
 		</div>
 
