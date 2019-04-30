@@ -31,6 +31,7 @@ public class EatServiceImpl implements EatService {
 
 	@Override
 	public List<Food> searchMyList(String id) {
+		
 		return eatRepo.searchMyList(id);
 	}
 

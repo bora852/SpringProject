@@ -1,6 +1,8 @@
 package com.ssafy.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +23,7 @@ import com.ssafy.model.service.EatService;
 import com.ssafy.model.service.FoodService;
 import com.ssafy.model.service.UserService;
 
-//@Controller
+@Controller
 public class MainController2 {
 	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 	
@@ -61,7 +63,15 @@ public class MainController2 {
 		model.addAttribute("list", foods);
 		return "food/foodHome";
 	}
-	
+	@GetMapping("/productinfo")
+	public String productinfo(Model model, HttpSession session) {
+		logger.trace("productinfo 방문.");
+		User user = (User)session.getAttribute("loginUser");
+		List<Food> foods = eat.searchMyList(user.getId());
+		logger.trace("foods :: "+foods);
+		model.addAttribute("list", foods);
+		return "food/productinfo";
+	}
 	
 	@GetMapping("/index")
 	public String index(Model model) {
