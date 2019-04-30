@@ -2,6 +2,7 @@ package com.ssafy.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -33,10 +34,22 @@ public class MainController2 {
 	@Autowired
 	FoodService food;
 	
-	@PostMapping("/search")
-	public String search(Model model) {
-		
-		return "redirect:/search";
+	@GetMapping("/search")
+	public String search(Model model, HttpServletRequest req, RedirectAttributes redir) {
+		String by = req.getParameter("by");
+		List<Food> result = null;
+		if (by.equals("상품명")) {
+			String name = req.getParameter("name");
+			result = food.selectName2(name);
+		} else if (by.equals("제조사")) {
+			String maker = req.getParameter("name");
+			result = food.selectMaker(maker);
+		} else if (by.equals("재료명")) {
+			String material = req.getParameter("name");
+			result = food.selectMaterial(material);
+		}
+		model.addAttribute("list", result);
+		return "food/foodHome";
 	}
 	
 	@GetMapping("/home")
@@ -80,6 +93,7 @@ public class MainController2 {
 	//회원가입
 	@GetMapping("/signUp")
 	public String signUpForm(Model model){
+		
 		return "/";
 	}
 	
