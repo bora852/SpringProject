@@ -52,12 +52,8 @@
 		<jsp:include page="../include/Navbar.jsp" />
 	</header>
 	<h2>비밀번호 찾기</h2>
-	<form method="post" action="user.do" id="findPwForm">
-		<input type="hidden" name="action" value="findPw">
-		<% if(request.getAttribute("msg")!=null){ %>
-			<span><%="-"+request.getAttribute("msg")%></span>
-		<%} %>	
-		
+	<c:url value="/userfindPw" var="userfindPw"/>
+	<form method="post" action="${userfindPw}" id="findPwForm">
 		<% if(request.getAttribute("id")!=null){ %>
 		<div class = "input_info">
 			<span>아이디</span>
@@ -81,7 +77,8 @@
 		<input type="submit" value="비밀번호 찾기" style="width:150px; height:30px;font-size:15px; background:#343a40; color:white; border-radius: 5px;">
 	</form>
 	
-	<form method="post" action="user.do" id="RePwForm">
+	<c:url value="/doePw" var="doePw"/>
+	<form method="post" action="${doePw }" id="RePwForm">
 		<input type="hidden" name="id" value="<%=request.getAttribute("id")%>">
 		<% if(request.getAttribute("msgRePw")!=null){ %>
 			<span><%="-"+request.getAttribute("msgRePw")%></span>

@@ -57,7 +57,8 @@
 								value="로그인">
 						</div>
 						<p class="hint-text">
-							<a href="./userfindPw.jsp">비밀번호를 잊으셨나요?</a>
+							<c:url value="/userfindPw" var="userfindPw"/>
+							<a href="${userfindPw }">비밀번호를 잊으셨나요?</a>
 						</p>
 					</form>
 				</div>

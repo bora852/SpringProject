@@ -103,7 +103,6 @@ public class User implements Serializable{
 				this.allergy += allergy[i]+",";
 			}
 			this.allergy += getAllergy().substring(0, getAllergy().length());
-			System.out.println(">>>>>>>"+allergy);
 		}
 	}
 

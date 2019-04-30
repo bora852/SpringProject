@@ -66,7 +66,7 @@ public class DataTest {
 	
 	@Test
 	public void testInsert() {
-		User user = new User("id1","pw2","name2","addr2","tel2", new String[] {"all1","all2","all3"});
+		User user = new User("id3","pw2","name2","addr2","tel2", new String[] {"all1","all2","all3"});
 		int result = service.insertUser(user);
 		assertThat(result, is(1));
 	}
@@ -90,56 +90,4 @@ public class DataTest {
 		assertThat(result, is(1));
 	}
 	
-//	
-	
-//	@Autowired
-//	BookRepository book;
-//	
-//	@Test
-//	public void insertUserTest() {
-//		int result = user.insert(new UserInfo("2","사람1","1234"));
-//		assertThat(result, is(1));
-//	}
-//	
-//	@Test
-//	public void insertBookTest() {
-//		int result = book.insert(new Book("2","책이름","작가","출판사","설명"));
-//		assertThat(result, is(1));
-//	}
-//	
-//	@Test
-//	public void selectUserTest() {
-//		UserInfo result = user.select("2");
-//		assertThat(result.getName(), is("사람1"));
-//	}
-//	
-//	@Test
-//	public void selectBookTest() {
-//		Book result = book.select("2");
-//		assertThat(result.getTitle(), is("책이름"));
-//	}
-//	
-//	@Test
-//	public void updatetUserTest() {
-//		int result = user.update(new UserInfo("2","up_사람1","up_1234"));
-//		assertThat(result, is(1));
-//	}
-//	
-//	@Test
-//	public void updatetBookTest() {
-//		int result = book.update(new Book("2","up_책이름","작가","출판사","설명"));
-//		assertThat(result, is(1));
-//	}
-//
-//	@Test
-//	public void deleteUserTest() {
-//		int result = user.delete("2");
-//		assertThat(result, is(1));
-//	}
-//	
-//	@Test
-//	public void selectAll() {
-//		List<UserInfo> users = user.selectAllUsers();
-//		assertThat(users.size(), is(1));
-//	}
 }

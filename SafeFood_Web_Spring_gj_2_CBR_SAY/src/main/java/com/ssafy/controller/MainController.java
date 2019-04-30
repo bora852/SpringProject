@@ -2,6 +2,7 @@ package com.ssafy.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -110,11 +111,103 @@ public class MainController {
 		return "user/userInfo";
 	}
 	
+	@PostMapping("/modify")
+	public String modify(Model model, RedirectAttributes redir, User user, HttpSession session) {
+		logger.trace("logout: {}", user.getId());
+		int result = userService.updateUser(user);
+
+		if (result > 0) {
+			session.setAttribute("loginUser", user);
+			redir.addFlashAttribute("alarm", "회원정보 수정 완료하였습니다.");
+		} else {
+			redir.addFlashAttribute("alarm", "회원정보 수정 실패하였습니다.");
+		}
+		return "redirect:/home";
+	}
+
+	//탈퇴
+	@GetMapping("/withdraw")
+	public String doWithdraw(Model model, RedirectAttributes redir, User user, HttpSession session) {
+		User users = (User) session.getAttribute("loginUser");
+		logger.trace("logout: {}", users.getId());
+		
+		int result = userService.deleteUser(users.getId());
+		
+		if (result > 0) {
+			redir.addFlashAttribute("alarm", "회원탈퇴되었습니다.");
+			session.invalidate();
+		}else {
+			redir.addFlashAttribute("alarm", "회원실패하였습니다.");
+		}
+		return "redirect:/home";
+	}
+	
+	//비밀번호 찾기
+	@GetMapping("/userfindPw")
+	public String userfindPwForm(Model model) {
+		return "user/userfindPw";
+	}
+	
+	@PostMapping("/userfindPw")
+	public String doUserfindPw(Model model, RedirectAttributes redir, User user, HttpSession session) {
+		
+		int result = userService.findPw(user);
+		if(result > 0) {
+			session.setAttribute("id", user.getId());
+			session.setAttribute("tel", user.getPw());
+			session.setAttribute("findChk", "success");
+			return "user/userfindPw";
+		}else {
+			redir.addFlashAttribute("alarm", "아이디 또는 패스워드가 다릅니다.");
+			return "user/userfindPw";
+		}
+	}
+	
+	//비밀번호 재설정
+	@PostMapping("/doePw")
+	public String doRePw(Model model, RedirectAttributes redir, User user, HttpSession session) {
+		int result = userService.updatePw(user);
+		if(result > 0) {
+			redir.addFlashAttribute("alarm", "비밀번호가 변경되었습니다.");
+			return "redirect:/home";
+		}else {
+			redir.addFlashAttribute("alarm", "비밀번호가 다릅니다.");
+			return "user/userfindPw";
+		}
+	}
 	//에러 페이지 연결
 	@RequestMapping("/error")
 	public String errorHandling(Model model) {
 		return "include/Error";
 	}
 	
-
+	@PostMapping("/search")
+	public String search(Model model, HttpServletRequest req, RedirectAttributes redir) {
+		logger.trace("search 방문.");
+		String by = req.getParameter("by");
+		List<Food> result = null;
+		if (by.equals("상품명")) {
+			String name = req.getParameter("search_input");;
+			result = food.selectName2(name);
+		} else if (by.equals("제조사")) {
+			String maker = req.getParameter("search_input");
+			result = food.selectMaker(maker);
+		} else if (by.equals("재료명")) {
+			String material = req.getParameter("search_input");
+			result = food.selectMaterial(material);
+		}
+		model.addAttribute("list", result);
+		return "food/foodHome";
+	}
+	
+	@GetMapping("/productinfo")
+	public String productinfo(Model model, HttpSession session) {
+		logger.trace("productinfo 방문.");
+		User user = (User)session.getAttribute("loginUser");
+		List<Food> foods = eat.searchMyList(user.getId());
+		logger.trace("foods :: "+foods);
+		model.addAttribute("list", foods);
+		return "food/productinfo";
+	}
+	
 }

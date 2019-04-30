@@ -41,9 +41,11 @@
 <c:url value="/static/css/heroic-features.css" var="heroiccss"></c:url>
 <c:url value="/static/css/main.css" var="maincss"></c:url>
 <c:url value="/static/css/modal.css" var="modalcss"></c:url>
+<c:url value="/static/css/signUp.css" var="signUpcss"></c:url>
 <link href="${heroiccss }" rel="stylesheet">
 <link href="${maincss }" rel="stylesheet">
 <link href="${modalcss }" rel="stylesheet">
+<link href="${signUpcss }" rel="stylesheet">
 <script src="http://www.w3schools.com/lib/w3data.js"></script>
 
 </head>
@@ -54,59 +56,73 @@
 	</header>
 	
 	<!-- 회원정보 폼 -->
-	<form method="post" action="user.do" id="updateForm">
+	<c:url value="/modify" var="modify"/>
+	<form method="post" action="${modify}" id="updateForm">
 		<input type="hidden" name="action" value="update">
 		<div id="signUp_place">
 			<div class="container">
 				<div id="signUp_box">
-					<%
-						if (request.getAttribute("msg") != null) {
-					%>
-					<span><%="-" + request.getAttribute("msg")%></span>
-					<%
-						}
-					%>
 					<h2>회원정보</h2>
 					<div class="input_info">
 						<span>아이디</span> <input type="text"
 							style="width: 300px; height: 30px; font-size: 15px;"
-							placeholder="아이디를 입력해주세요." value="${user.getId()}"
+							placeholder="아이디를 입력해주세요." value="${loginUser.getId()}"
 							disabled="disabled"> <input type="hidden" name="id"
-							value="<%=user.getId()%>">
-							value="${user.getId()}">
+							value="${loginUser.id }">
 					</div>
 					<div class="input_info">
 						<span>비밀번호</span> <input type="password" name="pw"
 							style="width: 300px; height: 30px; font-size: 15px;"
-							placeholder="영문 숫자 포함 6자리 이상" value="${user.getPw()}">
+							placeholder="영문 숫자 포함 6자리 이상" value="${loginUser.id}">
 					</div>
 					<div class="input_info">
 						<span>이름</span> <input type="text" name="name"
 							style="width: 300px; height: 30px; font-size: 15px;"
-							placeholder="이름을 입력해주세요" value="${user.getName()}">
+							placeholder="이름을 입력해주세요" value="${loginUser.name}">
 					</div>
 					<div class="input_info">
 						<span>주소</span> <input type="text" name="addr"
 							style="width: 300px; height: 30px; font-size: 15px;"
-							placeholder="주소를 입력해주세요" value="${user.getAddr()}">
+							placeholder="주소를 입력해주세요" value="${loginUser.addr}">
 					</div>
 					<div class="input_info">
 						<span>전화번호</span> <input type="tel" name="tel"
 							style="width: 300px; height: 30px; font-size: 15px;"
-							placeholder="010-xxxx-xxxx" value="<%=user.getTel()%>">
-							placeholder="010-xxxx-xxxx" value="${user.getTel()}">
+							placeholder="010-xxxx-xxxx" value="${loginUser.tel}">
 					</div>
 					<div class="input_info">
 						<span>알레르기</span> <input type="hidden" id="allvalue"
-							value="<%=user.getAllergy()%>">
-							value="${user.getAllergy()}">
+							value="${loginUser.allergy}">
 						<div id="input_allergy">
-
-							<%
-								String[] s = null;//user.getAllergy();
+	<div class = "allergy">
+								<input type="checkbox" name="allergy" value="대두"><span>대두</span>
+								<input type="checkbox" name="allergy" value="땅콩"><span>땅콩</span>
+								<input type="checkbox" name="allergy" value="우유"><span>우유</span>
+								<input type="checkbox" name="allergy" value="게"><span>게</span>
+								</div>
+								<div class = "allergy">
+								<input type="checkbox" name="allergy" value="새우"><span>새우</span>
+								<input type="checkbox" name="allergy" value="참치"><span>참치</span>
+								<input type="checkbox" name="allergy" value="연어"><span>연어</span>
+								<input type="checkbox" name="allergy" value="쑥"><span>쑥</span>
+								</div>
+								<div class = "allergy">
+								<input type="checkbox" name="allergy" value="소고기"><span>소고기</span>
+								<input type="checkbox" name="allergy" value="닭고기"><span>닭고기</span>
+								<input type="checkbox" name="allergy" value="돼지고기"><span>돼지고기</span>
+								</div>
+								<div class = "allergy">
+								<input type="checkbox" name="allergy" value="복숭아"><span>복숭아</span>
+								<input type="checkbox" name="allergy" value="민들레"><span>민들레</span>
+								<input type="checkbox" name="allergy" value="계란흰자"><span>계란흰자</span>
+								</div>
+<%-- 							<%
+								String[] s = null;//${loginUser.allergy};
 								String al = "";
-								for (int i = 0; i < s.length; i++) {
-									al += s[i];
+								if(s.length != 0){
+									for (int i = 0; i < s.length; i++) {
+										al += s[i];
+									}
 								}
 							%>
 							<div class="allergy">
@@ -271,17 +287,18 @@
 								<input type="checkbox" id="계란흰자" name="allergy" value="계란흰자"><span>계란흰자</span>
 								<%
 									}
-								%>
+								%> --%>
 							</div>
 						</div>
 					</div>
 					<div class="input_info signUp_submit">
 						<input type="submit" value="수정"
 							style="width: 50px; height: 30px; font-size: 15px; background: #343a40; color: white; border-radius: 5px;">
+							
+						<c:url value="/withdraw" var="withdraw"/>
 						<button type="button"
 							style="width: 50px; height: 30px; font-size: 15px; background: #343a40; color: white; border-radius: 5px;"
-							onclick="location.href='userInfo.do?action=withdraw'">탈퇴</button>
-						<!-- <input type="submit" value="탈퇴" style="width:50px; height:30px;font-size:15px; background:#343a40; color:white; border-radius: 5px;"> -->
+							onclick="location.href='${withdraw}'">탈퇴</button>
 					</div>
 				</div>
 			</div>

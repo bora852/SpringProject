@@ -49,7 +49,7 @@ public class UserRepositoryImpl implements UserRepository{
 	public int deleteUser(String userId) {
 		logger.trace("회원탈퇴(deleteUser): {}", userId);
 		String statement = ns+"deleteUser";
-		return template.update(statement, userId);
+		return template.delete(statement, userId);
 	}
 	
 	@Override
