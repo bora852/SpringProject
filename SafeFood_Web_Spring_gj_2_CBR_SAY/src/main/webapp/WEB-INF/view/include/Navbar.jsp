@@ -4,26 +4,22 @@
 <nav id="login_place">
 	<div class="container">
 		<div id="login_nav">
-			<%
-				if (session.getAttribute("loginId") == null) {
-			%>
-			<button type="button"
-				class="btn btn-outline-light login_btn login_nav_btn"
-				data-toggle="modal" data-target="#myModal">Login</button>
-			<c:url value="/signUp" var="signUp"/>
-			<button type="button" class="btn btn-outline-light login_btn login_nav_btn" onclick="location.href='${signUp }'">회원가입</button>
-			<%
-				} else {
-			%>
-			<button type="button"
-				class="btn btn-outline-light login_btn login_nav_btn"
-				onclick="location.href='userInfo.do?action=userInfo'">회원정보</button>
-			<button type="button"
-				class="btn btn-outline-light login_btn login_nav_btn"
-				onclick="location.href='Logout.do?action=logout'">Logout</button>
-			<%
-				}
-			%>
+			<c:if test="${empty loginUser}">
+				<button type="button"
+					class="btn btn-outline-light login_btn login_nav_btn"
+					data-toggle="modal" data-target="#myModal">Login</button>
+				<c:url value="/signUp" var="signUp"/>
+				<button type="button" class="btn btn-outline-light login_btn login_nav_btn" onclick="location.href='${signUp }'">회원가입</button>
+			</c:if>
+			
+			<c:if test="${!empty loginUser}">
+				<button type="button"
+					class="btn btn-outline-light login_btn login_nav_btn"
+					onclick="location.href='userInfo.do?action=userInfo'">회원정보</button>
+				<button type="button"
+					class="btn btn-outline-light login_btn login_nav_btn"
+					onclick="location.href='Logout.do?action=logout'">Logout</button>
+			</c:if>
 		</div>
 	</div>
 	<!-- Modal HTML -->
@@ -139,7 +135,7 @@
 		console.log("들어감")
 		$.ajax({
 			<c:url value="/search" var="search"></c:url>
-			url : "${search}"
+		/* 	url : "${search}" */
 			type : "get",
 			dataType : "json",
 			data : {

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -78,12 +79,24 @@ public class MainController {
 		return "user/signUp";
 	}
 	
-//	@PostMapping("/signUp")
-//	public String doSignUp(Model model) {
-//		
-//	}
+	@PostMapping("/signUp")
+	public String doSignUp(Model model, User user, RedirectAttributes redir) {
+		try {
+			userService.insertUser(user);
+			redir.addFlashAttribute("alarm", "회원가입되었습니다. 로그인해주세요.");
+			return "redirect:/home";
+		}catch(DuplicateKeyException e) {
+			logger.trace("DuplicateKeyException : {}", e);
+//			redir.addFlashAttribute("alarm", "이미 존재하는 아이디입니다.");
+			model.addAttribute("alarm", "이미 존재하는 아이디입니다.");
+			model.addAttribute("prev", user);
+			return "user/signUp";
+		}
+	}
 	
 	//로그아웃
+	
+	//에러 페이지 연결
 	
 
 }

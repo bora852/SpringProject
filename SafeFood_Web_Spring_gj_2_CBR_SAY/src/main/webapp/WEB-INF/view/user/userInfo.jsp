@@ -1,14 +1,14 @@
-<%@page import="java.util.Arrays"%>
 <%@page import="com.ssafy.model.dto.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<title>회원정보</title>
+<title>회원가입</title>
 
 <!-- js, jquery -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -33,23 +33,28 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 <!-- Bootstrap core CSS -->
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <!-- Custom styles for this template -->
-<link href="css/heroic-features.css" rel="stylesheet">
-<link href="css/main.css" rel="stylesheet">
-<link href="css/signUp.css" rel="stylesheet">
-<link href="css/modal.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<c:url value="/static/css/heroic-features.css" var="heroiccss"></c:url>
+<c:url value="/static/css/main.css" var="maincss"></c:url>
+<c:url value="/static/css/modal.css" var="modalcss"></c:url>
+<link href="${heroiccss }" rel="stylesheet">
+<link href="${maincss }" rel="stylesheet">
+<link href="${modalcss }" rel="stylesheet">
 <script src="http://www.w3schools.com/lib/w3data.js"></script>
+
 </head>
 <body>
+	<!-- Navigation -->
+	<header>
+		<jsp:include page="../include/Navbar.jsp" />
+	</header>
 	<%
 		User user = (User) request.getAttribute("user");
 	%>
-	<!-- Navigation -->
-	<header>
-		<div w3-include-html="Navbar.jsp"></div>
-	</header>
 	<!-- 회원정보 폼 -->
 	<form method="post" action="user.do" id="updateForm">
 		<input type="hidden" name="action" value="update">
@@ -287,17 +292,9 @@
 	<!-- /.container -->
 
 	<!-- Footer -->
-	<!--   <footer class="py-5 bg-dark"> -->
 	<footer>
-		<div w3-include-html="Footer.html"></div>
+		<jsp:include page="../include/footer.jsp" />
 	</footer>
 
-	<!-- Bootstrap core JavaScript -->
-	<script src="vendor/jquery/jquery.min.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 </body>
-<script>
-	w3IncludeHTML();
-</script>
 </html>
