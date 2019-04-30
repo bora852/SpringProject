@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.model.dto.UserVO;
+import com.ssafy.model.dto.User;
 import com.ssafy.model.repository.UserRepository;
 
 /**
@@ -17,7 +17,7 @@ import com.ssafy.model.repository.UserRepository;
  * @Date : 2019. 4. 14.
  */
 @Service
-//@Transactional
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -29,38 +29,42 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int insertUser(UserVO user) {
+	public int insertUser(User user) {
 		int result = userRepo.insertUser(user);
 		return result;
 	}
 
 	@Override
-	public UserVO login(UserVO user) {
-		return userRepo.login(user);
+	public User login(String id, String pw) {
+		User account = userRepo.selectUser(id);
+		logger.trace("login : {}", account);
+		if(account != null && account.getPw().equals(pw)) {
+			return account;
+		}else return null;
 	}
 
 	@Override
-	public UserVO selectUser(UserVO user) {
-		return userRepo.selectUser(user);
+	public User selectUser(String id) {
+		return userRepo.selectUser(id);
 	}
 
 	@Override
-	public int updateUser(UserVO user) {
+	public int updateUser(User user) {
 		return userRepo.updateUser(user);
 	}
 
 	@Override
-	public int deleteUser(UserVO user) {
-		return userRepo.deleteUser(user);
+	public int deleteUser(String userId) {
+		return userRepo.deleteUser(userId);
 	}
 
 	@Override
-	public int findPw(UserVO user) {
+	public int findPw(User user) {
 		return userRepo.findPw(user);
 	}
 
 	@Override
-	public int updatePw(UserVO user) {
+	public int updatePw(User user) {
 		return userRepo.updatePw(user);
 	}
 }

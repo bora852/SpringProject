@@ -8,7 +8,7 @@
 		<setting name="jdbcTypeForNull" value="NULL" />
 	</settings>
 	<typeAliases>
-		<typeAlias type="com.ssafy.model.dto.UserVO" alias="userInfo" />
+		<typeAlias type="com.ssafy.model.dto.User" alias="userInfo" />
 		<typeAlias type="com.ssafy.model.dto.Food" alias="food" />
 		<typeAlias type="com.ssafy.model.dto.Eat" alias="eat" />
 	</typeAliases>

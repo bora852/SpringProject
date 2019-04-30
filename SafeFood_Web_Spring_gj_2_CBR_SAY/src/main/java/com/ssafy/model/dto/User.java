@@ -3,7 +3,11 @@ package com.ssafy.model.dto;
 import java.io.Serializable;
 import java.util.Arrays;
 
-public class UserVO implements Serializable{
+public class User implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String pw;
 	private String name;
@@ -12,19 +16,23 @@ public class UserVO implements Serializable{
 	private String[] allergy_arr;
 	private String allergy;
 	
-	
-	public UserVO(String id, String pw) {
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public User(String id, String pw) {
 		super();
 		this.id = id;
 		this.pw = pw;
 	}
 	
-	public UserVO(String id, String[] allergy) {
+	public User(String id, String[] allergy) {
 		super();
 		this.id = id;
 		this.allergy_arr = allergy;
 	}	
-	public UserVO(String id, String pw, String name, String addr, String tel) {
+	public User(String id, String pw, String name, String addr, String tel) {
 		super();
 		this.id = id;
 		this.pw = pw;
@@ -32,7 +40,7 @@ public class UserVO implements Serializable{
 		this.addr = addr;
 		this.tel = tel;
 	}
-	public UserVO(String id, String pw, String name, String addr, String tel, String[] allergy) {
+	public User(String id, String pw, String name, String addr, String tel, String[] allergy) {
 		super();
 		this.id = id;
 		this.pw = pw;
@@ -41,6 +49,17 @@ public class UserVO implements Serializable{
 		this.tel = tel;
 		this.allergy_arr = allergy;
 	}
+	
+	public User(String id, String pw, String name, String addr, String tel, String allergy) {
+		super();
+		this.id = id;
+		this.pw = pw;
+		this.name = name;
+		this.addr = addr;
+		this.tel = tel;
+		this.allergy = allergy;
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -74,6 +93,7 @@ public class UserVO implements Serializable{
 	public String[] getAllergy_arr() {
 		return allergy_arr;
 	}
+	
 	public void setAllergy_arr(String[] allergy) {
 		this.allergy_arr = allergy;
 		this.allergy = "";

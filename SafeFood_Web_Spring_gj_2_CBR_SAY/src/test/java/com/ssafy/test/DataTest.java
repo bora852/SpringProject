@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ssafy.config.ApplicationConfig;
+import com.ssafy.model.dto.User;
 import com.ssafy.model.repository.UserRepository;
 import com.ssafy.model.service.UserService;
 // TODO: 테스트 환경을 구축한다.
@@ -55,17 +56,40 @@ public class DataTest {
 		assertThat(sf, is(notNullValue()));
 		assertThat(st, is(notNullValue()));
 		assertThat(user, is(notNullValue()));
-		assertThat(users, is(notNullValue()));
+		assertThat(service, is(notNullValue()));
 	}
 	@Autowired
-	UserService users;
-	
-	
-
+	UserService service;
 	
 	@Autowired
 	UserRepository user;
+	
+	@Test
+	public void testInsert() {
+		User user = new User("id3","pw2","name2","addr2","tel2", new String[] {"all1","all2","all3"});
+		int result = service.insertUser(user);
+		assertThat(result, is(1));
+	}
+	
+	@Test
+	public void loginTest() {
+		User user = service.login("cbr","1111");
+		assertThat(user.getId(), is("cbr"));
+	}
+	
+	@Test
+	public void deleteUserTest() {
+		int result = service.deleteUser("id3");
+		assertThat(result, is(1));
+	}
+	
+	@Test
+	public void login() {
+//		User user = service.
+	}
+	
 //	
+	
 //	@Autowired
 //	BookRepository book;
 //	
