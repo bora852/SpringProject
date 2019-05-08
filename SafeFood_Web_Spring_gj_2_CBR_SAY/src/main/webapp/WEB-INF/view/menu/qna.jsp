@@ -55,7 +55,9 @@
 <link href="${modalcss }" rel="stylesheet">
 <link href="${signUpcss }" rel="stylesheet">
 <script src="http://www.w3schools.com/lib/w3data.js"></script>
-<link rel="stylesheet" type="text/css" href="./table.css"/>
+
+<c:url value="/static/css/table.css" var="tablecss"></c:url>
+<link rel="stylesheet" type="text/css" href="${tablecss }"/>
 
 </head>
 <body>
@@ -66,13 +68,10 @@
 
 	<!--   container -->
 	<div id="app">
-		<h1>QnA</h1>
+		<h1>- QnA -</h1>
 		<div>
-			<router-link to="/route1">리스트</router-link>
-			<router-link to="/route2">추가</router-link>
-			<router-link to="/route3">업데이트</router-link>
-			<router-link to="/route4">자세히</router-link>
-			
+			<!-- <router-link to="/route3">업데이트</router-link>
+			<router-link to="/route4">자세히</router-link> -->
 		</div>
 		<router-view></router-view>
 	</div>
@@ -105,7 +104,7 @@
 </script>
 	<script type="text/x-template" id="add-temp">
 <div>
-<form action="" method="post" id="_frmForm" name="frmForm" @submit.prevent="addQna">
+<form action="" method="post" id="_frmForm" name="qnaForm" @submit.prevent="addQna">
 <table class="content_table">
 <colgroup>
 		<col style="width:30%;" />
@@ -113,19 +112,25 @@
 </colgroup>	
 <tr>
 <th>문의유형</th>
-<td><input data-msg="문의유형" type="text" name="category" id="_category" size="30" v-model="cname"/></td>
+<td><select name="job" id="_category" v-model="qcategory">
+    	<option value="">문의 유형 선택</option>
+    	<option value="1">음식1</option>
+    	<option value="2">음식2</option>
+    	<option value="3">음식3</option>
+	</select>
+</td>
 </tr>
 <tr>
 <th>제목</th>
-<td><input data-msg="제목" type="text" name="title"  id="_title" size="20" v-model="cmailid" /></td>
+<td><input data-msg="제목" type="text" name="title"  id="_title" size="30" v-model="qtitle"/></td>  
 </tr>
 <tr>
 <th>문의내용</th>
-<td><input data-msg="문의내용" type="date" name="contents"  id="_contents" size="30" v-model="cstart_date" /></td>
+<td><input data-msg="문의내용" type="contents"  id="_contents" size="30" v-model="qcontents"/></td>
 </tr>
-
+<tr>
 <td colspan="2" style="height:50px; text-align:center;">
-<button>취소</button>
+<button><router-link to = "/route1">목록</router-link></button>
 <button type="submit" name="button">등록</button></td>
 </tr>
 </table>
@@ -156,17 +161,54 @@
 				axios
 				.get('http://121.147.32.117:9090/api/qnas')
 				.then((res) => {
-					this.qnalist = res.data.data
+					this.qnalist = res.data.data;
 				})
-				.catch(error => {
-					console.log(error)
-					this.errored = true
+				.catch((error) => {
+					console.log(error);
+					this.errored = true;
 				})
 				.finally(() => this.loading=false)
 			}
 		});
 		let addView = Vue.component('addView', {
-			template : '#add-temp'
+			template : '#add-temp',
+			data:function(){
+				return{
+					quserId:'${loginUser.id}',
+					qcategory:'',
+					qtitle:'',
+					qcontents:''
+				}
+			},
+			methods:{
+				addQna:function(){
+					if(this.qcategory==''){alert('카테고리를 선택하세요.');return;}
+					if(this.qtitle==''){alert('제목을 입력하세요.');return;}
+					if(this.qcontents==''){alert('내용을 입력하세요.');return;}
+					
+					//console.log(${loginUser.id});
+					console.log(this.qans);
+					
+					axios.post('http://121.147.32.117:9090/api/qnas', {
+						user_id : this.quserId,
+						category : this.qcategory,
+						title : this.qtitle,
+						contents : this.qcontents
+					}
+							)
+					.then((res) =>{
+						this.qans = res.data.data;
+						console.log(this.qans);
+						alert('글이 등록되었습니다.');
+						location.href="/SF_WS_03/qna#/"; 
+					}).catch(error => {
+						console.log(error);
+						this.errored = true;
+					}).finally(()=>{
+						this.loading=false;
+					})
+				}
+			}
 		});
 		let updateView = Vue.component('updateView', {
 			template : '#update-temp'
@@ -176,7 +218,7 @@
 		});
 
 		const routes = [ {
-			path : '/route1',
+			path : '/',
 			component : listView
 		}, {
 			path : '/route2',
