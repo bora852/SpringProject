@@ -17,8 +17,8 @@
 		            where id = #{id}
 	</update>
 	
-	<delete id="deleteUser" parameterType="String">
-		delete from user where id = #{id}
+	<delete id="deleteUserEat" parameterType="String">
+		delete from usereat where userEat_idx = #{id}
 	</delete>
 	
 	<select id="findPw" parameterType="userInfo">
