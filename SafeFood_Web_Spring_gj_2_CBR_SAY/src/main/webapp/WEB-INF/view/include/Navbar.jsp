@@ -86,14 +86,12 @@
 				<li><a href="#" class="menu_a">공지 사항</a></li>
 				<li><a href="${productinfo }" class="menu_a">상품 정보</a></li>
 				<li><a href="#" class="menu_a">베스트 섭취 정보</a></li>
-				<%
-					if (session.getAttribute("loginId") != null) {
-				%>
+			<c:if test="${!empty loginUser}">
 				<li><a href="eatList.jsp" class="menu_a">내 섭취 정보</a></li>
 				<li><a href="#" class="menu_a">예상 섭취 정보</a></li>
-				<%
-					}
-				%>
+				<c:url value="/qna" var="qna"></c:url>
+				<li><a href="${qna}" class="menu_a">QnA</a>
+			</c:if>
 			</ul>
 		</div>
 	</div>

@@ -210,4 +210,8 @@ public class MainController {
 		return "food/productinfo";
 	}
 	
+	@GetMapping("/qna")
+	public String qna(Model model) {
+		return "menu/qna";
+	}
 }
