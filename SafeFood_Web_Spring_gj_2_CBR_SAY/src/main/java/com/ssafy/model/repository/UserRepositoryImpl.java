@@ -53,6 +53,13 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 	
 	@Override
+	public int deleteUserEat(String userId) {
+		logger.trace("회원탈퇴_회원음식삭제(deleteUserEat): {}", userId);
+		String statement = ns+"deleteUserEat";
+		return template.delete(statement, userId);
+	}
+	
+	@Override
 	public int findPw(User user) {
 		logger.trace("비밀번호 찾기(findPw): {}", user);
 		String statement = ns+"findPw";

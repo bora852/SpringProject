@@ -16,9 +16,13 @@
 		update user set pw = #{pw}, name = #{name}, addr = #{addr}, tel = #{tel}, allergy = #{allergy}
 		            where id = #{id}
 	</update>
-	
+
+	<delete id="deleteUser" parameterType="String">
+		delete from user where id = #{id}
+	</delete>
+		
 	<delete id="deleteUserEat" parameterType="String">
-		delete from usereat where userEat_idx = #{id}
+		delete from usereat where user_id = #{id}
 	</delete>
 	
 	<select id="findPw" parameterType="userInfo">

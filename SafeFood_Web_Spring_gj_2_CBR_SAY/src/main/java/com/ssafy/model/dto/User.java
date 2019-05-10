@@ -13,6 +13,7 @@ public class User implements Serializable{
 	private String name;
 	private String addr;
 	private String tel;
+	private String email;
 	private String[] allergy_arr;
 	private String allergy;
 	
@@ -48,7 +49,7 @@ public class User implements Serializable{
 		this.addr = addr;
 		this.tel = tel;
 		this.allergy_arr = allergy;
-		this.setAllergy_arr(allergy);
+		//this.setAllergy_arr(allergy);
 	}
 	
 	public User(String id, String pw, String name, String addr, String tel, String allergy) {
@@ -61,6 +62,17 @@ public class User implements Serializable{
 		this.allergy = allergy;
 	}
 	
+	public User(String id, String pw, String name, String addr, String tel, String email, String allergy) {
+		super();
+		this.id = id;
+		this.pw = pw;
+		this.name = name;
+		this.addr = addr;
+		this.tel = tel;
+		this.email = email;
+		this.allergy = allergy;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -85,6 +97,12 @@ public class User implements Serializable{
 	public void setAddr(String addr) {
 		this.addr = addr;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public String getTel() {
 		return tel;
 	}
@@ -95,15 +113,9 @@ public class User implements Serializable{
 		return allergy_arr;
 	}
 	
-	public void setAllergy_arr(String[] allergy) {
-		this.allergy_arr = allergy;
-		this.allergy = "";
-		if(getAllergy_arr()!=null) {
-			for(int i = 0; i < allergy.length; i++) {
-				this.allergy += allergy[i]+",";
-			}
-			this.allergy += getAllergy().substring(0, getAllergy().length());
-		}
+	public void setAllergy_arr(String allergy) {
+		this.allergy_arr = null;
+		this.allergy_arr = allergy.split(",");
 	}
 
 	public String getAllergy() {
@@ -112,6 +124,7 @@ public class User implements Serializable{
 
 	public void setAllergy(String allergy) {
 		this.allergy = allergy;
+		setAllergy_arr(allergy);
 	}
 
 	@Override

@@ -16,6 +16,7 @@ public interface UserRepository {
 	public User selectUser(String id);
 	public int updateUser(User user);
 	public int deleteUser(String userId);
+	public int deleteUserEat(String userId);
 	public int findPw(User user);
 	public int updatePw(User user);
 }

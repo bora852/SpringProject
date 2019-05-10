@@ -1,5 +1,6 @@
 package com.ssafy.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,9 +68,16 @@ public class MainController {
 			if(result.getAllergy() != null) {
 				allergy_user = result.getAllergy().split(",");
 			}
-//			redir.addFlashAttribute("alarm", "반갑습니다. "+result.getId()+"님");
+
+			StringBuilder my_allergy = new StringBuilder().append("[");
+			for(String al : allergy_user) {
+				my_allergy.append('"').append(al).append('"').append(',');
+			}
+			my_allergy.append("]");
 			session.setAttribute("loginUser", result);
-			session.setAttribute("allergy", allergy_user);
+			logger.trace(">>>  getAllergy : {}",result.getAllergy());
+			logger.trace("allergy : {}",Arrays.toString(allergy_user));
+			session.setAttribute("allergy", my_allergy.toString());
 		} else{ 
 			redir.addFlashAttribute("alarm", "아이디와 비밀번호를 확인해 주세요!");
 		}
@@ -90,7 +98,6 @@ public class MainController {
 			return "redirect:/home";
 		}catch(DuplicateKeyException e) {
 			logger.trace("DuplicateKeyException : {}", e);
-//			redir.addFlashAttribute("alarm", "이미 존재하는 아이디입니다.");
 			model.addAttribute("alarm", "이미 존재하는 아이디입니다.");
 			model.addAttribute("prev", user);
 			return "user/signUp";
@@ -115,11 +122,26 @@ public class MainController {
 	
 	@PostMapping("/modify")
 	public String modify(Model model, RedirectAttributes redir, User user, HttpSession session) {
-		logger.trace("logout: {}", user.getId());
+		logger.trace("modify: {}", user.getId());
+		String[] allergy_user = null;
 		int result = userService.updateUser(user);
-
+		
 		if (result > 0) {
 			session.setAttribute("loginUser", user);
+			allergy_user = user.getAllergy_arr();
+			
+			StringBuilder my_allergy = null;
+			if(allergy_user != null) {
+				my_allergy = new StringBuilder().append("[");
+				for(String al : allergy_user) {
+					my_allergy.append('"').append(al).append('"').append(',');
+				}
+				my_allergy.append("]");
+				session.setAttribute("allergy", my_allergy.toString());
+			}else {
+				session.setAttribute("allergy","");
+			}
+			
 			redir.addFlashAttribute("alarm", "회원정보 수정 완료하였습니다.");
 		} else {
 			redir.addFlashAttribute("alarm", "회원정보 수정 실패하였습니다.");
