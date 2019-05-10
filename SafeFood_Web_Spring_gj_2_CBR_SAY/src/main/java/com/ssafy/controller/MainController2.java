@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ssafy.model.dto.Eat;
 import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.User;
 import com.ssafy.model.service.EatService;
@@ -115,6 +116,14 @@ public class MainController2 {
 		}
 	}
 	
+	@GetMapping("/addEat")
+	public String addEat(Model model, int code, RedirectAttributes redir,HttpSession session) {
+		logger.trace("addEat : {}");
+		User info = (User) session.getAttribute("loginUser");
+		Eat eatNew = new Eat(info.getId(),code);
+		eat.insert(eatNew);
+		return "redirect:home";
+	}
 	//로그아웃
 	@GetMapping("/logout")
 	public String doLogout(Model model, HttpSession session, RedirectAttributes redir) {

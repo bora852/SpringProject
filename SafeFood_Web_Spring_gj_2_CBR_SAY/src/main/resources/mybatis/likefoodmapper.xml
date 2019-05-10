@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.model.mapper.LikeFood">
+
+	<insert id="insert" parameterType="likefood">
+		insert into likefood(likefood_idx,
+		user_id, food_code) values(#{likefood_idx}, #{user_id}, #{food_code})
+	</insert>
+	
+	<!-- <select id="selectUser" resultType="food" parameterType="map">
+		<bind name="pattern" value="'%' + _parameter.get(name) + '%'" />
+		select f.* from usereat e, food f where e.user_id = #{id} and e.food_code = f.code and f.name like #{pattern}
+	</select>
+	
+	<select id="selectMaterial" resultType="food" parameterType="map">
+	<bind name="pattern" value="'%' + _parameter.get(material) + '%'" />
+		select f.* from usereat e, food f where e.user_id = #{id} and e.food_code = f.code and f.material like #{pattern}
+	</select>
+
+	<select id="selectMaker" resultType="food" parameterType="map">
+	<bind name="pattern" value="'%' + _parameter.get(maker) + '%'" />
+		select f.* from usereat e, food f where e.user_id = #{id} and e.food_code = f.code and f.maker like #{pattern}
+	</select> -->
+
+</mapper>
