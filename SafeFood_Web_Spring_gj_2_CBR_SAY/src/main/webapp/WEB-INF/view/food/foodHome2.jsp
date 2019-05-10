@@ -186,4 +186,13 @@ div.jumbotron:hover div.for_hover {
 	
 	 
 </script>
+
+<!-- <script>
+	/* $(document).ready(function() {
+		$(document).on('click', 'h2.p_name', function() {
+			<c:url value="/detail?action=detail&name='+$(this).text()+'"var="detailUrl"></c:url>
+			location.href = encodeURI("${detailUrl}");
+		});
+	}) */; 
+</script> -->
 </html>

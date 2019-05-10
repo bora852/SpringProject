@@ -11,6 +11,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
+
 	<c:url value="/home" var="mainUrl"></c:url>
 	<a id="home" href="${mainUrl}">로딩중입니당..</a>
 </body>
