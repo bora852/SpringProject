@@ -74,7 +74,11 @@
 						</div>
 						<div class = "input_info">
 							<span>이름</span>
-							<input type="text" name="name" style="width:300px; height:30px;font-size:15px;" placeholder="User Name" value="${prev.name }">
+							<input type="text" name="name" style="width:300px; height:30px;font-size:15px;" placeholder="이름을 입력해주세요" value="${prev.name }">
+						</div>
+						<div class = "input_info">
+							<span>이메일</span>
+							<input type="text" name="email" style="width:300px; height:30px;font-size:15px;" placeholder="User e-mail" value="${prev.email }">
 						</div>
 						<div class = "input_info">
 							<span>주소</span>

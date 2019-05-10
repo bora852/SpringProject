@@ -52,38 +52,26 @@
 		<jsp:include page="../include/Navbar.jsp" />
 	</header>
 	<h2>비밀번호 찾기</h2>
-	<c:url value="/userfindPw" var="userfindPw"/>
-	<form method="post" action="${userfindPw}" id="findPwForm">
-		<c:if test="${!empty findChk}">
-		<%-- <% if(request.getAttribute("id")!=null){ %> --%>
-		<div class = "input_info">
-			<span>아이디</span>
-			<input type="text" name="id" style="width:300px; height:30px;font-size:15px;" placeholder="아이디를 입력해주세요." value="<%=request.getAttribute("id")%>">
+	<div class="w3-content w3-container w3-margin-top">
+		<div class="w3-container w3-card-4">
+			<c:url value="/userfindId" var="userfindId"></c:url>
+			<form action="${userfindId }" method="post">
+				<div class="w3-center w3-large w3-margin-top">
+					<h3>아이디 찾기</h3>
+				</div>
+				<div>
+					<p>
+						<label>Email</label>
+						<input class="w3-input" type="text" id="email" name="email" required>
+					</p>
+					<p class="w3-center">
+						<button type="submit" id=findBtn class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round">find</button>
+						<button type="button" onclick="history.go(-1);" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-margin-bottom w3-round">Cancel</button>
+					</p>
+				</div>
+			</form>
 		</div>
-	
-		<div class = "input_info">
-			<span>전화번호</span>
-			<input type="tel" name="tel" style="width:300px; height:30px;font-size:15px;" placeholder="010-xxxx-xxxx" value="<%=request.getAttribute("tel")%>">
-		</div>
-		</c:if>
-		<%-- <%} else { %> --%>
-		<c:if test="${empty findChk}">
-			<div class = "input_info">
-				<span>아이디</span>
-				<input type="text" name="id" style="width:300px; height:30px;font-size:15px;" placeholder="아이디를 입력해주세요.">
-			</div>
-			<div class = "input_info">
-				<span>전화번호</span>
-				<input type="tel" name="tel" style="width:300px; height:30px;font-size:15px;" placeholder="010-xxxx-xxxx">
-			</div>
-		</c:if>
-		<input type="submit" value="비밀번호 찾기" style="width:150px; height:30px;font-size:15px; background:#343a40; color:white; border-radius: 5px;">
-	</form>
-	
-	<c:url value="/doePw" var="doePw"/>
-	<form method="post" action="${doePw }" id="RePwForm">
-
-	</form>
+	</div>
 	<!-- /.container -->
 
 	<!-- Footer -->

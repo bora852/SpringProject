@@ -60,10 +60,10 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 	
 	@Override
-	public int findPw(User user) {
+	public User findPw(User user) {
 		logger.trace("비밀번호 찾기(findPw): {}", user);
 		String statement = ns+"findPw";
-		return template.update(statement, user);
+		return template.selectOne(statement, user);
 	}
 	
 	@Override

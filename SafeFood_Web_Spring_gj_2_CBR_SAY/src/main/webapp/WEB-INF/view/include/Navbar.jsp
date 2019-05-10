@@ -57,6 +57,10 @@
 								value="로그인">
 						</div>
 						<p class="hint-text">
+							<c:url value="/userfindId" var="userfindId"/>
+							<a href="${userfindId }">아이디를 잊으셨나요?</a>
+						</p>
+						<p class="hint-text">
 							<c:url value="/userfindPw" var="userfindPw"/>
 							<a href="${userfindPw }">비밀번호를 잊으셨나요?</a>
 						</p>

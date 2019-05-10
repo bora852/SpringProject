@@ -166,6 +166,12 @@ public class MainController {
 		return "redirect:/home";
 	}
 	
+	//아이디 찾기
+	@GetMapping("/userfindId")
+	public String userfindIdForm(Model model) {
+		return "user/userfindId";
+	}	
+	
 	//비밀번호 찾기
 	@GetMapping("/userfindPw")
 	public String userfindPwForm(Model model) {
@@ -173,18 +179,27 @@ public class MainController {
 	}
 	
 	@PostMapping("/userfindPw")
-	public String doUserfindPw(Model model, RedirectAttributes redir, User user, HttpSession session) {
+	public String doUserfindPw(Model model, RedirectAttributes redir, User user, HttpSession session, String div) {
+		User users = (User) session.getAttribute("loginUser");
 		
-		int result = userService.findPw(user);
-		if(result > 0) {
-			session.setAttribute("id", user.getId());
-			session.setAttribute("tel", user.getPw());
-			session.setAttribute("findChk", "success");
-			return "user/userfindPw";
-		}else {
-			redir.addFlashAttribute("alarm", "아이디 또는 패스워드가 다릅니다.");
-			return "user/userfindPw";
+		logger.trace(">>> email {} :: {}",users.getEmail(), user.getEmail());
+		userService.findPw(users);
+		if(users.getEmail().equals(user.getEmail())) { 
+			userService.sendEmail(users, div);
+			redir.addFlashAttribute("alarm", "임시비밀번호를 메일로 발송했습니다.");
+			
+		}else { 
+			redir.addFlashAttribute("alarm", "잘못된 이메일입니다.");
+			
 		}
+		return null;
+		/*
+		 * int result = userService.findPw(user); if(result > 0) {
+		 * session.setAttribute("id", user.getId()); session.setAttribute("tel",
+		 * user.getPw()); session.setAttribute("findChk", "success"); return
+		 * "user/userfindPw"; }else { redir.addFlashAttribute("alarm",
+		 * "아이디 또는 패스워드가 다릅니다."); return "user/userfindPw"; }
+		 */
 	}
 	
 	//비밀번호 재설정
