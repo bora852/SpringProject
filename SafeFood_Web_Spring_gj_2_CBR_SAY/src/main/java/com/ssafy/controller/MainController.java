@@ -60,10 +60,13 @@ public class MainController {
 	public String login(Model model, User user, RedirectAttributes redir, HttpServletResponse res,
 			HttpSession session) {
 
+		String[] allergy_user = null;
 		logger.trace("user : {}", user);
 		User result = userService.login(user.getId(), user.getPw());
 		if (result != null) {
-			String[] allergy_user = result.getAllergy().split(",");
+			if(result.getAllergy() != null) {
+				allergy_user = result.getAllergy().split(",");
+			}
 //			redir.addFlashAttribute("alarm", "반갑습니다. "+result.getId()+"님");
 			session.setAttribute("loginUser", result);
 			session.setAttribute("allergy", allergy_user);
@@ -71,7 +74,6 @@ public class MainController {
 			redir.addFlashAttribute("alarm", "아이디와 비밀번호를 확인해 주세요!");
 		}
 		return "redirect:home";
-
 	}
 	
 	//회원가입
