@@ -28,6 +28,11 @@ public class FoodServiceImpl implements FoodService {
 	}
 
 	@Override
+	public Food selectCode(int code) {
+		return foodRepo.selectCode(code);
+	}
+	
+	@Override
 	public Food selectName1(String name) {
 		return foodRepo.selectName1(name);
 	}

@@ -7,6 +7,7 @@ import com.ssafy.model.dto.Food;
 public interface FoodRepository {
 
 	public int insert(Food food);
+	public Food selectCode(int code);
 	public Food selectName1(String name);
 	public List<Food> selectName2(String name);
 	public List<Food> selectAll();

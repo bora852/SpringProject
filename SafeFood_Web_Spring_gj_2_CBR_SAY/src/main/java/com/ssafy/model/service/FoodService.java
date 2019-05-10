@@ -11,6 +11,8 @@ import com.ssafy.model.dto.Food;
 public interface FoodService {
 	int insert(Food book);
 
+	Food selectCode(int code);
+	
 	Food selectName1(String name);
 	
 	List<Food> selectName2(String name);

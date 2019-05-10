@@ -7,6 +7,10 @@
 		select * from food
 	</select>
 
+	<select id="selectCode" resultType="food" parameterType="int">
+		select * from food where code=#{code}
+	</select>
+	
 	<select id="selectName1" resultType="food" parameterType="string">
 		select * from food where name=#{name}
 	</select>

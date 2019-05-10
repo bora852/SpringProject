@@ -25,8 +25,15 @@ public class FoodRepositoryImpl implements FoodRepository {
 	}
 
 	@Override
+	public Food selectCode(int code) {
+		String statement = ns + "selectCode";
+		return template.selectOne(statement, code);
+	}
+	
+	@Override
 	public Food selectName1(String name) {
 		String statement = ns + "selectName1";
+		System.out.println(name);
 		return template.selectOne(statement, name);
 	}
 	

@@ -10,11 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.model.dto.Food;
@@ -45,6 +47,15 @@ public class MainController2 {
 		return "food/foodHome";
 	}
 	
+	@GetMapping("/detail")
+	public String foodDetail(Model model, HttpServletRequest req) {
+		logger.trace("foodDetail 방문.");
+		String name = req.getParameter("name");
+		Food food1 = food.selectName1(name);
+		logger.trace("food :: "+food1);
+		model.addAttribute("food", food1);
+		return "food/detailinfo";
+	}
 	
 	@GetMapping("/index")
 	public String index(Model model) {
@@ -55,6 +66,13 @@ public class MainController2 {
 		return "home";
 	}
 	
+	@ResponseBody
+	@PostMapping("/chart")
+	public Food chart(Model model, int code) {
+		Food foods = food.selectCode(code);
+		logger.trace("chart :: "+foods);
+		return foods;
+	}
 	//로그인
 	@PostMapping("/login")
 	public String login(Model model, User user, RedirectAttributes redir, HttpServletResponse res,

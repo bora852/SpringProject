@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <title>안전먹거리 프로젝트</title>
-
+<head>
 <!-- js, jquery -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -115,7 +115,7 @@ div.jumbotron:hover div.for_hover {
 							</div>
 							<div class="main_bt">
 								<div class="info_bt row">
-									<c:if test="${not empty loginId }">
+									<c:if test="${not empty loginUser }">
 										<button type="button" id="addButton"
 											class="btn btn_d btn-outline-info"
 											onclick="location.href='main.eat?action=add&code=${food.code }'">추가</button>
@@ -139,7 +139,7 @@ div.jumbotron:hover div.for_hover {
 	$(document).ready(function() {
 		$(document).on('click', '#detail_name', function() {
 			console.log("AAA");
-			let url = "SF_WS_03/detail?action=detail&name=" +$(this).text();
+			let url = "detail?name="+$(this).text();
 			location.href = encodeURI(url);
 		});
 	}) 
