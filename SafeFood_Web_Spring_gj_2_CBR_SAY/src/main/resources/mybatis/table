@@ -1,0 +1,78 @@
+CREATE TABLE `food` (
+  `code` int(11) NOT NULL,
+  `supportpereat` decimal(5,2) DEFAULT NULL,
+  `calory` decimal(5,2) DEFAULT NULL,
+  `carbo` decimal(5,2) DEFAULT NULL,
+  `protein` decimal(5,2) DEFAULT NULL,
+  `fat` decimal(5,2) DEFAULT NULL,
+  `sugar` decimal(5,2) DEFAULT NULL,
+  `natrium` decimal(10,2) DEFAULT NULL,
+  `chole` decimal(5,2) DEFAULT NULL,
+  `fattyacid` decimal(5,2) DEFAULT NULL,
+  `transfat` decimal(5,2) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `img` varchar(45) DEFAULT NULL,
+  `material` varchar(1000) DEFAULT NULL,
+  `maker` varchar(45) DEFAULT NULL,
+  eat_cnt int,
+  search_cnt int,
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `qna` (
+  `qna_idx` int(11) NOT NULL AUTO_INCREMENT,
+  `category` int(5) DEFAULT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `content` varchar(1000) DEFAULT NULL,
+  `user_id` varchar(45) DEFAULT NULL,
+  `answer` varchar(1000) DEFAULT NULL,
+  `qna_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `views` int(20) DEFAULT NULL,
+  PRIMARY KEY (`qna_idx`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `qna_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
+
+CREATE TABLE `user` (
+  `id` varchar(45) NOT NULL,
+  `pw` varchar(45) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `addr` varchar(45) NOT NULL,
+  `tel` varchar(45) DEFAULT NULL,
+  `allergy` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `usereat` (
+  `eat_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `userEat_idx` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(45) NOT NULL,
+  `food_code` int(11) NOT NULL,
+  PRIMARY KEY (`userEat_idx`),
+  KEY `user_id` (`user_id`),
+  KEY `usereat_ibfk_2` (`food_code`),
+  CONSTRAINT `usereat_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `usereat_ibfk_2` FOREIGN KEY (`food_code`) REFERENCES `food` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+
+
+create table likefood(
+    likefood_idx int(11) NOT NULL AUTO_INCREMENT primary key
+ ,  user_id varchar(45) not null
+ , `food_code` int(11) NOT NULL
+);
+
+create table reviews(
+	reviews_idx int(11) NOT NULL AUTO_INCREMENT primary key
+  , user_id varchar(45) not null
+  , `food_code` int(11) NOT NULL  
+  , reviews_content varchar(1000)
+);
+use mydb;
+alter table food add eat_cnt int;
+alter table food add search_cnt int;
+alter table user add email varchar(100) not null;
+
+select * from food;
+select * from user;
+select * from usereat;

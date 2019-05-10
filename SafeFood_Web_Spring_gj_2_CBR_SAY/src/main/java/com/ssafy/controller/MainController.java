@@ -165,17 +165,15 @@ public class MainController {
 
 	@PostMapping("/userfindPw")
 	public String doUserfindPw(Model model, RedirectAttributes redir, User user, HttpSession session, String div) {
-		User users = (User) session.getAttribute("loginUser");
+//		User users = (User) session.getAttribute("loginUser");
 
-		logger.trace(">>> email {} :: {}", users.getEmail(), user.getEmail());
-		userService.findPw(users);
-		if (users.getEmail().equals(user.getEmail())) {
-			userService.sendEmail(users, div);
+//		logger.trace(">>> email {} :: {}", users.getEmail(), user.getEmail());
+		User userResult = userService.findPw(user);   
+		if (userResult != null) {
 			redir.addFlashAttribute("alarm", "임시비밀번호를 메일로 발송했습니다.");
 
 		} else {
 			redir.addFlashAttribute("alarm", "잘못된 이메일입니다.");
-
 		}
 		return null;
 		/*

@@ -65,9 +65,27 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User findPw(User user) {
-		User users = userRepo.findPw(user);
+		User selUsers = userRepo.findPw(user);
 		
-		return userRepo.findPw(user);
+		//가입에 사용한 이메일이 아니면
+		if(!user.getEmail().equals(selUsers.getEmail())) {
+			return null;
+		}else {
+			//임시 비밀번호 생성
+			String yimsiPw = "";
+			Random rd = new Random();
+			for(int i = 0; i < 8; i++) {
+				yimsiPw += rd.nextInt(10);
+			}
+			
+			//비밀번호변경
+			user.setPw(yimsiPw); 
+			userRepo.updatePw(user);
+			//비밀번호 변경 메일 발송
+			sendEmail(selUsers);
+			
+			return selUsers;
+		}
 	}
 
 	@Override
@@ -76,7 +94,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void sendEmail(User user, String div) {
+	public void sendEmail(User user) {
 		// Mail Server 설정
 		String charSet = "utf-8";
 		String hostSMTP = "smtp.gmail.com";  //SMTP서버 설정
@@ -84,25 +102,15 @@ public class UserServiceImpl implements UserService {
 		String hostSMTPpwd = "by741852";
 
 		// 보내는 사람 EMail, 제목, 내용
-		String fromEmail = "safefoodby@gmail.com";
+		String fromEmail = user.getEmail();
 		String fromName = "Safe Food";
 		String subject = "";
 		String msg = "";
 		
-		//임시 비밀번호 생성
-		String yimsiPw = "";
-		Random rd = new Random();
-		for(int i = 0; i < 8; i++) {
-			yimsiPw += rd.nextInt(10);
-		}
-		
-		user.setPw(yimsiPw);
-		userRepo.updatePw(user);
-		
 		subject = "Safe Food 홈페이지 임시 비밀번호 입니다.";
 		msg += "<div align='center' style='border:1px solid black; font-family:verdana'>";
 		msg += "<h3 style='color: blue;'>";
-		msg += yimsiPw + "님의 임시 비밀번호 입니다. 비밀번호를 변경하여 사용하세요.</h3>";
+		msg += user.getPw() + "님의 임시 비밀번호 입니다. 비밀번호를 변경하여 사용하세요.</h3>";
 		msg += "<p>임시 비밀번호 : ";
 		msg += user.getPw() + "</p></div>";
 	

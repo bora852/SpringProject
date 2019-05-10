@@ -17,5 +17,5 @@ public interface UserService {
 	public int deleteUser(String userId);
 	public User findPw(User user);
 	public int updatePw(User user);
-	public void sendEmail(User user, String div);
+	public void sendEmail(User user);
 }

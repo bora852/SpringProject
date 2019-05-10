@@ -62,8 +62,8 @@
 		</div>
 	
 		<div class = "input_info">
-			<span>전화번호</span>
-			<input type="tel" name="tel" style="width:300px; height:30px;font-size:15px;" placeholder="010-xxxx-xxxx" value="<%=request.getAttribute("tel")%>">
+			<span>이메일</span>
+			<input type="email" name="email" style="width:300px; height:30px;font-size:15px;" placeholder="010-xxxx-xxxx" value="<%=request.getAttribute("tel")%>">
 		</div>
 		</c:if>
 		<%-- <%} else { %> --%>
