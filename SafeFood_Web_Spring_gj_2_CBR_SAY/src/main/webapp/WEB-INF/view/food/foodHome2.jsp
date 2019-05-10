@@ -81,42 +81,7 @@ div.jumbotron:hover div.for_hover {
 	<header>
 		<jsp:include page="../include/Navbar.jsp" />
 	</header>
-	<div class="container">
-  <h2>Carousel Example</h2>  
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner">
-      <div class="item active">
-        <img src="la.jpg" alt="Los Angeles" style="width:100%;">
-      </div>
-
-      <div class="item">
-        <img src="chicago.jpg" alt="Chicago" style="width:100%;">
-      </div>
-    
-      <div class="item">
-        <img src="ny.jpg" alt="New york" style="width:100%;">
-      </div>
-    </div>
-
-    <!-- Left and right controls -->
-    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-      <span class="glyphicon glyphicon-chevron-left"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" data-slide="next">
-      <span class="glyphicon glyphicon-chevron-right"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
-</div>
+	
 	<!-- Page Content -->
 	<div class="container main_block">
 		<c:choose>
@@ -172,5 +137,53 @@ div.jumbotron:hover div.for_hover {
 
 </body>
 <script>
+
+/* 	$(document).ready(function() {
+		$(document).on('click', 'h2.p_name', function() {
+			var url = 'detailinfo.food?action=detail&name=' + $(this).text();
+			location.href = encodeURI(url);
+		});
+	}); */
+/* 	$(document).on('click','#search_bt',function() {
+				var name = $("#search_input").val();
+				var option = $("#selected option:selected").val();
+				if (name) {
+					$.ajax({
+						url : 'search.food?action=search&by='
+								+ option + '&name=' + name,
+						type : "POST",
+						dataType : "json",
+						data : $("#search_bt").serialize(),
+						success : function(res) {
+							$(".main_block").empty();
+							$.each(res,function(idx, data) {
+								var str2 = '<div class="jumbotron my-4 row">'
+								+ '<div class="col-lg-3 main_img_box">'
+								+ '<img class="main_img" src="' + data.img + '">'
+								+ '<div class="for_hover"><h2 style="color:white; margin-top:14px;">'
+								+ data.maker
+								+ '</h2></div></div>'
+								+ '<div class="col-lg-9"><div class="main_name border_line row">'
+								+ '<h2 class="p_name">'
+								+ data.name
+								+ '</h2></div><div class="main_mat row">'
+								+ '<a>'+ data.material+ '</a></div><div class="main_bt">'
+								+ '<div class="info_bt row">'
+								+'<c:if test="${not empty loginId }">'
+								+ '<div class="info_bt"><button type="button" class="btn btn-outline-info" style="margin-left:5px;" >추가</button><button type="button" class="btn btn-outline-info" style="margin-left:5px;">찜</button>'
+								+'</c:if>'
+								+'</div></div></div></div>';
+								
+								$(".main_block").append(str2);
+								});
+							},
+							error : function(e) {
+								alert("ajax error");
+								}
+							});
+					}
+	}); */
+	
+	 
 </script>
 </html>
