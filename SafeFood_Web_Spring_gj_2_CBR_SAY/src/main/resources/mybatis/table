@@ -1,3 +1,5 @@
+create database mydb;
+use mydb;
 CREATE TABLE `food` (
   `code` int(11) NOT NULL,
   `supportpereat` decimal(5,2) DEFAULT NULL,
@@ -17,7 +19,17 @@ CREATE TABLE `food` (
   eat_cnt int,
   search_cnt int,
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
+
+CREATE TABLE `user` (
+  `id` varchar(45) NOT NULL,
+  `pw` varchar(45) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `addr` varchar(45) NOT NULL,
+  `tel` varchar(45) DEFAULT NULL,
+  `allergy` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ;
 
 CREATE TABLE `qna` (
   `qna_idx` int(11) NOT NULL AUTO_INCREMENT,
@@ -33,16 +45,6 @@ CREATE TABLE `qna` (
   CONSTRAINT `qna_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 );
 
-CREATE TABLE `user` (
-  `id` varchar(45) NOT NULL,
-  `pw` varchar(45) NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `addr` varchar(45) NOT NULL,
-  `tel` varchar(45) DEFAULT NULL,
-  `allergy` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE `usereat` (
   `eat_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `userEat_idx` int(11) NOT NULL AUTO_INCREMENT,
@@ -53,7 +55,7 @@ CREATE TABLE `usereat` (
   KEY `usereat_ibfk_2` (`food_code`),
   CONSTRAINT `usereat_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `usereat_ibfk_2` FOREIGN KEY (`food_code`) REFERENCES `food` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+);
 
 
 create table likefood(
@@ -68,7 +70,7 @@ create table reviews(
   , `food_code` int(11) NOT NULL  
   , reviews_content varchar(1000)
 );
-use mydb;
+
 alter table food add eat_cnt int;
 alter table food add search_cnt int;
 alter table user add email varchar(100) not null;
