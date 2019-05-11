@@ -54,35 +54,16 @@
 	<h2>비밀번호 찾기</h2>
 	<c:url value="/userfindPw" var="userfindPw"/>
 	<form method="post" action="${userfindPw}" id="findPwForm">
-		<c:if test="${!empty findChk}">
-		<%-- <% if(request.getAttribute("id")!=null){ %> --%>
 		<div class = "input_info">
 			<span>아이디</span>
-			<input type="text" name="id" style="width:300px; height:30px;font-size:15px;" placeholder="아이디를 입력해주세요." value="<%=request.getAttribute("id")%>">
+			<input type="text" name="id" style="width:300px; height:30px;font-size:15px;" placeholder="아이디를 입력해주세요.">
 		</div>
 	
 		<div class = "input_info">
 			<span>이메일</span>
-			<input type="email" name="email" style="width:300px; height:30px;font-size:15px;" placeholder="010-xxxx-xxxx" value="<%=request.getAttribute("tel")%>">
+			<input type="email" name="email" style="width:300px; height:30px;font-size:15px;" placeholder="e-mail">
 		</div>
-		</c:if>
-		<%-- <%} else { %> --%>
-		<c:if test="${empty findChk}">
-			<div class = "input_info">
-				<span>아이디</span>
-				<input type="text" name="id" style="width:300px; height:30px;font-size:15px;" placeholder="아이디를 입력해주세요.">
-			</div>
-			<div class = "input_info">
-				<span>전화번호</span>
-				<input type="tel" name="tel" style="width:300px; height:30px;font-size:15px;" placeholder="010-xxxx-xxxx">
-			</div>
-		</c:if>
 		<input type="submit" value="비밀번호 찾기" style="width:150px; height:30px;font-size:15px; background:#343a40; color:white; border-radius: 5px;">
-	</form>
-	
-	<c:url value="/doePw" var="doePw"/>
-	<form method="post" action="${doePw }" id="RePwForm">
-
 	</form>
 	<!-- /.container -->
 

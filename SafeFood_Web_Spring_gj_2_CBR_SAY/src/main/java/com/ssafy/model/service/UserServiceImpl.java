@@ -79,8 +79,8 @@ public class UserServiceImpl implements UserService {
 			}
 			
 			//비밀번호변경
-			user.setPw(yimsiPw); 
-			userRepo.updatePw(user);
+			selUsers.setPw(yimsiPw); 
+			userRepo.updatePw(selUsers);
 			//비밀번호 변경 메일 발송
 			sendEmail(selUsers);
 			
@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
 		subject = "Safe Food 홈페이지 임시 비밀번호 입니다.";
 		msg += "<div align='center' style='border:1px solid black; font-family:verdana'>";
 		msg += "<h3 style='color: blue;'>";
-		msg += user.getPw() + "님의 임시 비밀번호 입니다. 비밀번호를 변경하여 사용하세요.</h3>";
+		msg += user.getId() + "님의 임시 비밀번호 입니다. 비밀번호를 변경하여 사용하세요.</h3>";
 		msg += "<p>임시 비밀번호 : ";
 		msg += user.getPw() + "</p></div>";
 	
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
 			email.setCharset(charSet);
 			email.setSSL(true);
 			email.setHostName(hostSMTP);
-			email.setSmtpPort(587);
+			email.setSmtpPort(465);
 
 			email.setAuthentication(hostSMTPid, hostSMTPpwd);
 			email.setTLS(true);

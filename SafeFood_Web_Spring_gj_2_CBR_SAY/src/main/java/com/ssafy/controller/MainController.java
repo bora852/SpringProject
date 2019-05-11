@@ -171,11 +171,11 @@ public class MainController {
 		User userResult = userService.findPw(user);   
 		if (userResult != null) {
 			redir.addFlashAttribute("alarm", "임시비밀번호를 메일로 발송했습니다.");
-
+			
 		} else {
 			redir.addFlashAttribute("alarm", "잘못된 이메일입니다.");
 		}
-		return null;
+		return "redirect:/home";
 		/*
 		 * int result = userService.findPw(user); if(result > 0) {
 		 * session.setAttribute("id", user.getId()); session.setAttribute("tel",
