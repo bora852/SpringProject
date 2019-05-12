@@ -1,7 +1,9 @@
 package com.ssafy.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -161,8 +164,28 @@ public class MainController {
 	public String userfindIdForm(Model model) {
 		return "user/userfindId";
 	}
+	
+	@PostMapping("/userfindId")
+	@ResponseBody
+	public Map<String, Object> doUserfindId(Model model,@RequestBody User user) {
+		Map<String, Object> map = new HashMap<>();
+		User userResult = userService.findId(user);
+		model.addAttribute("prev", user);
+		if(userResult != null) {
+			logger.trace("userID : {}",userResult.getId());
+			model.addAttribute("findId", userResult.getId());
+			map.put("findId", userResult.getId());
+			return map;
+//			return userResult.getId();
+		}else {
+			model.addAttribute("findId", "가입된 아이디가 존재하지 않습니다.");
+//			return "가입된 아이디가 존재하지 않습니다.";
+			map.put("findId", "가입된 아이디가 존재하지 않습니다.");
+			return map;
+		}
+	}
 
-	// 비밀번호 찾기
+	// 비밀번호 찾기-임시비밀번호 메일로 발송
 	@GetMapping("/userfindPw")
 	public String userfindPwForm(Model model) {
 		return "user/userfindPw";
@@ -170,35 +193,12 @@ public class MainController {
 
 	@PostMapping("/userfindPw")
 	public String doUserfindPw(Model model, RedirectAttributes redir, User user, HttpSession session, String div) {
-//		User users = (User) session.getAttribute("loginUser");
-
-//		logger.trace(">>> email {} :: {}", users.getEmail(), user.getEmail());
 		User userResult = userService.findPw(user);   
 		if (userResult != null) {
 			redir.addFlashAttribute("alarm", "임시비밀번호를 메일로 발송했습니다.");
-			
-		} else {
-			redir.addFlashAttribute("alarm", "잘못된 이메일입니다.");
-		}
-		return "redirect:/home";
-		/*
-		 * int result = userService.findPw(user); if(result > 0) {
-		 * session.setAttribute("id", user.getId()); session.setAttribute("tel",
-		 * user.getPw()); session.setAttribute("findChk", "success"); return
-		 * "user/userfindPw"; }else { redir.addFlashAttribute("alarm",
-		 * "아이디 또는 패스워드가 다릅니다."); return "user/userfindPw"; }
-		 */
-	}
-
-	// 비밀번호 재설정
-	@PostMapping("/doePw")
-	public String doRePw(Model model, RedirectAttributes redir, User user, HttpSession session) {
-		int result = userService.updatePw(user);
-		if (result > 0) {
-			redir.addFlashAttribute("alarm", "비밀번호가 변경되었습니다.");
 			return "redirect:/home";
 		} else {
-			redir.addFlashAttribute("alarm", "비밀번호가 다릅니다.");
+			redir.addFlashAttribute("alarm", "잘못된 이메일입니다.");
 			return "user/userfindPw";
 		}
 	}
@@ -297,5 +297,10 @@ public class MainController {
 	@GetMapping("/qna")
 	public String qna(Model model) {
 		return "menu/qna";
+	}
+	
+	@GetMapping("/cancel")
+	public String cancel() {
+		return "redirect:home";
 	}
 }

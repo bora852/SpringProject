@@ -25,6 +25,10 @@
 		delete from usereat where user_id = #{id}
 	</delete>
 	
+	<select id="findId" parameterType="userInfo" resultType="userInfo">
+		select * from user where email = #{email}
+	</select>
+	
 	<select id="findPw" parameterType="userInfo" resultType="userInfo">
 		select * from user where id = #{id} and email = #{email}
 	</select>

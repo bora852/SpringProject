@@ -65,10 +65,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User findPw(User user) {
-		User selUsers = userRepo.findPw(user);
+		User selUser = userRepo.findPw(user);
 		
 		//가입에 사용한 이메일이 아니면
-		if(!user.getEmail().equals(selUsers.getEmail())) {
+		if(selUser!=null &&!user.getEmail().equals(selUser.getEmail())) {
 			return null;
 		}else {
 			//임시 비밀번호 생성
@@ -79,13 +79,21 @@ public class UserServiceImpl implements UserService {
 			}
 			
 			//비밀번호변경
-			selUsers.setPw(yimsiPw); 
-			userRepo.updatePw(selUsers);
+			selUser.setPw(yimsiPw); 
+			userRepo.updatePw(selUser);
 			//비밀번호 변경 메일 발송
-			sendEmail(selUsers);
+			sendEmail(selUser);
 			
-			return selUsers;
+			return selUser;
 		}
+	}
+	
+	@Override
+	public User findId(User user) {
+		User selUser = userRepo.findId(user);
+		if(selUser!=null &&!user.getEmail().equals(selUser.getEmail())) {
+			return null;
+		}else return selUser;
 	}
 
 	@Override

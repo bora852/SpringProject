@@ -15,6 +15,7 @@ public interface UserService {
 	public User selectUser(String id);
 	public int updateUser(User user);
 	public int deleteUser(String userId);
+	public User findId(User user);
 	public User findPw(User user);
 	public int updatePw(User user);
 	public void sendEmail(User user);

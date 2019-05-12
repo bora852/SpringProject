@@ -51,33 +51,58 @@
 	<header>
 		<jsp:include page="../include/Navbar.jsp" />
 	</header>
-	<h2>비밀번호 찾기</h2>
+<div id="app">
+	<h2>아이디 찾기</h2>
 	<div class="w3-content w3-container w3-margin-top">
 		<div class="w3-container w3-card-4">
 			<c:url value="/userfindId" var="userfindId"></c:url>
-			<form action="${userfindId }" method="post">
-				<div class="w3-center w3-large w3-margin-top">
-					<h3>아이디 찾기</h3>
-				</div>
+			<form action="${userfindId }" method="post" v-on:submit.prevent="findId">
 				<div>
 					<p>
 						<label>Email</label>
-						<input class="w3-input" type="text" id="email" name="email" required>
+						<input class="w3-input" v-model="email" type="text" id="email" name="email" required value="${prev.email }">
 					</p>
+					
 					<p class="w3-center">
-						<button type="submit" id=findBtn class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round">find</button>
-						<button type="button" onclick="history.go(-1);" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-margin-bottom w3-round">Cancel</button>
+						<input type="submit" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round" value="아이디찾기">
+						<c:url value="/cancel" var="cancel"></c:url>
+						<button type="button" onclick="location.href='${cancel}'" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-margin-bottom w3-round">취소</button>
 					</p>
 				</div>
 			</form>
+			<template v-if="isFindId">
+				<span>{{id}}</span>
+			</template>
 		</div>
 	</div>
+</div>
 	<!-- /.container -->
 
 	<!-- Footer -->
 	<footer>
 		<jsp:include page="../include/footer.jsp" />
 	</footer>
-
+<script src="https://unpkg.com/vue"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+<script>
+let vi = new Vue({
+	el:"#app",
+	data:{id:"", email:"", isFindId:false},
+	methods:{
+		findId(){
+			this.isFindId=false;
+			 axios.post("/SF_WS_03/userfindId",{email : this.email})
+			.then(res => {
+				console.log(res);
+				this.id = res.data.findId;
+				this.isFindId=true;
+			}).catch(error => {
+				console.log(error)
+			}) 
+		}
+	}	
+});
+</script>
 </body>
 </html>

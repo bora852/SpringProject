@@ -56,12 +56,12 @@
 	<form method="post" action="${userfindPw}" id="findPwForm">
 		<div class = "input_info">
 			<span>아이디</span>
-			<input type="text" name="id" style="width:300px; height:30px;font-size:15px;" placeholder="아이디를 입력해주세요.">
+			<input type="text" name="id" style="width:300px; height:30px;font-size:15px;" placeholder="아이디를 입력해주세요." required>
 		</div>
 	
 		<div class = "input_info">
 			<span>이메일</span>
-			<input type="email" name="email" style="width:300px; height:30px;font-size:15px;" placeholder="e-mail">
+			<input type="email" name="email" style="width:300px; height:30px;font-size:15px;" placeholder="e-mail" required>
 		</div>
 		<input type="submit" value="비밀번호 찾기" style="width:150px; height:30px;font-size:15px; background:#343a40; color:white; border-radius: 5px;">
 	</form>
