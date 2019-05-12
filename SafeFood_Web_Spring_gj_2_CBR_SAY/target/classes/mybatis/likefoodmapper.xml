@@ -5,9 +5,9 @@
 <mapper namespace="com.ssafy.model.mapper.LikeFood">
 
 	<insert id="insert" parameterType="likefood">
-		insert into likefood(likefood_idx,
-		user_id, food_code) values(#{likefood_idx}, #{user_id}, #{food_code})
+		insert into likefood (user_id, food_code) values( #{userId}, #{foodCode})
 	</insert>
+	
 	
 	<!-- <select id="selectUser" resultType="food" parameterType="map">
 		<bind name="pattern" value="'%' + _parameter.get(name) + '%'" />

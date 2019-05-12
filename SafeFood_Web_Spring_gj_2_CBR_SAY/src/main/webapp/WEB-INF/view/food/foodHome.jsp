@@ -116,11 +116,12 @@ div.jumbotron:hover div.for_hover {
 							<div class="main_bt">
 								<div class="info_bt row">
 									<c:if test="${not empty loginUser }">
-										<c:url value="/addEat?code=${food.getCode() }" var="addEat"></c:url>
-										<button type="button" id="addButton"
-											class="btn btn_d btn-outline-info"
-											onclick="location.href='${addEat}'">추가</button>
-										<button type="button" class="btn btn_d btn-outline-info">찜</button>
+									<c:url value="/addEat?code=${food.getCode() }" var="addEat"></c:url>
+									<button type="button" id="addButton"
+										class="btn btn_d btn-outline-info"
+										onclick="location.href='${addEat}'">추가</button>
+									<c:url value="/addLike?code=${food.getCode() }" var="addLike"></c:url>
+									<button type="button" onclick="location.href='${addLike}'" class="btn btn_d btn-outline-info">찜</button>
 									</c:if>
 								</div>
 							</div>

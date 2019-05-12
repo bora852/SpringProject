@@ -21,9 +21,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.model.dto.Eat;
 import com.ssafy.model.dto.Food;
+import com.ssafy.model.dto.LikeFood;
 import com.ssafy.model.dto.User;
 import com.ssafy.model.service.EatService;
 import com.ssafy.model.service.FoodService;
+import com.ssafy.model.service.LikeFoodService;
 import com.ssafy.model.service.UserService;
 
 @Controller
@@ -39,6 +41,9 @@ public class MainController {
 	@Autowired
 	FoodService food;
 
+	@Autowired
+	LikeFoodService foodLike;
+	
 	/* ========================== User ========================================= */
 
 	// 로그인
@@ -270,6 +275,15 @@ public class MainController {
 
 	/* ========================== Like ========================================= */
 
+	@GetMapping("/addLike")
+	public String addLike(Model model, int code, RedirectAttributes redir, HttpSession session) {
+		logger.trace("addLike : {}");
+		User info = (User) session.getAttribute("loginUser");
+		LikeFood like= new LikeFood(1,info.getId(), code);
+		foodLike.insert(like);
+		return "redirect:home";
+	}
+	
 	/* ========================== Review =========================================*/
 
 	/* ========================== etc ========================================= */
