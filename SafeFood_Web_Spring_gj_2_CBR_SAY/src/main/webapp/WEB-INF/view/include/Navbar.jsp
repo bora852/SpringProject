@@ -86,8 +86,9 @@
 
 		<div id="menu_nav">
 			<ul>
+				<c:url value="/notice" var="notice"></c:url>
+				<li><a href="${notice }" class="menu_a">공지 사항</a></li>
 				<c:url value="/productinfo" var="productinfo"></c:url>
-				<li><a href="#" class="menu_a">공지 사항</a></li>
 				<li><a href="${productinfo }" class="menu_a">상품 정보</a></li>
 			<c:if test="${!empty loginUser}">
 				<li><a href="#" class="menu_a">베스트 섭취 정보</a></li>

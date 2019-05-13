@@ -25,10 +25,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ssafy.model.dto.Eat;
 import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.LikeFood;
+import com.ssafy.model.dto.Notice;
 import com.ssafy.model.dto.User;
 import com.ssafy.model.service.EatService;
 import com.ssafy.model.service.FoodService;
 import com.ssafy.model.service.LikeFoodService;
+import com.ssafy.model.service.NoticeService;
 import com.ssafy.model.service.UserService;
 
 @Controller
@@ -46,6 +48,9 @@ public class MainController {
 
 	@Autowired
 	LikeFoodService foodLike;
+	
+	@Autowired
+	NoticeService noticeService;
 	
 	/* ========================== User ========================================= */
 
@@ -285,7 +290,30 @@ public class MainController {
 	}
 	
 	/* ========================== Review =========================================*/
-
+	
+	/* ========================== Notice =========================================*/
+	
+	//공지사항 리스트 
+	@GetMapping("/notice")
+	public String noticeForm(Model model){
+		model.addAttribute("noticeList", noticeService.selectAll());
+		return "menu/notice";
+	}
+	
+	//공지사항 등록폼
+	@GetMapping("/writeNotice")
+	public String writeNoticeForm(Model model) {
+		return "menu/noticeWrite";
+	}
+	
+	//공지사항 등록
+	@PostMapping("/writeNotice")
+	public String writeNotice(Model model, Notice notice, RedirectAttributes redir) {
+		noticeService.insertNotice(notice);
+		redir.addFlashAttribute("alarm", "글이 등록되었습니다.");
+		return "redirect:/notice";
+	}
+	
 	/* ========================== etc ========================================= */
 
 	// 에러 페이지 연결

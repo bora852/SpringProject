@@ -50,10 +50,12 @@
 <c:url value="/static/css/main.css" var="maincss"></c:url>
 <c:url value="/static/css/modal.css" var="modalcss"></c:url>
 <c:url value="/static/css/signUp.css" var="signUpcss"></c:url>
+<c:url value="/static/css/common.css" var="commoncss"></c:url>
 <link href="${heroiccss }" rel="stylesheet">
 <link href="${maincss }" rel="stylesheet">
 <link href="${modalcss }" rel="stylesheet">
 <link href="${signUpcss }" rel="stylesheet">
+<link href="${commoncss }" rel="stylesheet">
 <script src="http://www.w3schools.com/lib/w3data.js"></script>
 
 <c:url value="/static/css/table.css" var="tablecss"></c:url>
@@ -61,11 +63,11 @@
 
 </head>
 <body>
+
 	<!-- Navigation -->
 	<header>
 		<jsp:include page="../include/Navbar.jsp" />
 	</header>
-
 	<!--   container -->
 	<div id="app">
 		<h1>- QnA -</h1>
@@ -82,27 +84,33 @@
 		<jsp:include page="../include/footer.jsp" />
 	</footer>
 
-	<script type="text/x-template" id="list-temp">
+<!-- QnA 리스트 화면 -->
+<script type="text/x-template" id="list-temp">
 <div>
 <button><router-link to = "/route2">문의하기</router-link></button>
 <div>
 <table class='list_table'>
-<col width="10%"><col width="70%"><col width="20%">
+<col width="15%"><col width="70%"><col width="20%">
+<c:url value="/static/img/question.png" var="question"></c:url>
 <tr>
   <th>번호</th>
   <th>제목</th>
   <th>날짜</th>
 </tr>
 <tr v-for="qna in qnalist">
-  <td v-html="qna.qna_idx" @click="show_detail(emp.id)"></td>
-  <td v-html="qna.title"></td>
+  <td><img src="${question }" width="30px" height="30px">{{qna.qna_idx}}</td>
+  <td @click="show_detail(qna.qna_idx)"><a href="#">{{qna.title}}</a></td>
   <td v-html="qna.qna_date"></td>
 </tr>
 </table>
 </div>
+		<!--<input type="text" placeholder="검색어 입력" v-model:value="searchValue" @keyup.enter="search">-->
+		<input type="button" class="btn btn-info btn-sm" value="검색">
 <div>
 </script>
-	<script type="text/x-template" id="add-temp">
+
+<!-- QnA 추가 화면 -->
+<script type="text/x-template" id="add-temp">
 <div>
 <form action="" method="post" id="_frmForm" name="qnaForm" @submit.prevent="addQna">
 <table class="content_table">
@@ -130,24 +138,77 @@
 </tr>
 <tr>
 <td colspan="2" style="height:50px; text-align:center;">
-<button><router-link to = "/route1">목록</router-link></button>
+<button><router-link to = "/">목록</router-link></button>
 <button type="submit" name="button">등록</button></td>
 </tr>
 </table>
 </form>
 </div>
 </script>
-	<script type="text/x-template" id="update-temp">
+
+<!-- QnA 수정 화면 -->
+<script type="text/x-template" id="update-temp">
 <div>
-	수정화면
+<article  id="body">
+		<div class="container" role="main">
+			<h3>공지사항 수정화면</h3>
+			<c:url value="/writeNotice" var="writeNotice"></c:url>
+			<form name="form" id="form" role="form" method="post" action="${writeNotice}">
+				<input type="hidden" name="userId" value="관리자">
+				<div class="mb-3">
+					<label for="title">제목</label>
+					<input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">
+				</div>
+
+				<div class="mb-3">
+					<label for="content">내용</label>
+					<textarea class="form-control" rows="5" name="content" id="content" placeholder="내용을 입력해 주세요" ></textarea>
+				</div>
+				
+				<input type="submit" class="btn btn-sm btn-primary" value="저장" id="btnSave" />
+				
+				<c:url value="/qna" var="qna"></c:url>
+				<button type="button" class="btn btn-sm btn-primary" id="btnList" onclick="location.href='${qna}'">목록</button>
+			</form>
+			<div >
+			</div>
+		</div>
+	</article>
 </div>
 </script>
-	<script type="text/x-template" id="detail-temp">
+
+<!-- QnA 상세보기 화면 -->
+<script type="text/x-template" id="detail-temp">
 <div>
-	상세보기화면
+<article  id="body">
+		<div class="container" role="main">
+			<h3>공지사항 상세보기</h3>
+			<c:url value="/writeNotice" var="writeNotice"></c:url>
+			<form name="form" id="form" role="form" method="post" action="${writeNotice}">
+				<input type="hidden" name="userId" value="관리자">
+				<div class="mb-3">
+					<label for="title">제목</label>
+					<p v-html="qna.title"></p>
+				</div>
+
+				<div class="mb-3">
+					<label for="content">내용</label>
+					<p v-html="qna.content"></p>
+				</div>
+
+				<button class="btn btn-sm btn-primary" id="btnSave" onclick="location.href='/SF_WS_03/qna#/route3'">수정</button>
+				<c:url value="/qna" var="qna"></c:url>
+				<button type="button" class="btn btn-sm btn-primary" id="btnList" onclick="location.href='${qna}'">목록</button>
+			</form>
+		</div>
+	</article>
 </div>
 </script>
-	<script>
+
+
+<script>
+
+/* QnA리스트 화면 */
 		let listView = Vue.component('listView', {
 			template : '#list-temp',
 			data:function(){
@@ -159,7 +220,7 @@
 			},
 			mounted:function(){
 				axios
-				.get('http://121.147.32.117:9090/api/qnas')
+				.get('http://121.147.32.111:9090/api/qnas')
 				.then((res) => {
 					this.qnalist = res.data.data;
 				})
@@ -168,8 +229,15 @@
 					this.errored = true;
 				})
 				.finally(() => this.loading=false)
+			},
+			methods:{
+				show_detail:function(idx){
+					router.push({path:'/route4/'+idx});
+				}
 			}
 		});
+
+/* QnA추가 화면 */
 		let addView = Vue.component('addView', {
 			template : '#add-temp',
 			data:function(){
@@ -186,19 +254,17 @@
 					if(this.qtitle==''){alert('제목을 입력하세요.');return;}
 					if(this.qcontents==''){alert('내용을 입력하세요.');return;}
 					
-					//console.log(${loginUser.id});
-					console.log(this.qans);
+					console.log(this.qcontents);
 					
-					axios.post('http://121.147.32.117:9090/api/qnas', {
+					axios.post('http://121.147.32.111:9090/api/qnas', {
 						user_id : this.quserId,
 						category : this.qcategory,
 						title : this.qtitle,
-						contents : this.qcontents
+						content : this.qcontents
 					}
 							)
 					.then((res) =>{
 						this.qans = res.data.data;
-						console.log(this.qans);
 						alert('글이 등록되었습니다.');
 						location.href="/SF_WS_03/qna#/"; 
 					}).catch(error => {
@@ -210,11 +276,33 @@
 				}
 			}
 		});
+		
+/* QnA 수정 화면 */
 		let updateView = Vue.component('updateView', {
 			template : '#update-temp'
 		});
+		
+/* QnA 자세히 화면 */
 		let detailView = Vue.component('detailView', {
-			template : '#detail-temp'
+			template : '#detail-temp',
+			data : function(){
+				return { 
+					qna : {}
+				}
+			},
+			mounted:function(){
+				axios.get("http://121.147.32.111:9090/api/qnas/"+this.$route.params.id)
+				.then(res => {
+					this.qna = res.data.data;
+					console.log(this.qna)
+				}).catch(error => {
+					console.log(error)
+				})
+				
+			},
+			methods : {
+				
+			}
 		});
 
 		const routes = [ {
@@ -227,7 +315,7 @@
 			path : '/route3',
 			component : updateView
 		}, {
-			path : '/route4',
+			path : '/route4/:id',
 			component : detailView
 		} ];
 

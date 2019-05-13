@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.repository.NoticeMapper"> <!-- @Mapper의 정보 -->
+<!-- 	public List<Notice> selectAll() throws Exception;
+	public Notice select(Integer notice_idx) throws Exception;
+	public int insertNotice(Notice notice) throws Exception;
+	public int updateNotice(Notice notice) throws Exception;
+	public int deleteNotice(Notice notice) throws Exception; -->
+	<select id="selectNotice" parameterType="int" resultType="notice"> <!-- 아이디는 method의 이름 -->
+		select * from notice where notice_idx = #{noticeIdx};
+	</select>
+	
+	<select id="selectAll" resultType="notice">
+		select * from notice
+	</select>
+	
+<!-- 	<select id="selectBytitle" resultType="notice"> 
+		select * from notice where title like #{title}
+	</select> -->
+	
+	<insert id="insertNotice" parameterType="notice">
+		insert into notice (user_id, title, content) 
+		       values (#{userId}, #{title}, #{content})
+	</insert>
+	
+	<update id="updateNotice" parameterType="notice">
+		update notice set user_id=#{userId}
+		                 ,title = #{title}
+		                 ,content = #{content}		                 
+		                 ,notice_date=#{noticeDate} where notice_idx = #{noticeIdx}
+	</update>
+	
+	<delete id="deleteNotice" parameterType="int">
+		delete from notice where notice_idx=#{noticeIdx}
+	</delete>
+	
+	<update id="updateHitCnt" parameterType="int">
+		update notice set hit_cnt = hit_cnt + 1 where user_id=#{userId}
+	</update>
+</mapper>
