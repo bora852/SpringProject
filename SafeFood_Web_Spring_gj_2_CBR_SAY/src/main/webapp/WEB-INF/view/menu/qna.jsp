@@ -63,7 +63,6 @@
 
 </head>
 <body>
-
 	<!-- Navigation -->
 	<header>
 		<jsp:include page="../include/Navbar.jsp" />
@@ -72,14 +71,14 @@
 	<div id="app">
 		<h1>- QnA -</h1>
 		<div>
-			<!-- <router-link to="/route3">업데이트</router-link>
-			<router-link to="/route4">자세히</router-link> -->
+		<c:url value="/qnas" var="qnas"></c:url>
+		<a href="${qnas }">11</a>
 		</div>
 		<router-view></router-view>
 	</div>
 	<!-- /.container -->
 
-	<!-- Footer -->
+	<!-- Footer --><!-- http://localhost:8080/SF_WS_03/WEB-INF/view/menu/qna.jsp -->
 	<footer>
 		<jsp:include page="../include/footer.jsp" />
 	</footer>
@@ -104,8 +103,12 @@
 </tr>
 </table>
 </div>
-		<!--<input type="text" placeholder="검색어 입력" v-model:value="searchValue" @keyup.enter="search">-->
-		<input type="button" class="btn btn-info btn-sm" value="검색">
+		<select v-model="searchMode">
+			<option>질문제목
+			<option>내용
+		</select>
+		<input type="text" placeholder="검색어 입력" v-model:value="searchValue" @keyup.enter="search">
+		<input type="button" class="btn btn-info btn-sm" value="검색" @click="search">
 <div>
 </script>
 
@@ -152,17 +155,17 @@
 <article  id="body">
 		<div class="container" role="main">
 			<h3>공지사항 수정화면</h3>
-			<c:url value="/writeNotice" var="writeNotice"></c:url>
-			<form name="form" id="form" role="form" method="post" action="${writeNotice}">
+			<!--<c:url value="/writeNotice" var="writeNotice"></c:url>--> 
+			<form name="form" id="form" role="form" method="post" action="${writeNotice}" @submit.prevent="updatQna">
 				<input type="hidden" name="userId" value="관리자">
 				<div class="mb-3">
 					<label for="title">제목</label>
-					<input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">
+					<input type="text" v-model="qna.title" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">
 				</div>
 
 				<div class="mb-3">
 					<label for="content">내용</label>
-					<textarea class="form-control" rows="5" name="content" id="content" placeholder="내용을 입력해 주세요" ></textarea>
+					<textarea v-model="qna.content" class="form-control" rows="5" name="content" id="content" placeholder="내용을 입력해 주세요" ></textarea>
 				</div>
 				
 				<input type="submit" class="btn btn-sm btn-primary" value="저장" id="btnSave" />
@@ -170,8 +173,6 @@
 				<c:url value="/qna" var="qna"></c:url>
 				<button type="button" class="btn btn-sm btn-primary" id="btnList" onclick="location.href='${qna}'">목록</button>
 			</form>
-			<div >
-			</div>
 		</div>
 	</article>
 </div>
@@ -183,9 +184,9 @@
 <article  id="body">
 		<div class="container" role="main">
 			<h3>공지사항 상세보기</h3>
-			<c:url value="/writeNotice" var="writeNotice"></c:url>
-			<form name="form" id="form" role="form" method="post" action="${writeNotice}">
-				<input type="hidden" name="userId" value="관리자">
+			<!--<c:url value="/writeNotice" var="writeNotice"></c:url>-->
+			<!--<form name="form" id="form" role="form" method="post">-->
+				<input type="hidden" name="userId" value="관리자" >
 				<div class="mb-3">
 					<label for="title">제목</label>
 					<p v-html="qna.title"></p>
@@ -195,11 +196,12 @@
 					<label for="content">내용</label>
 					<p v-html="qna.content"></p>
 				</div>
-
-				<button class="btn btn-sm btn-primary" id="btnSave" onclick="location.href='/SF_WS_03/qna#/route3'">수정</button>
+					 <!-- onclick="location.href='/SF_WS_03/qna#/route3'" -->
+				<button class="btn btn-sm btn-primary" id="btnSave" @click="show_update(qna.qna_idx)">수정</button>
 				<c:url value="/qna" var="qna"></c:url>
 				<button type="button" class="btn btn-sm btn-primary" id="btnList" onclick="location.href='${qna}'">목록</button>
-			</form>
+				<button class="btn btn-sm btn-primary" id="btnDelete" @click="deleteQna(qna.qna_idx)">삭제</button>
+			<!--</form>-->
 		</div>
 	</article>
 </div>
@@ -208,19 +210,22 @@
 
 <script>
 
-/* QnA리스트 화면 */
+		/* QnA리스트 */
 		let listView = Vue.component('listView', {
 			template : '#list-temp',
 			data:function(){
 				return{
 					qnalist : [],
 					loading : true,
-					errored : false
+					errored : false,
+					searchMode:"질문제목",
+					searchValue:"",
+					maxPage:0
 				}
 			},
 			mounted:function(){
 				axios
-				.get('http://121.147.32.111:9090/api/qnas')
+				.get('http://localhost:9090/api/qnas')
 				.then((res) => {
 					this.qnalist = res.data.data;
 				})
@@ -233,11 +238,27 @@
 			methods:{
 				show_detail:function(idx){
 					router.push({path:'/route4/'+idx});
+				},
+				search() {
+					let searchMode = "";
+					if(this.searchMode === '질문제목')
+						searchMode = "title";
+					else
+						searchMode = "content";
+					
+					axios.get("http://localhost:9090/api/search/" + searchMode + "/" + this.searchValue)
+					.then(response => {
+						this.qnalist = response.data.data;
+						this.maxPage = Math.ceil(response.data.maxPage/10);
+						console.log(this.maxPage);
+					}).catch(error => {
+						console.log(error);
+					});
 				}
 			}
 		});
 
-/* QnA추가 화면 */
+		/* QnA추가*/
 		let addView = Vue.component('addView', {
 			template : '#add-temp',
 			data:function(){
@@ -256,7 +277,7 @@
 					
 					console.log(this.qcontents);
 					
-					axios.post('http://121.147.32.111:9090/api/qnas', {
+					axios.post('http://localhost:9090/api/qnas', { //121.147.32.111
 						user_id : this.quserId,
 						category : this.qcategory,
 						title : this.qtitle,
@@ -277,12 +298,38 @@
 			}
 		});
 		
-/* QnA 수정 화면 */
+		/* QnA 수정  */
 		let updateView = Vue.component('updateView', {
-			template : '#update-temp'
+			template : '#update-temp',
+			data: function(){
+				return {
+					qna : {}
+				}
+			},
+			mounted : function(){
+				axios.get("http://localhost:9090/api/qnas/"+this.$route.params.id)
+				.then(res => {
+					this.qna = res.data.data;
+					console.log(this.qna)
+				}).catch(error => {
+					console.log(error)
+				})
+			},
+			methods:{
+				updatQna(){
+					axios.put("http://localhost:9090/api/qnas", this.qna)
+					.then(res => {
+						alert('글이 수정되었습니다.');
+						router.push({path:'/route4/'+this.qna.qna_idx});
+					}).catch(error => {
+						console.log(error);
+					})
+				}
+			}
+			
 		});
 		
-/* QnA 자세히 화면 */
+		/* QnA 상세보기*/
 		let detailView = Vue.component('detailView', {
 			template : '#detail-temp',
 			data : function(){
@@ -291,7 +338,7 @@
 				}
 			},
 			mounted:function(){
-				axios.get("http://121.147.32.111:9090/api/qnas/"+this.$route.params.id)
+				axios.get("http://localhost:9090/api/qnas/"+this.$route.params.id)
 				.then(res => {
 					this.qna = res.data.data;
 					console.log(this.qna)
@@ -301,6 +348,18 @@
 				
 			},
 			methods : {
+				show_update(idx){
+					router.push({path:'/route3/'+idx});
+				},
+				deleteQna(idx){
+					axios.delete("http://localhost:9090/api/qnas/"+idx)
+					.then(res => {
+						alert("삭제되었습니다.");
+						location.href="/SF_WS_03/qna#/";
+					}).catch(error => {
+						console.log(error);
+					})
+				}
 				
 			}
 		});
@@ -312,7 +371,7 @@
 			path : '/route2',
 			component : addView
 		}, {
-			path : '/route3',
+			path : '/route3/:id',
 			component : updateView
 		}, {
 			path : '/route4/:id',
@@ -322,6 +381,7 @@
 		const router = new VueRouter({
 			routes : routes
 		});
+		
 		var vi = new Vue({
 			el : "#app",
 			router : router

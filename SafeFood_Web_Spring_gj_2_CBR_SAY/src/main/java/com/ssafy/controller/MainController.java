@@ -327,6 +327,11 @@ public class MainController {
 		return "menu/qna";
 	}
 	
+	@GetMapping("/qnas")
+	public String qnas(Model model) {
+		return "menu/qnas";
+	}
+	
 	@GetMapping("/cancel")
 	public String cancel() {
 		return "redirect:home";
