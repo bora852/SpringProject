@@ -44,7 +44,9 @@
 #menu_place {
 	position: relative;
 	width: 100%;
-	height: 100px;
+	height: 70px;
+	margin: 10px;
+	
 }
 
 #menu_place>.container {
@@ -68,7 +70,7 @@
 	float: right;
 	list-style: none;
 	font-size: 15px;
-	margin: 10px 300px 10px 0px;
+	margin: 10px 300px 20px 0px;
 }
 
 #menu_nav>ul>li {
@@ -76,11 +78,23 @@
 	margin: 15px;
 }
 
+#new_menu_nav {
+	float: right;
+	width: 300px;
+	margin-top: 15px;
+}
+
 /* 상단 글귀 영역 */
+
 #top_place {
 	width: 100%;
-	height: 250px;
-	background: #8997AA;
+	height: 350px;
+	/* background: #8997AA;  */
+
+     background-image: url("../bg/bg.PNG");
+     background-repeat: no-repeat;
+     background-position: center center;
+     background-color:  #8997AA;
 }
 
 #top_place>.container {
@@ -207,6 +221,16 @@
 }
 
 .menu_a:hover {
-	font: bold;
+	color: gray;
 	text-decoration: none;
+}
+
+<c:url value="/static/font/NANUMSQUAREROUNDR.TTF" var="fonts"></c:url>
+@font-face {
+  font-family: webisfree;
+  src: url('${fonts}'); /* ./../../static/font/NANUMSQUAREROUNDR.TTF */
+}
+
+body {
+  font-family: webisfree;
 }

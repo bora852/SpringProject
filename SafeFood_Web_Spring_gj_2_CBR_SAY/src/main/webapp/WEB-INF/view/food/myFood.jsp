@@ -30,7 +30,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<title>Insert title here</title>
+<title>내 섭취 정보</title>
 
 <!-- js, jquery -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -62,7 +62,7 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 	crossorigin="anonymous"></script>
-	
+
 <!-- Custom styles for this template -->
 <c:url value="/static/css/heroic-features.css" var="heroiccss"></c:url>
 <c:url value="/static/css/main.css" var="maincss"></c:url>
@@ -80,235 +80,169 @@
 	</header>
 
 	<!-- Page Content -->
-	  <!-- Page Content -->
-  <div class="container">
+	<div class="container">
 
-    <!-- Page Heading/Breadcrumbs -->
-    <h1 class="mt-4 mb-3">내 섭취 정보
-    </h1>
+		<!-- Page Heading/Breadcrumbs -->
+		<h1 class="mt-4 mb-3">내 섭취 정보</h1>
 
-    <div class="mb-4" id="accordion" role="tablist" aria-multiselectable="true">
-      
-      <div class="card">
-        <div class="card-header" role="tab" id="headingThree">
-          <h5 class="mb-0">
-            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">통계보기</a>
-          </h5>
-        </div>
-        <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="card-body">
-          	<canvas id="myChart" width="400" height="400"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
+		<div class="mb-4" id="accordion" role="tablist"
+			aria-multiselectable="true">
 
-	<table class="table table-hover">
-		<colgroup>
-			<col style="width: 5%;" />
-			<col style="width: 25%;" />
-			<col style="width: auto;" />
-			<col style="width: 10%;" />
-		</colgroup>
-
-		<thead>
-			<tr>
-				<th></th>
-				<th scope="col">날짜</th>
-				<th scope="col">먹은 음식</th>
-				<th scope="col"><input type="checkbox" name="all" class="check-all"></th>
-			</tr>
-		</thead>
-		<tbody>
-		<c:choose>
-			<c:when test="${eatList ne null }">
-				<c:forEach var="eat" begin="0" end="${eatList.size()-1 }">
-					<tr>
-						<td></td>
-						<td scope="row">${eatList[eat].getEatDate()}</td>
-						<td>${foodList[eat].getName()}</td>
-						<td><input type="checkbox" name="${eat }" class="allSel"></td>
-					</tr>
-				</c:forEach>
-			</c:when>
-		</c:choose>
-					
-		</tbody>
-	</table>
-	
-	<div style="text-align:right;">
-		<c:url value="/writeNotice" var="writeNotice"></c:url>
-		<button type="button" class="btn btn-sm btn-primary" id="btnWriteForm" onclick="location.href='${writeNotice}'">삭제</button>
-	</div>
-  </div>
-  
-<%-- 	<div class="container main_block">
-		<c:choose>
-			<c:when test="${list ne null }">
-				<c:forEach var="food" items="${list }">
-					<div class="jumbotron my-4 row">
-						<div class="col-lg-3 main_img_box">
-							<c:url value="/static/${food.img }" var="foodimg"></c:url>
-							<img class="main_img" src="${foodimg }">
-							<div class="for_hover">
-								<h2 style="color: white; margin-top: 14px;">${food.maker }</h2>
-							</div>
+			<div class="card">
+				<div class="card-header" role="tab" id="headingThree">
+					<h5 class="mb-0">
+						<a class="collapsed" data-toggle="collapse"
+							data-parent="#accordion" href="#collapseThree"
+							aria-expanded="false" aria-controls="collapseThree">통계보기</a>
+					</h5>
+				</div>
+				<div id="collapseThree" class="collapse" role="tabpanel"
+					aria-labelledby="headingThree">
+					<div class="card-body">
+						<div id="app" style="text-align: center; margin:10px;">
+							<select v-model="chartMode">
+								<option>일별</option>
+								<option>월별</option>
+								<option>연별</option>
+							</select>
+							<input type="button" class="btn btn-info btn-sm" value="차트검색" > <!-- @click="search" -->
 						</div>
-						<div class="col-lg-9">
-							<div class="main_name border_line row">
-								<h2 class="p_name">${food.name }</h2>
-								<c:if test="${!empty loginUser }">
-									<c:set var="loop_flag" value="false" />
-									<c:forEach var="allergyitem" items="${allergy }">
-										<c:if test="${not loop_flag }">
-											<c:if test="${fn:contains(food.material,allergyitem)}">
-												<span class="label label-danger">알레르기주의</span>
-												<c:set var="loop_flag" value="true" />
-											</c:if>
-										</c:if>
-									</c:forEach>
-								</c:if>
-
-							</div>
-							<div class="main_mat row">
-								<a>${food.material }</a>
-							</div>
-							<div class="main_bt">
-								<div class="info_bt row">
-									<c:if test="${not empty loginId }">
-										<button type="button" id="addButton"
-											class="btn btn_d btn-outline-info"
-											onclick="location.href='main.eat?action=add&code=${food.code }'">추가</button>
-										<button type="button" class="btn btn_d btn-outline-info">찜</button>
-									</c:if>
-								</div>
-							</div>
-						</div>
+						<!-- 차트 -->
+						<canvas id="myChart" width="400" height="400"></canvas>
 					</div>
-				</c:forEach>
-			</c:when>
-		</c:choose>
-	</div> --%>
- 
-<!--    <!-- Navigation -->
-  <!-- <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">Start Bootstrap</a>
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="about.html">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="services.html">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="contact.html">Contact</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Portfolio
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
-              <a class="dropdown-item" href="portfolio-1-col.html">1 Column Portfolio</a>
-              <a class="dropdown-item" href="portfolio-2-col.html">2 Column Portfolio</a>
-              <a class="dropdown-item" href="portfolio-3-col.html">3 Column Portfolio</a>
-              <a class="dropdown-item" href="portfolio-4-col.html">4 Column Portfolio</a>
-              <a class="dropdown-item" href="portfolio-item.html">Single Portfolio Item</a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Blog
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
-              <a class="dropdown-item" href="blog-home-1.html">Blog Home 1</a>
-              <a class="dropdown-item" href="blog-home-2.html">Blog Home 2</a>
-              <a class="dropdown-item" href="blog-post.html">Blog Post</a>
-            </div>
-          </li>
-          <li class="nav-item active dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Other Pages
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
-              <a class="dropdown-item" href="full-width.html">Full Width Page</a>
-              <a class="dropdown-item" href="sidebar.html">Sidebar Page</a>
-              <a class="dropdown-item active" href="faq.html">FAQ</a>
-              <a class="dropdown-item" href="404.html">404</a>
-              <a class="dropdown-item" href="pricing.html">Pricing Table</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
- -->
+				</div>
+			</div>
+		</div>
 
- <!-- /.container -->
- 
+		<table class="table table-hover">
+			<colgroup>
+				<col style="width: 5%;" />
+				<col style="width: 25%;" />
+				<col style="width: auto;" />
+				<col style="width: 10%;" />
+			</colgroup>
+
+			<thead>
+				<tr>
+					<th></th>
+					<th scope="col">날짜</th>
+					<th scope="col">먹은 음식</th>
+					<th scope="col"><input type="checkbox" name="all"
+						class="check-all"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:choose>
+					<c:when test="${eatList ne null }">
+						<c:forEach var="eat" begin="0" end="${eatList.size()-1 }">
+							<tr>
+								<td></td>
+								<td scope="row">${eatList[eat].getEatDate()}</td>
+								<td>${foodList[eat].getName()}</td>
+								<td><input type="checkbox" name="${eat }" class="allSel"></td>
+							</tr>
+						</c:forEach>
+					</c:when>
+				</c:choose>
+
+			</tbody>
+		</table>
+
+		<div style="text-align: right;">
+			<c:url value="/writeNotice" var="writeNotice"></c:url>
+			<button type="button" class="btn btn-sm btn-primary"
+				id="btnWriteForm" onclick="location.href='${writeNotice}'">삭제</button>
+		</div>
+	</div>
+
+	<!-- /.container -->
 
 	<footer>
 		<jsp:include page="../include/footer.jsp" />
 	</footer>
 
 </body>
+<!-- #일별
+select substr(eat_date,1,10), sum(carbo), sum(protein), sum(fat), sum(sugar)
+	 , sum(natrium), sum(chole), sum(fattyacid), sum(transfat)
+  from food f, usereat e
+ where f.code = e.food_code
+ group by substr(eat_date,1,10)
+ ;
+ 
+ select substr(eat_date,1,10)
+   from usereat;
+ 
+ #주간
+ SELECT DATE_FORMAT(DATE_SUB(eat_date, INTERVAL (DAYOFWEEK(eat_date)-1) DAY), '%Y/%m/%d') as start,
+       DATE_FORMAT(DATE_SUB(eat_date, INTERVAL (DAYOFWEEK(eat_date)-7) DAY), '%Y/%m/%d') as end,
+       DATE_FORMAT(eat_date, '%Y%U') AS `aaa`,
+       sum(carbo)
+  from food f, usereat e
+  where f.code = e.food_code
+ GROUP BY aaa;
 
+ 
+ #월별
+ select substr(eat_date,1,7), sum(carbo), sum(protein), sum(fat), sum(sugar)
+	 , sum(natrium), sum(chole), sum(fattyacid), sum(transfat)
+  from food f, usereat e
+ where f.code = e.food_code
+ group by substr(eat_date,1,7)
+ ; -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script>
-    //체크박스 전체선택
-	$( document ).ready( function() {
-	    $( '.check-all' ).click( function() {
-	      $( '.allSel' ).prop( 'checked', this.checked );
-	    } );
-	  } );	
-	
-    //charts.js
+	//체크박스 전체선택
+	$(document).ready(function() {
+		$('.check-all').click(function() {
+			$('.allSel').prop('checked', this.checked);
+		});
+	});
+
+	let nutri = new Array("탄수화물", "단백질", "지방", "당류", "나트륨", "콜레스테롤", "포화지방산", "트랜스지방");
+	//charts.js
 	let ctx = document.getElementById('myChart').getContext('2d');
 	let myChart = new Chart(ctx, {
-	    type : 'bar',
-	    data: {
-	        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-	        datasets: [{
-	            label: '# of Votes',
-	            data: [12, 19, 3, 5, 2, 3],
-	            backgroundColor: [
-	                'rgba(255, 99, 132, 0.2)',
-	                'rgba(54, 162, 235, 0.2)',
-	                'rgba(255, 206, 86, 0.2)',
-	                'rgba(75, 192, 192, 0.2)',
-	                'rgba(153, 102, 255, 0.2)',
-	                'rgba(255, 159, 64, 0.2)'
-	            ],
-	            borderColor: [
-	                'rgba(255, 99, 132, 1)',
-	                'rgba(54, 162, 235, 1)',
-	                'rgba(255, 206, 86, 1)',
-	                'rgba(75, 192, 192, 1)',
-	                'rgba(153, 102, 255, 1)',
-	                'rgba(255, 159, 64, 1)'
-	            ],
-	            borderWidth: 1
-	        }]
-	    },
-	    options: {
-	        scales: {
-	        	/*  xAxes: [{
-	                 stacked: true
-	             }],
-	             yAxes: [{
-	                 stacked: true
-	             }] */
-	             yAxes: [{
-	                ticks: {
-	                    beginAtZero: true
-	                }
-	            }] 
-	        }
-	    }
+		type : 'line',
+		data : {
+			labels : [ '1월', '2월', 'Yellow', 'Green', 'Purple', 'Orange' ],
+			datasets : [ {
+				label : nutri[0],
+				data : [10, 20, 30, 40, 50, 60],
+				backgroundColor : [ 'rgba(255, 99, 132, 0.2)'],
+				borderColor : [ 'rgba(255, 99, 132, 1)'],
+				borderWidth : 1
+			} ,
+			{
+				label : nutri[1],
+				data : [10, 30, 30, 40, 50, 40],
+				backgroundColor : [ 'rgba(255, 206, 86, 0.2)'],
+				borderColor : [ 'rgba(255, 99, 132, 1)'],
+				borderWidth : 1
+			} 
+			
+			
+			]
+		},
+		options : {
+			scales : {
+				yAxes : [ {
+					ticks : {
+						beginAtZero : true
+					}
+				} ]
+			}
+		}
+	});
+	
+	let vi = new Vue({
+		el:"#app",
+		data : {
+			chartMode : ""
+		}
 	});
 </script>
 

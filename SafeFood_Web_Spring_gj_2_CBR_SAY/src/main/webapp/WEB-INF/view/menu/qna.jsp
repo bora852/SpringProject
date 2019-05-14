@@ -21,11 +21,6 @@
 	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 	crossorigin="anonymous"></script>
 
-<script src="https://unpkg.com/vue"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 <!-- 부가적인 테마 -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
@@ -44,7 +39,6 @@
 	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 	crossorigin="anonymous"></script>
 
-<!-- Custom styles for this template -->
 <!-- Custom styles for this template -->
 <c:url value="/static/css/heroic-features.css" var="heroiccss"></c:url>
 <c:url value="/static/css/main.css" var="maincss"></c:url>
@@ -68,13 +62,11 @@
 		<jsp:include page="../include/Navbar.jsp" />
 	</header>
 	<!--   container -->
-	<div id="app">
-		<h1>- QnA -</h1>
-		<div>
-		<c:url value="/qnas" var="qnas"></c:url>
-		<a href="${qnas }">11</a>
+	<div class="container">
+		<div id="app">
+			<h1>- QnA -</h1>
+			<router-view></router-view>
 		</div>
-		<router-view></router-view>
 	</div>
 	<!-- /.container -->
 
@@ -86,66 +78,71 @@
 <!-- QnA 리스트 화면 -->
 <script type="text/x-template" id="list-temp">
 <div>
-<button><router-link to = "/route2">문의하기</router-link></button>
-<div>
-<table class='list_table'>
-<col width="15%"><col width="70%"><col width="20%">
-<c:url value="/static/img/question.png" var="question"></c:url>
-<tr>
-  <th>번호</th>
-  <th>제목</th>
-  <th>날짜</th>
-</tr>
-<tr v-for="qna in qnalist">
-  <td><img src="${question }" width="30px" height="30px">{{qna.qna_idx}}</td>
-  <td @click="show_detail(qna.qna_idx)"><a href="#">{{qna.title}}</a></td>
-  <td v-html="qna.qna_date"></td>
-</tr>
-</table>
+	<div style="text-align:right; margin:10px;">
+		<button class="btn btn-info btn-sm"><router-link to = "/route2">문의하기</router-link></button>
+	</div>
+	<div>
+		<table class='list_table'>
+			<col width="15%"><col width="70%"><col width="20%">
+			<c:url value="/static/img/question.png" var="question"></c:url>
+			<tr>
+			  <th>번호</th>
+			  <th>제목</th>
+			  <th>날짜</th>
+			</tr>
+			<tr v-for="qna in qnalist">
+			  <td><img src="${question }" width="30px" height="30px">{{qna.qna_idx}}</td>
+			  <td @click="show_detail(qna.qna_idx)"><a href="#">{{qna.title}}</a></td>
+			  <td v-html="qna.qna_date"></td>
+			</tr>
+		</table>
+	</div>
+<div style="text-align: center; margin:10px;">
+	<select v-model="searchMode">
+		<option>질문제목</option>
+		<option>내용</option>
+	</select>
+	<input type="text" placeholder="검색어 입력" v-model:value="searchValue" @keyup.enter="search">
+	<input type="button" class="btn btn-info btn-sm" value="검색" @click="search">
 </div>
-		<select v-model="searchMode">
-			<option>질문제목</option>
-			<option>내용</option>
-		</select>
-		<input type="text" placeholder="검색어 입력" v-model:value="searchValue" @keyup.enter="search">
-		<input type="button" class="btn btn-info btn-sm" value="검색" @click="search">
 <div>
 </script>
 
 <!-- QnA 추가 화면 -->
 <script type="text/x-template" id="add-temp">
 <div>
-<form action="" method="post" id="_frmForm" name="qnaForm" @submit.prevent="addQna">
-<table class="content_table">
-<colgroup>
-		<col style="width:30%;" />
-		<col style="width:70%;" />							
-</colgroup>	
-<tr>
-<th>문의유형</th>
-<td><select name="job" id="_category" v-model="qcategory">
-    	<option value="">문의 유형 선택</option>
-    	<option value="1">음식1</option>
-    	<option value="2">음식2</option>
-    	<option value="3">음식3</option>
-	</select>
-</td>
-</tr>
-<tr>
-<th>제목</th>
-<td><input data-msg="제목" type="text" name="title"  id="_title" size="30" v-model="qtitle"/></td>  
-</tr>
-<tr>
-<th>문의내용</th>
-<td><input data-msg="문의내용" type="contents"  id="_contents" size="30" v-model="qcontents"/></td>
-</tr>
-<tr>
-<td colspan="2" style="height:50px; text-align:center;">
-<button><router-link to = "/">목록</router-link></button>
-<button type="submit" name="button">등록</button></td>
-</tr>
-</table>
-</form>
+	<form action="" method="post" id="_frmForm" name="qnaForm" @submit.prevent="addQna">
+		<table class="content_table">
+			<colgroup>
+					<col style="width:30%;" />
+					<col style="width:70%;" />							
+			</colgroup>	
+			<tr>
+				<th>문의유형</th>
+				<td>
+					<select name="job" id="_category" v-model="qcategory">
+				    	<option value="">문의 유형 선택</option>
+				    	<option value="1">음식1</option>
+				    	<option value="2">음식2</option>
+				    	<option value="3">음식3</option>
+					</select>
+			</td>
+			</tr>
+			<tr>
+				<th>제목</th>
+				<td><input data-msg="제목" type="text" name="title"  id="_title" size="30" v-model="qtitle"/></td>  
+			</tr>
+			<tr>
+				<th>문의내용</th>
+				<td><input data-msg="문의내용" type="contents"  id="_contents" size="30" v-model="qcontents"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="height:50px; text-align:center;">
+				<button type="submit" name="button">등록</button></td>
+				<button><router-link to = "/">목록</router-link></button>
+			</tr>
+		</table>
+	</form>
 </div>
 </script>
 
@@ -208,8 +205,13 @@
 </script>
 
 
-<script>
 
+<script src="https://unpkg.com/vue"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script>
 		/* QnA리스트 */
 		let listView = Vue.component('listView', {
 			template : '#list-temp',
