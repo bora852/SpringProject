@@ -290,7 +290,7 @@ public class MainController {
 		return foods;
 	}
 	
-	//인기검색어
+	//인기검색어 
 	@ResponseBody
 	@GetMapping("/oftenSearch")
 	public List<Food> oftenSearch(Model model){
