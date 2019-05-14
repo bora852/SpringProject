@@ -3,6 +3,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <nav id="login_place">
 	<div class="container">
+	
+	<%-- <div id="new_menu_nav">
+			<ul>
+				<c:url value="/notice" var="notice"></c:url>
+				<li><a href="${notice }" class="menu_a">공지 사항</a></li>
+				<c:url value="/productinfo" var="productinfo"></c:url>
+				<li><a href="${productinfo }" class="menu_a">상품 정보</a></li>
+			<c:if test="${!empty loginUser}">
+				<li><a href="#" class="menu_a">베스트 섭취 정보</a></li>
+				<c:url value="/searchMyList" var="searchMyList"></c:url>
+				<li><a href="${searchMyList }" class="menu_a">내 섭취 정보</a></li>
+				<li><a href="#" class="menu_a">예상 섭취 정보</a></li>
+				<c:url value="/qna" var="qna"></c:url>
+				<li><a href="${qna}" class="menu_a">QnA</a>
+			</c:if>
+			</ul>
+		</div> --%>s
+	
 		<div id="login_nav">
 			<c:if test="${empty loginUser}">
 				<button type="button"
@@ -77,12 +95,12 @@
 </nav>
 <nav id="menu_place">
 	<div class="container">
-		<div id="img_place">
+		<%-- <div id="img_place">
 		
 		<c:url value="/static/img/ssafy_Mark.jpg" var="image"></c:url>
 			<a href="index.jsp"><img src="${image }" width=100px
 				height=70px></a>
-		</div>
+		</div> --%>
 
 		<div id="menu_nav">
 			<ul>
@@ -132,7 +150,7 @@
 						<input id="search_input" name = "search_input" type="text" class="float_left" size="40" style="width: 300px; height: 30px; font-size: 15px;"> 
 						<button id="search_bt" type="submit" class="float_left"  style="width: 80px; height: 30px; margin-left: 15px;">검색</button>
 					</div>
-					<div id="app">
+					<div id="apps">
 						<p style="color:white; width:450px; clear:both;">
 						인기검색어 : 
 							<template v-for="search in searchs">
@@ -154,7 +172,7 @@
 	}
 	
 	let vq = new Vue({
-		el:"#app",
+		el:"#apps",
 		data : { searchs : {}},
 		mounted: function(){
 			axios.get("/SF_WS_03/oftenSearch")
@@ -172,3 +190,16 @@
 		}
 	});
 </script>
+<c:url value="/static/bg/bg1.jpg" var="bg"></c:url> 
+
+ <style>
+	<c:url value="/static/font/NANUMSQUAREROUNDR.TTF" var="fonts"></c:url>
+	@font-face {
+	  font-family: webisfree;
+	  src: url('${fonts}');
+	}
+	
+	body {
+	  font-family: webisfree;
+	}
+</style> 
