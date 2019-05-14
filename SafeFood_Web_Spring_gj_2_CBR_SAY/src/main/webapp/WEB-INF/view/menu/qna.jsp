@@ -104,8 +104,8 @@
 </table>
 </div>
 		<select v-model="searchMode">
-			<option>질문제목
-			<option>내용
+			<option>질문제목</option>
+			<option>내용</option>
 		</select>
 		<input type="text" placeholder="검색어 입력" v-model:value="searchValue" @keyup.enter="search">
 		<input type="button" class="btn btn-info btn-sm" value="검색" @click="search">

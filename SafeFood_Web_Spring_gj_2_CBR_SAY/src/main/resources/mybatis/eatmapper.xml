@@ -5,13 +5,18 @@
 <mapper namespace="com.ssafy.model.mapper.Eat">
 
 	<insert id="insert" parameterType="eat">
-		insert into usereat(user_id,
-		food_code) values(#{userId}, #{foodCode})
+		insert into usereat(user_id, food_code) values(#{userId}, #{foodCode})
 	</insert>
 	
-	<select id="searchMyList" resultType="food" parameterType="string">
-		select f.* from usereat e, food f where e.food_code = f.code and e.user_id=#{id}
+	<update id="updateEatCnt" parameterType="int">
+		update food set eat_cnt = eat_cnt + 1 where code = #{foodCode}
+	</update>
+	
+	<select id="searchMyList" resultType="eat" parameterType="string">
+		select e.* from usereat e, food f where e.food_code = f.code and e.user_id=#{id}
 	</select>
+	
+	
 	
 	<select id="searchName" resultType="food" parameterType="map">
 		<bind name="pattern" value="'%' + _parameter.get(name) + '%'" />

@@ -1,5 +1,6 @@
 package com.ssafy.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -66,16 +67,20 @@ public class MainController {
 			if (result.getAllergy() != null) {
 				allergy_user = result.getAllergy().split(",");
 			}
-
+			
 			StringBuilder my_allergy = new StringBuilder().append("[");
-			for (String al : allergy_user) {
-				my_allergy.append('"').append(al).append('"').append(',');
+			if (allergy_user != null) {
+				my_allergy = new StringBuilder().append("[");
+				for (String al : allergy_user) {
+					my_allergy.append('"').append(al).append('"').append(',');
+				}
+				my_allergy.append("]");
+				session.setAttribute("allergy", my_allergy.toString());
+			} else {
+				session.setAttribute("allergy", "");
 			}
-			my_allergy.append("]");
-			session.setAttribute("loginUser", result);
-			logger.trace(">>>  getAllergy : {}", result.getAllergy());
 			logger.trace("allergy : {}", Arrays.toString(allergy_user));
-			session.setAttribute("allergy", my_allergy.toString());
+			session.setAttribute("loginUser", result);
 		} else {
 			redir.addFlashAttribute("alarm", "아이디와 비밀번호를 확인해 주세요!");
 		}
@@ -243,10 +248,28 @@ public class MainController {
 	public String productinfo(Model model, HttpSession session) {
 		logger.trace("productinfo 방문.");
 		User user = (User) session.getAttribute("loginUser");
-		List<Food> foods = eat.searchMyList(user.getId());
+		List<Food> foods = food.selectAll();
 		logger.trace("foods :: " + foods);
 		model.addAttribute("list", foods);
 		return "food/productinfo";
+	}
+	
+	@GetMapping("/searchMyList")
+	public String myFoodInfo(Model model, HttpSession session) {
+		logger.trace("searchMyList 방문.");
+		User user = (User) session.getAttribute("loginUser");
+		List<Eat> eats = eat.searchMyList(user.getId());
+		List<Food> foods = new ArrayList<>();
+		if(eats != null) {
+			for(Eat myeat: eats) {
+				foods.add(food.selectCode(myeat.getFoodCode()));
+			}
+		}
+		logger.trace("eat :: " + eats);
+		logger.trace("foods :: " + foods);
+		model.addAttribute("eatList", eats);
+		model.addAttribute("foodList",foods);
+		return "food/myFood";
 	}
 
 	@GetMapping("/detail")
@@ -266,7 +289,15 @@ public class MainController {
 		logger.trace("chart :: " + foods);
 		return foods;
 	}
-
+	
+	//인기검색어
+	@ResponseBody
+	@GetMapping("/oftenSearch")
+	public List<Food> oftenSearch(Model model){
+		List<Food> foods = food.selectOftenSearch();
+		logger.trace("인기검색어 :: {}" + foods);
+		return foods;
+	}
 	/* ========================== Eat ========================================= */
 
 	@GetMapping("/addEat")
@@ -276,6 +307,17 @@ public class MainController {
 		Eat eatNew = new Eat(info.getId(), code);
 		eat.insert(eatNew);
 		return "redirect:home";
+	}
+	
+	@GetMapping("/addEatDetail")
+	@ResponseBody
+	public int addEatDetail(Model model, HttpServletRequest req, RedirectAttributes redir, HttpSession session) {
+		logger.trace("addEat : {}");
+		
+		User info = (User) session.getAttribute("loginUser");
+		Eat eatNew = new Eat(info.getId(), Integer.parseInt(req.getParameter("code")));
+		int result = eat.insert(eatNew);
+		return result;
 	}
 
 	/* ========================== Like ========================================= */

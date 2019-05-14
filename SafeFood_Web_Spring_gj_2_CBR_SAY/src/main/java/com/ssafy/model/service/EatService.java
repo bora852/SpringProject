@@ -12,7 +12,7 @@ public interface EatService {
 	
 	int insert(Eat eat);
 
-	List<Food> searchMyList(String id);
+	List<Eat> searchMyList(String id);
 
 	public List<Food> selectName(String name, String id);
 	

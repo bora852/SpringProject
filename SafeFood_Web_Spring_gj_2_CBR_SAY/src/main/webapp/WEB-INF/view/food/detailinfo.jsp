@@ -29,8 +29,7 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 <!-- Bootstrap core CSS -->
 <link rel="stylesheet"
@@ -137,7 +136,7 @@
 				</div>
 				<div class="row" style="margin: 10px">
 					<div class="info_bt col-lg-4">
-						<button type="button" class="btn btn_d btn-outline-info">추가</button>
+						<button type="button" class="btn btn_d btn-outline-info"  id="eatFood">섭취</button>
 						<button type="button" class="btn btn_d btn-outline-info">찜</button>
 					</div>
 				</div>
@@ -209,7 +208,23 @@
 	am4core.useTheme(am4themes_frozen);
 	am4core.useTheme(am4themes_animated);
 	// Themes end
-
+	
+ 	$("#eatFood").click(function(){  
+		let code = 'code='+'${food.getCode()}';
+		console.log("code : ",code);
+		$.ajax({
+			<c:url value="/addEatDetail" var="addEatDetail"/>
+			url : "${addEatDetail}",
+			type : "GET",
+			data : code,
+			success : function(res){
+				console.log("success : ",res);
+			},
+			error:function(e){
+				console.log("errer : ", e)
+			}
+		});
+	});
 	// Create chart instance
 	var chart = am4core.create("chartdiv", am4charts.PieChart);
 	$.ajax({

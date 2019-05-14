@@ -60,5 +60,17 @@ public class FoodRepositoryImpl implements FoodRepository {
 		String statement = ns + "selectMaker";
 		return template.selectList(statement, maker);
 	}
+
+	@Override
+	public int updateSearchCnt(int code) {
+		String statement = ns + "updateSearchCnt";
+		return template.update(statement, code);
+	}
+
+	@Override
+	public List<Food> selectOftenSearch() {
+		String statement = ns + "selectOftenSearch";
+		return template.selectList(statement);
+	}
 	
 }

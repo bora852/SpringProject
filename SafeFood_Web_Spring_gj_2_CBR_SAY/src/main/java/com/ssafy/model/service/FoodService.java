@@ -22,5 +22,7 @@ public interface FoodService {
 	List<Food> selectMaker(String maker);
 	
 	List<Food> selectAll();
+	
+	public List<Food> selectOftenSearch();
 
 }

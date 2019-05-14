@@ -34,7 +34,10 @@ public class FoodServiceImpl implements FoodService {
 	
 	@Override
 	public Food selectName1(String name) {
-		return foodRepo.selectName1(name);
+		Food food =  foodRepo.selectName1(name);
+		//search_cnt 횟수 증가
+		foodRepo.updateSearchCnt(food.getCode());
+		return food;
 	}
 
 	@Override
@@ -55,6 +58,11 @@ public class FoodServiceImpl implements FoodService {
 	@Override
 	public List<Food> selectMaker(String maker) {
 		return foodRepo.selectMaker(maker);
+	}
+
+	@Override
+	public List<Food> selectOftenSearch() {
+		return foodRepo.selectOftenSearch();
 	}
 
 }

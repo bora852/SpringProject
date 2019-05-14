@@ -8,10 +8,11 @@ import com.ssafy.model.dto.Food;
 public interface EatRepository {
 
 	public int insert(Eat eat);
-	public List<Food> searchMyList(String id);
+	public List<Eat> searchMyList(String id);
 	public List<Food> selectName(String name, String id);
 	public List<Food> selectMaterial(String material, String id);
 	public List<Food> selectMaker(String maker, String id);
-
+	public int updateEatCnt(int code);
+	
 }
 

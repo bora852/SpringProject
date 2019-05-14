@@ -27,7 +27,7 @@ public class EatRepositoryImpl implements EatRepository {
 		return template.insert(statement, eat);
 	}
 	@Override
-	public List<Food> searchMyList(String id) {
+	public List<Eat> searchMyList(String id) {
 		String statement = ns + "searchMyList";
 		return template.selectList(statement, id);
 	}
@@ -57,5 +57,11 @@ public class EatRepositoryImpl implements EatRepository {
 		map.put("id", id);
 		map.put("maker", maker);
 		return template.selectList(statement, map);
+	}
+	
+	@Override
+	public int updateEatCnt(int code) {
+		String statement = ns + "updateEatCnt";
+		return template.update(statement, code);
 	}
 }

@@ -13,5 +13,6 @@ public interface FoodRepository {
 	public List<Food> selectAll();
 	public List<Food> selectMaterial(String material);
 	public List<Food> selectMaker(String maker);
-
+	public int updateSearchCnt(int code);
+	public List<Food> selectOftenSearch();
 }

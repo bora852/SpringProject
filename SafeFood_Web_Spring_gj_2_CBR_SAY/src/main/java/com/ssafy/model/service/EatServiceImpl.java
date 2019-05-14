@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.model.dto.Eat;
 import com.ssafy.model.dto.Food;
 import com.ssafy.model.repository.EatRepository;
-import com.ssafy.model.repository.FoodRepository;
 
 @Transactional
 @Service
@@ -26,11 +25,12 @@ public class EatServiceImpl implements EatService {
 	@Override
 	@Transactional
 	public int insert(Eat eat) {
+		eatRepo.updateEatCnt(eat.getFoodCode());
 		return eatRepo.insert(eat);
 	}
 
 	@Override
-	public List<Food> searchMyList(String id) {
+	public List<Eat> searchMyList(String id) {
 		
 		return eatRepo.searchMyList(id);
 	}

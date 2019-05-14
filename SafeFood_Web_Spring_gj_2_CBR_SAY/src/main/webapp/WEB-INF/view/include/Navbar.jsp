@@ -92,7 +92,8 @@
 				<li><a href="${productinfo }" class="menu_a">상품 정보</a></li>
 			<c:if test="${!empty loginUser}">
 				<li><a href="#" class="menu_a">베스트 섭취 정보</a></li>
-				<li><a href="eatList.jsp" class="menu_a">내 섭취 정보</a></li>
+				<c:url value="/searchMyList" var="searchMyList"></c:url>
+				<li><a href="${searchMyList }" class="menu_a">내 섭취 정보</a></li>
 				<li><a href="#" class="menu_a">예상 섭취 정보</a></li>
 				<c:url value="/qna" var="qna"></c:url>
 				<li><a href="${qna}" class="menu_a">QnA</a>
@@ -131,15 +132,43 @@
 						<input id="search_input" name = "search_input" type="text" class="float_left" size="40" style="width: 300px; height: 30px; font-size: 15px;"> 
 						<button id="search_bt" type="submit" class="float_left"  style="width: 80px; height: 30px; margin-left: 15px;">검색</button>
 					</div>
+					<div id="app">
+						<p style="color:white; width:450px; clear:both;">
+						인기검색어 : 
+							<template v-for="search in searchs">
+								<a href="#" style="color: white; text-decoration: none; padding:4px"><span v-text="search.name" @click="doDetail(search.name)"></span></a>
+							</template>
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </form>
+<script src=" https://unpkg.com/vue"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 <script>
 	let alarm = "${alarm}";
 	if(alarm){
 		alert(alarm);
 	}
 	
+	let vq = new Vue({
+		el:"#app",
+		data : { searchs : {}},
+		mounted: function(){
+			axios.get("/SF_WS_03/oftenSearch")
+			.then(res => {
+				this.searchs = res.data;
+				console.log(this.searchs);
+			})
+		},
+		methods:{
+			doDetail : function(code){
+				console.log(code);
+				let url = "detail?name="+code;
+				location.href = encodeURI(url);	
+			}
+		}
+	});
 </script>

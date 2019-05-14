@@ -1,6 +1,6 @@
 package com.ssafy.model.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Eat {
 	private Integer userEatIdx;	
@@ -15,14 +15,12 @@ public class Eat {
 		super();
 		this.userId = userId;
 		this.foodCode = foodCode;
-		this.eatDate = new Date();
 	}
 	public Eat(Integer userEatIdx, String userId, Integer foodCode) {
 		super();
 		this.userEatIdx = userEatIdx;
 		this.userId = userId;
 		this.foodCode = foodCode;
-		this.eatDate = new Date();
 	}
 	public Integer getUserEatIdx() {
 		return userEatIdx;

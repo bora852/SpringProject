@@ -15,6 +15,10 @@
 		select * from food where name=#{name}
 	</select>
 	
+	<update id="updateSearchCnt" parameterType="int">
+		update food set search_cnt = search_cnt + 1 where code = #{foodCode}
+	</update>
+	
 	<select id="selectName2" resultType="food" parameterType="string">
 		<bind name="pattern" value="'%' + _parameter + '%'" />
 		select * from food where name like #{pattern}
@@ -33,5 +37,9 @@
 	<insert id="insert" parameterType="food">
 		insert into food (code, name, supportpereat,calory,carbo,protein,fat,sugar,natrium,chole,fattyacid,transfat,maker,material,img) values (#{code}, #{name}, #{supportpereat}, #{calory}, #{carbo}, #{protein}, #{fat}, #{sugar}, #{natrium}, #{chole}, #{fattyacid}, #{transfat}, #{maker}, #{material}, #{img})
 	</insert>
+	
+	<select id="selectOftenSearch" resultType="food">
+		select * from food order by search_cnt desc limit 3
+	</select>
 
 </mapper>
