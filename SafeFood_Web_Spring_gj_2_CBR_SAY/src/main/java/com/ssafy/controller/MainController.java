@@ -1,7 +1,9 @@
 package com.ssafy.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -313,43 +315,82 @@ public class MainController {
 	@ResponseBody
 	public int addEatDetail(Model model, HttpServletRequest req, RedirectAttributes redir, HttpSession session) {
 		logger.trace("addEat : {}");
+		
 		User info = (User) session.getAttribute("loginUser");
 		Eat eatNew = new Eat(info.getId(), Integer.parseInt(req.getParameter("code")));
 		int result = eat.insert(eatNew);
 		return result;
 	}
 
-	//내 섭취 정보 - 차트 데이터 조회
-	@ResponseBody
-	@GetMapping("/chartSearch/{type}/{srtDate}/{endDate}")
-	public List<Food> chartDay(Food foods, Model model, HttpSession session, @PathVariable String type, @PathVariable String srtDate, @PathVariable String endDate, HttpServletRequest req) {
-		foods.setSrtDate(srtDate);
-		foods.setEndDate(endDate);
-		logger.trace("chart 조회 : {}", foods);
-		String by = req.getParameter("type");
-		logger.trace("type 조회 : {}", type);
-		User info = (User)session.getAttribute("loginUser");
-		List<Food> list = null; 
-		if(type.equals("day")) {
-			list = eat.selectChartDay(foods, info.getId());
-		}else if(type.equals("week")) {
-			list = eat.selectChartWeek(foods, info.getId());
-		}else {
-			list = eat.selectChartMonth(foods, info.getId());
-		}
-		logger.trace("chart 조회 결과 : {}", list);
-		return list;
-	}
-	
 	/* ========================== Like ========================================= */
 
+	@GetMapping("/searchLikeList")
+	public String LikeList(Model model, HttpSession session) {
+		logger.trace("LikeList 방문.");
+		User info = (User) session.getAttribute("loginUser");
+		List<Food> foods = foodLike.selectAll(info.getId());
+		logger.trace("foods :: " + foods);
+		model.addAttribute("likefoodlist", foods);
+		return "like/likeList";
+	}
+	
 	@GetMapping("/addLike")
 	public String addLike(Model model, int code, RedirectAttributes redir, HttpSession session) {
-		logger.trace("addLike : {}", code);
+		logger.trace("addLike : {}");
 		User info = (User) session.getAttribute("loginUser");
 		LikeFood like= new LikeFood(1,info.getId(), code);
 		foodLike.insert(like);
 		return "redirect:home";
+	}
+	
+	@GetMapping("/daySum")
+	public String selectSumDay(Model model, HttpServletRequest req, RedirectAttributes redir, HttpSession session) {
+		logger.trace("daySum : {}");
+		String[] likeCheck = req.getParameterValues("likeCheck");
+		logger.trace(Arrays.toString(likeCheck)); 
+		User info = (User) session.getAttribute("loginUser");
+		Date date = new Date();
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String to = transFormat.format(date);
+		
+		logger.trace("daySum : "+to);
+		Food foodSum = food.selectSumDay(info.getId(), to);
+		/* logger.trace("foods :: " + foodSum); */
+		model.addAttribute("foodSum", foodSum);
+		
+		//afterfoodsum
+		
+		Food afterSum = food.selectSumDay(info.getId(), to);
+		for(int i=0;i<likeCheck.length;i++) {
+			Food newFood = food.selectCode(Integer.parseInt(likeCheck[i]));
+			afterSum.setSupportpereat(afterSum.getSupportpereat() + newFood.getSupportpereat());
+			afterSum.setCalory(afterSum.getCalory() + newFood.getCalory());
+			afterSum.setCarbo(afterSum.getCarbo()+newFood.getCarbo());
+			afterSum.setProtein(afterSum.getProtein()+newFood.getProtein());
+			afterSum.setFat(afterSum.getFat()+newFood.getFat());
+			afterSum.setSugar(afterSum.getSugar()+newFood.getSugar());
+			afterSum.setNatrium(afterSum.getNatrium()+newFood.getNatrium());
+			afterSum.setChole(afterSum.getChole()+newFood.getChole());
+			afterSum.setFattyacid(afterSum.getFattyacid()+newFood.getFattyacid());
+			afterSum.setTransfat(afterSum.getTransfat()+newFood.getTransfat());
+		}
+		model.addAttribute("afterSum", afterSum);
+
+		///////////////////////////////
+		List<Food> foods = foodLike.selectAll(info.getId());
+		logger.trace("foods :: " + foods);
+		model.addAttribute("likefoodlist", foods);
+		return "like/likeList";
+	}
+	
+	/* =========================== best ==========================================*/
+	
+	@GetMapping("/bestList")
+	public String best(Model model) {
+		logger.trace("best 방문.");
+		List<Food> foods = food.selectRank();
+		model.addAttribute("rankFoods", foods);
+		return "best/bestFood";
 	}
 	
 	/* ========================== Review =========================================*/

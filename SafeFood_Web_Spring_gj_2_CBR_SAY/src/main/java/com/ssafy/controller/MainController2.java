@@ -37,7 +37,7 @@ import com.ssafy.model.service.LikeFoodService;
 import com.ssafy.model.service.NoticeService;
 import com.ssafy.model.service.UserService;
 
-@Controller
+//@Controller
 public class MainController2 {
 	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
