@@ -73,7 +73,7 @@ public class EatRepositoryImpl implements EatRepository {
 		map.put("srtDate",food.getSrtDate());
 		map.put("endDate",food.getEndDate());
 		map.put("userId",userId);
-		return template.selectList(statement);
+		return template.selectList(statement, map);
 	}
 	@Override
 	public List<Food> selectChartWeek(Food food, String userId) {
@@ -82,16 +82,16 @@ public class EatRepositoryImpl implements EatRepository {
 		map.put("srtDate",food.getSrtDate());
 		map.put("endDate",food.getEndDate());
 		map.put("userId",userId);
-		return template.selectList(statement);
+		return template.selectList(statement, map);
 	}
 	@Override
 	public List<Food> selectChartMonth(Food food, String userId) {
-		logger.trace("selectChartMonth : {}", food);
+		logger.trace("selectChartMonth : {}", food+ " * userId : "+userId);
 		String statement = ns + "selectChartMonth";
 		Map<String, String> map = new HashMap<>();
-		map.put("srtDate","2019-04");
-		map.put("endDate","2019-06");
+		map.put("srtDate",food.getSrtDate());
+		map.put("endDate",food.getEndDate());
 		map.put("userId",userId);
-		return template.selectList(statement);
+		return template.selectList(statement, map);
 	}
 }

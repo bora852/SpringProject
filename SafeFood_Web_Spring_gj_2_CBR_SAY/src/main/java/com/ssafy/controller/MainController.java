@@ -321,10 +321,10 @@ public class MainController {
 
 	//내 섭취 정보 - 차트 데이터 조회
 	@ResponseBody
-	@GetMapping("/chartSearch/{type}")
-	public List<Food> chartDay(Food foods, Model model, HttpSession session, @PathVariable String type, HttpServletRequest req) {
-		foods.setSrtDate("2019-01-01");
-		foods.setEndDate("2019-05-01");
+	@GetMapping("/chartSearch/{type}/{srtDate}/{endDate}")
+	public List<Food> chartDay(Food foods, Model model, HttpSession session, @PathVariable String type, @PathVariable String srtDate, @PathVariable String endDate, HttpServletRequest req) {
+		foods.setSrtDate(srtDate);
+		foods.setEndDate(endDate);
 		logger.trace("chart 조회 : {}", foods);
 		String by = req.getParameter("type");
 		logger.trace("type 조회 : {}", type);

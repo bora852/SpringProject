@@ -36,32 +36,35 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 	crossorigin="anonymous"></script>
+	
+	
+	
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
 	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
 	crossorigin="anonymous"></script>
+	
+<!-- 부가적인 테마 -->
+<!-- <link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+합쳐지고 최소화된 최신 자바스크립트
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	
+	 -->
+	
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 	crossorigin="anonymous"></script>
 
-<!-- 부가적인 테마 -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 <!-- Bootstrap core CSS -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 	crossorigin="anonymous">
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-	crossorigin="anonymous"></script>
 
 <!-- Custom styles for this template -->
 <c:url value="/static/css/heroic-features.css" var="heroiccss"></c:url>
@@ -76,7 +79,7 @@
 <body>
 	<!-- Navigation -->
 	<header>
-		<jsp:include page="../include/Navbar.jsp" />
+		<jsp:include page="../include/Navbar2.jsp" />
 	</header>
 
 	<!-- Page Content -->
@@ -102,9 +105,11 @@
 						<div id="app" style="text-align: center; margin:10px;">
 							<select v-model="chartMode">
 								<option>일별</option>
+								<option>주별</option>
 								<option>월별</option>
-								<option>연별</option>
 							</select>
+							<input id="fromDate" type="date" v-model="strDate"> ~ 
+							<input id="toDate" type="date" v-model="endDate">
 							<input type="button" class="btn btn-info btn-sm" value="차트검색" @click="search">
 						</div>
 						<!-- 차트 -->
@@ -166,19 +171,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script>
+
 	//체크박스 전체선택
 	$(document).ready(function() {
+		
 		$('.check-all').click(function() {
 			$('.allSel').prop('checked', this.checked);
 		});
+		
+	
 	});
 
 	let nutri = new Array("탄수화물", "단백질", "지방", "당류", "나트륨", "콜레스테롤", "포화지방산", "트랜스지방");
+	let backg = new Array('rgba(255, 99, 132, 0.2)');
 	
-	function FoodInfo(label, data, bg){
+	
+	function FoodInfo(label, data, bg, border){
 		this.label = label;
 		this.data = data;
 		this.bg = bg;
+		this.border = border;
 		this.borderWidth= 1;
 	}
 	
@@ -191,22 +203,14 @@
 		data : {
 			 labels : [ '1월', '2월', 'Yellow', 'Green', 'Purple', 'Orange' ],
 			datasets : [ 
-				new FoodInfo("test",  [10, 20, 30, 40, 50, 60], [ 'rgba(255, 99, 132, 0.2)']),
-				{
+				new FoodInfo( nutri[0],  [10, 20, 30, 40, 50, 10],  'rgba(255, 99, 132, 0.2)', [ 'rgba(255, 99, 132, 1)'])
+				/*  ,	{
 				label : nutri[0],
 				data : [10, 20, 30, 40, 50, 60],
 				backgroundColor : [ 'rgba(255, 99, 132, 0.2)'],
 				borderColor : [ 'rgba(255, 99, 132, 1)'],
 				borderWidth : 1
-			} ,
-			{
-				label : nutri[1],
-				data : [10, 30, 30, 40, 50, 40],
-				backgroundColor : [ 'rgba(255, 206, 86, 0.2)'],
-				borderColor : [ 'rgba(255, 99, 132, 1)'],
-				borderWidth : 1
-			} 
-			
+			}   */
 			
 			] 
 		},
@@ -224,21 +228,32 @@
 	let vi = new Vue({
 		el:"#app",
 		data : {
-			chartMode : ""
+			chartMode : "일별",
+			strDate : "",
+			endDate : ""
 		},
 		mounted(){
 			// axios를 통해서 데이터 조회 후 사용
-			console.log("chart data ",myChart.data.datasets)
+			/* console.log("chart data ",myChart.data.datasets)
 			myChart.data.datasets.push(new FoodInfo("test",  [10, 20, 30, 40, 50, 60], [ 'rgba(255, 99, 132, 0.2)']));
-			console.log("chart data ",myChart.data.datasets)
+			*/console.log("chart data ",myChart.data.datasets) 
 		},
 		methods:{
 			search(){
-				let test = "month";
-				console.log("차트검색 눌렀음");
-				axios.get("/SF_WS_03/chartSearch/"+test)
+				let type = "";
+				console.log(this.strDate);
+				if(this.chartMode == "일별"){
+					type = "day";
+				}else if(this.chartMod == "월별"){
+					type = "month";
+				}else{
+					type = "week";
+				}
+				
+				axios.get("/SF_WS_03/chartSearch/"+type+"/"+this.strDate+"/"+this.endDate)
 				.then(res => {
-					console.log(res);
+					console.log(res.data);
+					console.log(res.data.length);
 				}).catch(error => {
 					console.log(error);
 				});

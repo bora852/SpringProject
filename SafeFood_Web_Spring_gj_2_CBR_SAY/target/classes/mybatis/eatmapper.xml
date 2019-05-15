@@ -34,23 +34,23 @@
 	<!-- 차트 관련 쿼리 -->
 	<!-- 일별 -->
 	<select id="selectChartDay" resultType="food" parameterType="map">
-		<bind name="srtDate" value="'%' + _parameter.get(srtDate) + '%'"/>
-		<bind name="endDate" value="'%' + _parameter.get(endDate) + '%'"/>
-		<bind name="userId" value="'%' + _parameter.get(userId) + '%'"/>
+		<bind name="p_srtDate" value="_parameter.get('srtDate')"/>
+		<bind name="p_endDate" value="_parameter.get('endDate')"/>
+		<bind name="p_userId" value="_parameter.get('userId')"/>
 		select substr(eat_date,1,10) dates, sum(carbo) carbo, sum(protein) protein, sum(fat) fat, sum(sugar) sugar
 			 , sum(natrium) natrium, sum(chole) chole, sum(fattyacid) fattyacid, sum(transfat) transfat
 		  from food f, usereat u
 		 where f.code = u.food_code
-		   and u.user_id = #{userId}
-		   and substr(eat_date,1,10) between #{srtDate} and #{endDate}
+		   and u.user_id = #{p_userId}
+		   and substr(eat_date,1,10) between #{p_srtDate} and #{p_endDate}
 		 group by substr(eat_date,1,10)
 	</select>
 	
 	<!-- 주별 -->
 	<select id="selectChartWeek" resultType="food" parameterType="map">
-		<bind name="srtDate" value="'%' + _parameter.get(srtDate) + '%'"/>
-		<bind name="endDate" value="'%' + _parameter.get(endDate) + '%'"/>
-		<bind name="userId" value="'%' + _parameter.get(userId) + '%'"/>
+		<bind name="p_srtDate" value="_parameter.get('srtDate')"/>
+		<bind name="p_endDate" value="_parameter.get('endDate')"/>
+		<bind name="p_userId" value="_parameter.get('userId')"/>
 		 SELECT DATE_FORMAT(DATE_SUB(eat_date, INTERVAL (DAYOFWEEK(eat_date)-1) DAY), '%Y/%m/%d') as start,
 		       DATE_FORMAT(DATE_SUB(eat_date, INTERVAL (DAYOFWEEK(eat_date)-7) DAY), '%Y/%m/%d') as end,
 		       DATE_FORMAT(eat_date, '%Y%u') AS dates
@@ -65,9 +65,9 @@
 	
 	<!-- 월별 -->
 	<select id="selectChartMonth" resultType="food" parameterType="map">
-		<bind name="srtDate" value="'%' + _parameter.get(srtDate) + '%'"/>
-		<bind name="endDate" value="'%' + _parameter.get(endDate) + '%'"/>
-		<bind name="userId" value="'%' + _parameter.get(userId) + '%'"/>
+		<bind name="p_srtDate" value="_parameter.get('srtDate')"/>
+		<bind name="p_endDate" value="_parameter.get('endDate')"/>
+		<bind name="p_userId" value="_parameter.get('userId')"/>
 		 select substr(eat_date,1,7) dates, sum(carbo) carbo, sum(protein) protein, sum(fat) fat, sum(sugar) sugar
 			 , sum(natrium) natrium, sum(chole) chole, sum(fattyacid) fattyacid, sum(transfat) transfat
 		  from food f, usereat e
