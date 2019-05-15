@@ -83,7 +83,9 @@ div.jumbotron:hover div.for_hover {
 	width: 500px;
 	height: 300px;
 }
-
+.rank_content {
+	height: 300px;
+}
 </style>
 </head>
 <body>
@@ -93,17 +95,25 @@ div.jumbotron:hover div.for_hover {
 </header>
 	
 	<div class="container main_block">
-	<c:forEach var="rankFood" items="${rankFoods }">
 	<c:set var="rank" value="1" />
-	<div class="clear">
+	<c:forEach var="rankFood" items="${rankFoods }">
+	<div class="clear rank_content">
 		        <div class="col p-4 d-flex flex-column position-static item_content fleft">
-		          <c:url value="/static/img/rank${rank }" var="rankimg"></c:url>
+		          <c:url value="/static/img/rank${rank }.png" var="rankimg"></c:url>
 		          <c:set var="rank" value="${rank + 1}"/>
-		          <img width="50" height="50" src="${rankimg }">
-		          <strong class="d-inline-block mb-2 text-primary">World</strong>
-		          <h3 class="mb-0">${rankFood.name }</h3>
-		          <div class="mb-1 text-muted">Nov 12</div>
-		          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+		          <img width="50" height="80" src="${rankimg }">
+		        <!--   <strong class="d-inline-block mb-2 text-primary">World</strong>
+		         -->  <h3 class="mb-0">${rankFood.name }</h3>
+		             <p class="card-text mb-auto">${rankFood.content }</p>
+		        <div class="col p-6 fleft" style="margin-left: 300px">
+		       <c:url value="/addEat?code=${rankFood.getCode() }" var="addEat"></c:url>
+									<button type="button" id="addButton"
+										class="btn btn_d btn-outline-info"
+										onclick="location.href='${addEat}'">추가</button>
+				
+									<c:url value="/addLike?code=${rankFood.getCode() }" var="addLike"></c:url>
+									<button type="button" onclick="location.href='${addLike}'" class="btn btn_d btn-outline-info">찜</button>
+		        </div>
 		        </div>
 		        <div class="col-auto d-none d-lg-block fleft">
 		        <c:url value="/static/${rankFood.img }" var="rankFoodimg"></c:url>
@@ -111,6 +121,7 @@ div.jumbotron:hover div.for_hover {
 		         <!--  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> 
 		  -->     </div>
 	</div>
+	<hr/>
 	</c:forEach>
 	</div>
 </body>
