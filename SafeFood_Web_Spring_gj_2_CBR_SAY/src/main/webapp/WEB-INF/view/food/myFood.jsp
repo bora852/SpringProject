@@ -79,7 +79,7 @@
 <body>
 	<!-- Navigation -->
 	<header>
-		<jsp:include page="../include/Navbar2.jsp" />
+		<jsp:include page="../include/Navbar.jsp" />
 	</header>
 
 	<!-- Page Content -->
@@ -183,14 +183,31 @@
 	});
 
 	let nutri = new Array("탄수화물", "단백질", "지방", "당류", "나트륨", "콜레스테롤", "포화지방산", "트랜스지방");
-	let backg = new Array('rgba(255, 99, 132, 0.2)');
+	let nutri_order = new Array("carbo", "protein", "fat", "sugar", "natrium", "chole", "fattyacid", "transfat");
+	let backg = new Array('rgba(255, 99, 132, 0.2)',
+				            'rgba(54, 162, 235, 0.2)',
+				            'rgba(255, 206, 86, 0.2)',
+				            'rgba(75, 192, 192, 0.2)',
+				            'rgba(153, 102, 255, 0.2)',
+				            'rgba(255, 159, 64, 0.2)',
+				            'rgba(153, 051, 204, 0.2)',
+			                'rgba(255, 000, 000, 0.2)');
 	
+	let borderC = new Array( 'rgba(255, 99, 132, 1)',
+				            'rgba(54, 162, 235, 1)',
+				            'rgba(255, 206, 86, 1)',
+				            'rgba(75, 192, 192, 1)',
+				            'rgba(153, 102, 255, 1)',
+				            'rgba(255, 159, 64, 1)',
+				            'rgba(102, 000, 153, 1)',
+			                'rgba(255, 000, 000, 1)');
+						
 	
 	function FoodInfo(label, data, bg, border){
 		this.label = label;
 		this.data = data;
-		this.bg = bg;
-		this.border = border;
+		this.backgroundColor = bg;
+		this.borderColor = border;
 		this.borderWidth= 1;
 	}
 	
@@ -201,9 +218,9 @@
 	let myChart = new Chart(ctx, {
 		type : 'line',
 		data : {
-			 labels : [ '1월', '2월', 'Yellow', 'Green', 'Purple', 'Orange' ],
+			 labels : [ /* '1월', '2월', 'Yellow', 'Green', 'Purple', 'Orange'  */],
 			datasets : [ 
-				new FoodInfo( nutri[0],  [10, 20, 30, 40, 50, 10],  'rgba(255, 99, 132, 0.2)', [ 'rgba(255, 99, 132, 1)'])
+				/* new FoodInfo( nutri[0],  [10, 20, 30, 40, 50, 10], backg[0], backg[0]) */
 				/*  ,	{
 				label : nutri[0],
 				data : [10, 20, 30, 40, 50, 60],
@@ -234,13 +251,16 @@
 		},
 		mounted(){
 			// axios를 통해서 데이터 조회 후 사용
-			/* console.log("chart data ",myChart.data.datasets)
+			 /* console.log("chart data ",myChart.data.datasets)
 			myChart.data.datasets.push(new FoodInfo("test",  [10, 20, 30, 40, 50, 60], [ 'rgba(255, 99, 132, 0.2)']));
-			*/console.log("chart data ",myChart.data.datasets) 
+			
+			console.log("chart data ",myChart.data.datasets);  */
 		},
 		methods:{
 			search(){
-				let type = "";
+				myChart.data.datasets.push(new FoodInfo("test",  [10, 20, 30, 40, 50, 60], [ 'rgba(255, 99, 132, 0.2)']));
+				console.log("chart data ",myChart.data.datasets); 
+/* 				let type = "";
 				console.log(this.strDate);
 				if(this.chartMode == "일별"){
 					type = "day";
@@ -254,9 +274,30 @@
 				.then(res => {
 					console.log(res.data);
 					console.log(res.data.length);
+					
+					for(let i = 0; i < res.data.length; i++){
+						let chartvalue = new Array();
+						
+						console.log("i : ",i);
+						
+						let test =  res.data[i];
+						for(let j = 0; j < 8; j++){
+							/* console.log("vvvaaalll : ", test[nutri_order[j]]); 
+							chartvalue[j] = test[nutri_order[j]];
+						}
+						
+						console.log("제발아아 : ", chartvalue);
+						
+						
+						myChart.data.labels.push(test.dates);		
+						console.log("날짜 :: ",test.dates);
+						myChart.data.datasets.push(new FoodInfo(nutri[i], chartvalue, backg[i], borderC[i]));
+						console.log("chart data ",myChart.data.datasets); 
+					}
+					
 				}).catch(error => {
 					console.log(error);
-				});
+				}); */
 			}
 		}
 	});
