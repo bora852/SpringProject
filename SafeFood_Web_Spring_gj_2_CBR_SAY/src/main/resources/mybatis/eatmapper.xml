@@ -16,8 +16,6 @@
 		select e.* from usereat e, food f where e.food_code = f.code and e.user_id=#{id}
 	</select>
 	
-	
-	
 	<select id="searchName" resultType="food" parameterType="map">
 		<bind name="pattern" value="'%' + _parameter.get(name) + '%'" />
 		select f.* from usereat e, food f where e.user_id = #{id} and e.food_code = f.code and f.name like #{pattern}
@@ -33,4 +31,49 @@
 		select f.* from usereat e, food f where e.user_id = #{id} and e.food_code = f.code and f.maker like #{pattern}
 	</select>
 
+	<!-- 차트 관련 쿼리 -->
+	<!-- 일별 -->
+	<select id="selectChartDay" resultType="food" parameterType="map">
+		<bind name="srtDate" value="'%' + _parameter.get(srtDate) + '%'"/>
+		<bind name="endDate" value="'%' + _parameter.get(endDate) + '%'"/>
+		<bind name="userId" value="'%' + _parameter.get(userId) + '%'"/>
+		select substr(eat_date,1,10) dates, sum(carbo) carbo, sum(protein) protein, sum(fat) fat, sum(sugar) sugar
+			 , sum(natrium) natrium, sum(chole) chole, sum(fattyacid) fattyacid, sum(transfat) transfat
+		  from food f, usereat u
+		 where f.code = u.food_code
+		   and u.user_id = #{userId}
+		   and substr(eat_date,1,10) between #{srtDate} and #{endDate}
+		 group by substr(eat_date,1,10)
+	</select>
+	
+	<!-- 주별 -->
+	<select id="selectChartWeek" resultType="food" parameterType="map">
+		<bind name="srtDate" value="'%' + _parameter.get(srtDate) + '%'"/>
+		<bind name="endDate" value="'%' + _parameter.get(endDate) + '%'"/>
+		<bind name="userId" value="'%' + _parameter.get(userId) + '%'"/>
+		 SELECT DATE_FORMAT(DATE_SUB(eat_date, INTERVAL (DAYOFWEEK(eat_date)-1) DAY), '%Y/%m/%d') as start,
+		       DATE_FORMAT(DATE_SUB(eat_date, INTERVAL (DAYOFWEEK(eat_date)-7) DAY), '%Y/%m/%d') as end,
+		       DATE_FORMAT(eat_date, '%Y%u') AS dates
+			 , sum(carbo) carbo, sum(protein) protein, sum(fat) fat, sum(sugar) sugar
+			 , sum(natrium) natrium, sum(chole) chole, sum(fattyacid) fattyacid, sum(transfat) transfat
+		  from food f, usereat u
+		  where f.code = u.food_code
+		    and u.user_id = #{userId}
+		    and substr(eat_date,1,10) between #{srtDate} and #{endDate}
+		 GROUP BY dates
+	</select>
+	
+	<!-- 월별 -->
+	<select id="selectChartMonth" resultType="food" parameterType="map">
+		<bind name="srtDate" value="'%' + _parameter.get(srtDate) + '%'"/>
+		<bind name="endDate" value="'%' + _parameter.get(endDate) + '%'"/>
+		<bind name="userId" value="'%' + _parameter.get(userId) + '%'"/>
+		 select substr(eat_date,1,7) dates, sum(carbo) carbo, sum(protein) protein, sum(fat) fat, sum(sugar) sugar
+			 , sum(natrium) natrium, sum(chole) chole, sum(fattyacid) fattyacid, sum(transfat) transfat
+		  from food f, usereat e
+		 where f.code = e.food_code
+		   and u.user_id = #{userId}
+		   and substr(eat_date,1,10) between #{srtDate} and #{endDate}
+		 group by substr(eat_date,1,7)
+	</select>
 </mapper>

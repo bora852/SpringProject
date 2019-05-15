@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,5 +65,33 @@ public class EatRepositoryImpl implements EatRepository {
 	public int updateEatCnt(int code) {
 		String statement = ns + "updateEatCnt";
 		return template.update(statement, code);
+	}
+	@Override
+	public List<Food> selectChartDay(Food food, String userId) {
+		String statement = ns + "selectChartDay";
+		Map<String, String> map = new HashMap<>();
+		map.put("srtDate",food.getSrtDate());
+		map.put("endDate",food.getEndDate());
+		map.put("userId",userId);
+		return template.selectList(statement);
+	}
+	@Override
+	public List<Food> selectChartWeek(Food food, String userId) {
+		String statement = ns + "selectChartWeek";
+		Map<String, String> map = new HashMap<>();
+		map.put("srtDate",food.getSrtDate());
+		map.put("endDate",food.getEndDate());
+		map.put("userId",userId);
+		return template.selectList(statement);
+	}
+	@Override
+	public List<Food> selectChartMonth(Food food, String userId) {
+		logger.trace("selectChartMonth : {}", food);
+		String statement = ns + "selectChartMonth";
+		Map<String, String> map = new HashMap<>();
+		map.put("srtDate","2019-04");
+		map.put("endDate","2019-06");
+		map.put("userId",userId);
+		return template.selectList(statement);
 	}
 }

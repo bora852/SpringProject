@@ -105,7 +105,7 @@
 								<option>월별</option>
 								<option>연별</option>
 							</select>
-							<input type="button" class="btn btn-info btn-sm" value="차트검색" > <!-- @click="search" -->
+							<input type="button" class="btn btn-info btn-sm" value="차트검색" @click="search">
 						</div>
 						<!-- 차트 -->
 						<canvas id="myChart" width="400" height="400"></canvas>
@@ -154,7 +154,6 @@
 				id="btnWriteForm" onclick="location.href='${writeNotice}'">삭제</button>
 		</div>
 	</div>
-
 	<!-- /.container -->
 
 	<footer>
@@ -162,34 +161,6 @@
 	</footer>
 
 </body>
-<!-- #일별
-select substr(eat_date,1,10), sum(carbo), sum(protein), sum(fat), sum(sugar)
-	 , sum(natrium), sum(chole), sum(fattyacid), sum(transfat)
-  from food f, usereat e
- where f.code = e.food_code
- group by substr(eat_date,1,10)
- ;
- 
- select substr(eat_date,1,10)
-   from usereat;
- 
- #주간
- SELECT DATE_FORMAT(DATE_SUB(eat_date, INTERVAL (DAYOFWEEK(eat_date)-1) DAY), '%Y/%m/%d') as start,
-       DATE_FORMAT(DATE_SUB(eat_date, INTERVAL (DAYOFWEEK(eat_date)-7) DAY), '%Y/%m/%d') as end,
-       DATE_FORMAT(eat_date, '%Y%U') AS `aaa`,
-       sum(carbo)
-  from food f, usereat e
-  where f.code = e.food_code
- GROUP BY aaa;
-
- 
- #월별
- select substr(eat_date,1,7), sum(carbo), sum(protein), sum(fat), sum(sugar)
-	 , sum(natrium), sum(chole), sum(fattyacid), sum(transfat)
-  from food f, usereat e
- where f.code = e.food_code
- group by substr(eat_date,1,7)
- ; -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
 <script src="https://unpkg.com/vue"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
@@ -203,13 +174,25 @@ select substr(eat_date,1,10), sum(carbo), sum(protein), sum(fat), sum(sugar)
 	});
 
 	let nutri = new Array("탄수화물", "단백질", "지방", "당류", "나트륨", "콜레스테롤", "포화지방산", "트랜스지방");
+	
+	function FoodInfo(label, data, bg){
+		this.label = label;
+		this.data = data;
+		this.bg = bg;
+		this.borderWidth= 1;
+	}
+	
+	
+	
 	//charts.js
 	let ctx = document.getElementById('myChart').getContext('2d');
 	let myChart = new Chart(ctx, {
 		type : 'line',
 		data : {
-			labels : [ '1월', '2월', 'Yellow', 'Green', 'Purple', 'Orange' ],
-			datasets : [ {
+			 labels : [ '1월', '2월', 'Yellow', 'Green', 'Purple', 'Orange' ],
+			datasets : [ 
+				new FoodInfo("test",  [10, 20, 30, 40, 50, 60], [ 'rgba(255, 99, 132, 0.2)']),
+				{
 				label : nutri[0],
 				data : [10, 20, 30, 40, 50, 60],
 				backgroundColor : [ 'rgba(255, 99, 132, 0.2)'],
@@ -225,7 +208,7 @@ select substr(eat_date,1,10), sum(carbo), sum(protein), sum(fat), sum(sugar)
 			} 
 			
 			
-			]
+			] 
 		},
 		options : {
 			scales : {
@@ -242,6 +225,24 @@ select substr(eat_date,1,10), sum(carbo), sum(protein), sum(fat), sum(sugar)
 		el:"#app",
 		data : {
 			chartMode : ""
+		},
+		mounted(){
+			// axios를 통해서 데이터 조회 후 사용
+			console.log("chart data ",myChart.data.datasets)
+			myChart.data.datasets.push(new FoodInfo("test",  [10, 20, 30, 40, 50, 60], [ 'rgba(255, 99, 132, 0.2)']));
+			console.log("chart data ",myChart.data.datasets)
+		},
+		methods:{
+			search(){
+				let test = "month";
+				console.log("차트검색 눌렀음");
+				axios.get("/SF_WS_03/chartSearch/"+test)
+				.then(res => {
+					console.log(res);
+				}).catch(error => {
+					console.log(error);
+				});
+			}
 		}
 	});
 </script>

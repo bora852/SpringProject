@@ -17,6 +17,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -231,7 +232,6 @@ public class MainController {
 		List<Food> result = null;
 		if (by.equals("상품명")) {
 			String name = req.getParameter("search_input");
-			;
 			result = food.selectName2(name);
 		} else if (by.equals("제조사")) {
 			String maker = req.getParameter("search_input");
@@ -313,18 +313,39 @@ public class MainController {
 	@ResponseBody
 	public int addEatDetail(Model model, HttpServletRequest req, RedirectAttributes redir, HttpSession session) {
 		logger.trace("addEat : {}");
-		
 		User info = (User) session.getAttribute("loginUser");
 		Eat eatNew = new Eat(info.getId(), Integer.parseInt(req.getParameter("code")));
 		int result = eat.insert(eatNew);
 		return result;
 	}
 
+	//내 섭취 정보 - 차트 데이터 조회
+	@ResponseBody
+	@GetMapping("/chartSearch/{type}")
+	public List<Food> chartDay(Food foods, Model model, HttpSession session, @PathVariable String type, HttpServletRequest req) {
+		foods.setSrtDate("2019-01-01");
+		foods.setEndDate("2019-05-01");
+		logger.trace("chart 조회 : {}", foods);
+		String by = req.getParameter("type");
+		logger.trace("type 조회 : {}", type);
+		User info = (User)session.getAttribute("loginUser");
+		List<Food> list = null; 
+		if(type.equals("day")) {
+			list = eat.selectChartDay(foods, info.getId());
+		}else if(type.equals("week")) {
+			list = eat.selectChartWeek(foods, info.getId());
+		}else {
+			list = eat.selectChartMonth(foods, info.getId());
+		}
+		logger.trace("chart 조회 결과 : {}", list);
+		return list;
+	}
+	
 	/* ========================== Like ========================================= */
 
 	@GetMapping("/addLike")
 	public String addLike(Model model, int code, RedirectAttributes redir, HttpSession session) {
-		logger.trace("addLike : {}");
+		logger.trace("addLike : {}", code);
 		User info = (User) session.getAttribute("loginUser");
 		LikeFood like= new LikeFood(1,info.getId(), code);
 		foodLike.insert(like);

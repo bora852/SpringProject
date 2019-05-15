@@ -31,6 +31,11 @@ public class Food {
 	protected String material;
 	/** 이미지 경로 */
 	protected String img;
+	/** 날짜 추가 - 차트에서 필요 */
+	protected String srtDate;
+	protected String endDate;
+	protected String dates;
+
 
 	public Food() {
 	}
@@ -61,6 +66,46 @@ public class Food {
 		this.img = img;
 	}
 
+	public Food(int code, String name, double supportpereat, double calory, double carbo, double protein, double fat,
+			double sugar, double natrium, double chole, double fattyacid, double transfat, String maker,
+			String material, String img, String srtDate, String endDate, String dates) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.supportpereat = supportpereat;
+		this.calory = calory;
+		this.carbo = carbo;
+		this.protein = protein;
+		this.fat = fat;
+		this.sugar = sugar;
+		this.natrium = natrium;
+		this.chole = chole;
+		this.fattyacid = fattyacid;
+		this.transfat = transfat;
+		this.maker = maker;
+		this.material = material;
+		this.img = img;
+		this.srtDate = srtDate;
+		this.endDate = endDate;
+		this.dates = dates;
+	}
+
+	public String getSrtDate() {
+		return srtDate;
+	}
+
+	public void setSrtDate(String srtDate) {
+		this.srtDate = srtDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	
 	public int getCode() {
 		return code;
 	}
@@ -180,13 +225,21 @@ public class Food {
 	public void setImg(String img) {
 		this.img = img;
 	}
+	
+	public String getDates() {
+		return dates;
+	}
+
+	public void setDates(String dates) {
+		this.dates = dates;
+	}
 
 	@Override
 	public String toString() {
 		return "Food [code=" + code + ", name=" + name + ", supportpereat=" + supportpereat + ", calory=" + calory
 				+ ", carbo=" + carbo + ", protein=" + protein + ", fat=" + fat + ", sugar=" + sugar + ", natrium="
 				+ natrium + ", chole=" + chole + ", fattyacid=" + fattyacid + ", transfat=" + transfat + ", maker="
-				+ maker + ", material=" + material + ", img=" + img + "]";
+				+ maker + ", material=" + material + ", img=" + img + ", srtDate=" + srtDate + ", endDate=" + endDate
+				+ ", dates=" + dates + "]";
 	}
-
 }
