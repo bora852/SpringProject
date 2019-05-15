@@ -140,7 +140,6 @@ div.jumbotron:hover div.for_hover {
 <script>
 	$(document).ready(function() {
 		$(document).on('click', '#detail_name', function() {
-			console.log("AAA");
 			let url = "detail?name="+$(this).text();
 			location.href = encodeURI(url);
 		});

@@ -94,7 +94,7 @@
 						</div>
 						<div class="col-lg-9">
 							<div class="main_name border_line row">
-								<h2 class="p_name">${food.name }</h2>
+								<h2 class="p_name" id="detail_name" >${food.name }</h2>
 								<c:if test="${!empty loginUser }">
 									<c:set var="loop_flag" value="false" />
 									<c:forEach var="allergyitem" items="${allergy }" >
@@ -113,11 +113,13 @@
 							</div>
 							<div class="main_bt">
 								<div class="info_bt row">
-									<c:if test="${not empty loginId }">
-										<button type="button" id="addButton"
-											class="btn btn_d btn-outline-info"
-											onclick="location.href='main.eat?action=add&code=${food.code }'">추가</button>
-										<button type="button" class="btn btn_d btn-outline-info">찜</button>
+									<c:if test="${not empty loginUser }">
+									<c:url value="/addEat?code=${food.getCode() }" var="addEat"></c:url>
+									<button type="button" id="addButton"
+										class="btn btn_d btn-outline-info"
+										onclick="location.href='${addEat}'">추가</button>
+									<c:url value="/addLike?code=${food.getCode() }" var="addLike"></c:url>
+									<button type="button" onclick="location.href='${addLike}'" class="btn btn_d btn-outline-info">찜</button>
 									</c:if>
 								</div>
 							</div>
@@ -136,7 +138,12 @@
 </body>
 
 <script>
-	
+	$(document).ready(function() {
+		$(document).on('click', '#detail_name', function() {
+			let url = "detail?name="+$(this).text();
+			location.href = encodeURI(url);
+		});
+	}) 
 </script>
 
 </html>
