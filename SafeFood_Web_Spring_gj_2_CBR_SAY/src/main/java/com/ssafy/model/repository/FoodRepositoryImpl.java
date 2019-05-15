@@ -83,4 +83,10 @@ public class FoodRepositoryImpl implements FoodRepository {
 		map.put("date", date);
 		return template.selectOne(statement,map);
 	}
+	
+	@Override
+	public List<Food> selectRank() {
+		String statement = ns + "selectRank";
+		return template.selectList(statement);
+	}
 }

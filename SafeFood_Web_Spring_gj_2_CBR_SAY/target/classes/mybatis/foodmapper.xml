@@ -47,4 +47,8 @@
 		select sum(supportpereat) supportpereat, sum(calory) calory, sum(carbo) carbo, sum(protein) protein, sum(fat) fat, sum(sugar) sugar, sum(natrium) natrium, sum(chole) chole, sum(fattyacid) fattyacid, sum(transfat) transfat  from usereat u, food f where u.food_code= f.code and eat_date like #{pattern}
 		group by user_id having user_id=#{userId} ;
 	</select>
+	
+	<select id="selectRank" resultType="food">
+		select * from food order by eat_cnt desc LIMIT 5;
+	</select>
 </mapper>

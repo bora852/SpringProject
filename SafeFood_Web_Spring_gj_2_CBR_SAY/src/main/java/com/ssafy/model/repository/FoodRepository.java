@@ -16,4 +16,5 @@ public interface FoodRepository {
 	public int updateSearchCnt(int code);
 	public List<Food> selectOftenSearch();
 	public Food selectSumDay(String userId, String date);
+	public List<Food> selectRank();
 }

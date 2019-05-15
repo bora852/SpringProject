@@ -389,6 +389,8 @@ public class MainController2 {
 	@GetMapping("/bestList")
 	public String best(Model model) {
 		logger.trace("best 방문.");
+		List<Food> foods = food.selectRank();
+		model.addAttribute("rankFoods", foods);
 		return "best/bestFood";
 	}
 	

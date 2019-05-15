@@ -17,6 +17,7 @@ import com.ssafy.model.repository.FoodRepository;
 public class FoodServiceImpl implements FoodService {
 
 	private FoodRepository foodRepo;
+
 	@Autowired
 	public FoodServiceImpl(FoodRepository repo) {
 		foodRepo = repo;
@@ -31,11 +32,11 @@ public class FoodServiceImpl implements FoodService {
 	public Food selectCode(int code) {
 		return foodRepo.selectCode(code);
 	}
-	
+
 	@Override
 	public Food selectName1(String name) {
-		Food food =  foodRepo.selectName1(name);
-		//search_cnt 횟수 증가
+		Food food = foodRepo.selectName1(name);
+		// search_cnt 횟수 증가
 		foodRepo.updateSearchCnt(food.getCode());
 		return food;
 	}
@@ -44,17 +45,17 @@ public class FoodServiceImpl implements FoodService {
 	public List<Food> selectName2(String name) {
 		return foodRepo.selectName2(name);
 	}
-	
+
 	@Override
 	public List<Food> selectAll() {
 		return foodRepo.selectAll();
 	}
-	
+
 	@Override
 	public List<Food> selectMaterial(String material) {
 		return foodRepo.selectMaterial(material);
 	}
-	
+
 	@Override
 	public List<Food> selectMaker(String maker) {
 		return foodRepo.selectMaker(maker);
@@ -64,10 +65,14 @@ public class FoodServiceImpl implements FoodService {
 	public List<Food> selectOftenSearch() {
 		return foodRepo.selectOftenSearch();
 	}
-	
+
 	@Override
 	public Food selectSumDay(String userId, String date) {
-		return foodRepo.selectSumDay(userId,date);
+		return foodRepo.selectSumDay(userId, date);
 	}
 
+	@Override
+	public List<Food> selectRank() {
+		return foodRepo.selectRank();
+	}
 }
