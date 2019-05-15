@@ -64,5 +64,10 @@ public class FoodServiceImpl implements FoodService {
 	public List<Food> selectOftenSearch() {
 		return foodRepo.selectOftenSearch();
 	}
+	
+	@Override
+	public Food selectSumDay(String userId, String date) {
+		return foodRepo.selectSumDay(userId,date);
+	}
 
 }

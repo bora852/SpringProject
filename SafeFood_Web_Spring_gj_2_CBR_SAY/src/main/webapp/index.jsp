@@ -15,6 +15,7 @@
 	<c:url value="/home" var="mainUrl"></c:url>
 	<a id="home" href="${mainUrl}">로딩중입니당..</a>
 </body>
+
 <script>
 	$(document).ready(function() {
 		let href = $('#home').attr('href');

@@ -1,7 +1,9 @@
 package com.ssafy.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -341,6 +343,24 @@ public class MainController2 {
 		return "redirect:home";
 	}
 	
+	@GetMapping("/daySum")
+	public String selectSumDay(Model model, RedirectAttributes redir, HttpSession session) {
+		logger.trace("daySum : {}");
+		User info = (User) session.getAttribute("loginUser");
+		Date date = new Date();
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String to = transFormat.format(date);
+		
+		logger.trace("daySum : "+to);
+		Food foodSum = food.selectSumDay(info.getId(), to);
+		/* logger.trace("foods :: " + foodSum); */
+		model.addAttribute("foodSum", foodSum);
+		
+		List<Food> foods = foodLike.selectAll(info.getId());
+		logger.trace("foods :: " + foods);
+		model.addAttribute("likefoodlist", foods);
+		return "like/likeList";
+	}
 	/* ========================== Review =========================================*/
 	
 	/* ========================== Notice =========================================*/

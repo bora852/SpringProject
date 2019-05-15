@@ -24,5 +24,7 @@ public interface FoodService {
 	List<Food> selectAll();
 	
 	public List<Food> selectOftenSearch();
+	
+	Food selectSumDay(String userId, String date);
 
 }

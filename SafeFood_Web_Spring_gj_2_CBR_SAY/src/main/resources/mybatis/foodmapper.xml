@@ -42,4 +42,9 @@
 		select * from food order by search_cnt desc limit 3
 	</select>
 
+	<select id="selectSumDay" resultType="food" parameterType="map">
+	<bind name="pattern" value="_parameter.get('date') + '%'" />
+		select sum(supportpereat) supportpereat, sum(calory) calory, sum(carbo) carbo, sum(protein) protein, sum(fat) fat, sum(sugar) sugar, sum(natrium) natrium, sum(chole) chole, sum(fattyacid) fattyacid, sum(transfat) transfat  from usereat u, food f where u.food_code= f.code and eat_date like #{pattern}
+		group by user_id having user_id=#{userId} ;
+	</select>
 </mapper>

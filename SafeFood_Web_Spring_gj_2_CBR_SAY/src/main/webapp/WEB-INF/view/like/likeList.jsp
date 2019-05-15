@@ -96,7 +96,8 @@ div.jumbotron:hover div.for_hover {
 	<div class="container main_block">
 		<h2>상품 목록</h2>
 		<div id = "likelist">
-		<form id="target">
+		<c:url value="/daySum" var="daySum"></c:url>
+		<form id="target" action="daySum" method="get">
 		<c:forEach var="food" items="${likefoodlist }">
 		 	<c:url value="/static/${food.img }" var="foodimg"></c:url>
 		 	<div class="fleft">
@@ -108,9 +109,12 @@ div.jumbotron:hover div.for_hover {
 		</form>
 		</div>
 		<div class = "clear">
-		<h2>예상 섭취 그래프</h2>
-		<div id="chart_div" style="width:900px; height: 500px;"></div>
-		</div>
+		<c:if test="${!empty foodSum}">
+			<h2>예상 섭취 그래프</h2>
+			<h2>${foodSum }</h2>
+			<div id="chart_div" style="width:900px; height: 500px;"></div>
+			</div>
+		</c:if>
 	</div>
 </body>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -121,23 +125,23 @@ div.jumbotron:hover div.for_hover {
 		function drawVisualization() { 
 			var data = google.visualization.arrayToDataTable([
 					['nutrient', '현재', '섭취 후'],
-					['supportpereat',  165,      938],
-					['calory',  135,      1120],
-					['carbo',  157,      1167],
-					['protein',  139,      1110],
-					['fat',  136,      691],
-					['sugar',  139,      1110],
-					['natrium',  139,      1110],
-					['chole',  139,      1110],
-					['fattyacid',  139,      1110],
-					['transfat',  139,      1110]
+					//['supportpereat',  ${foodSum.supportpereat},      938],
+					['calory',  ${foodSum.calory},      1120],
+					['carbo',  ${foodSum.carbo},      1167],
+					['protein',  ${foodSum.protein},      1110],
+					['fat',  ${foodSum.fat},      691],
+					['sugar',  ${foodSum.sugar},      1110],
+					['natrium',  ${foodSum.natrium},      1110],
+					['chole',  ${foodSum.chole},      1110],
+					['fattyacid',  ${foodSum.fattyacid},      1110],
+					['transfat',  ${foodSum.transfat},      1110]
 				]);
 			var options = {
 					title : '예상 섭취 그래프',
 					vAxis: {title: '섭취량'},
 					hAxis: {title: '영양소'}, 
 					seriesType: 'bars',
-					series: {5: {type: 'line'}}
+					series: {300: {type: 'line'}}
 				};
 			
 			var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));

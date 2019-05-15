@@ -1,6 +1,8 @@
 package com.ssafy.model.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -73,4 +75,12 @@ public class FoodRepositoryImpl implements FoodRepository {
 		return template.selectList(statement);
 	}
 	
+	@Override
+	public Food selectSumDay(String userId, String date) {
+		String statement = ns + "selectSumDay";
+		Map<String, String> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("date", date);
+		return template.selectOne(statement,map);
+	}
 }
