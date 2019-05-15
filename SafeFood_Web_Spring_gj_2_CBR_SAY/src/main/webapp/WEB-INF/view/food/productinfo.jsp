@@ -71,6 +71,30 @@
 <link href="${maincss }" rel="stylesheet">
 <link href="${modalcss }" rel="stylesheet">
 <script src="http://www.w3schools.com/lib/w3data.js"></script>
+<style>
+div.jumbotron:hover div.for_hover {
+	display: block;
+}
+
+.label {
+	height: 25px;
+	display: inline;
+	padding: .2em .6em .3em;
+	font-size: medium;
+	font-weight: 700;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: .25em;
+	line-height: 18px;
+	margin: 8px 5px;
+}
+
+.label-danger {
+	background-color: #d9534f;
+}
+</style>
 </head>
 
 <body>

@@ -18,6 +18,6 @@ public interface EatRepository {
 	public List<Food> selectChartDay(Food food, String userId);
 	public List<Food> selectChartWeek(Food food, String userId);
 	public List<Food> selectChartMonth(Food food, String userId);
-	
+	public int deleteMyFood(List<Integer> num);
 }
 

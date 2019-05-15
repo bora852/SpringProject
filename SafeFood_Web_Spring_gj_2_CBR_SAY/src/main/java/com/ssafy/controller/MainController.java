@@ -1,7 +1,9 @@
 package com.ssafy.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +55,31 @@ public class MainController {
 	
 	@Autowired
 	NoticeService noticeService;
+	
+	public boolean[] checkOver(List<Food> foods) {
+		boolean[] check = new boolean[20];
+		for(int i=0;i<20;i++) {
+			check[i] = true;
+			if(foods.get(i).getCalory() > 1300) {
+				check[i] = false;
+			}
+			if(foods.get(i).getCarbo() > 230) {
+				check[i] = false;
+			}
+			if(foods.get(i).getProtein() > 27.5) {
+				check[i] = false;
+			}
+			if(foods.get(i).getFat() > 800) {
+				check[i] = false;
+			}
+			if(foods.get(i).getNatrium() > 750) {
+				check[i] = false;
+			}
+			foods.get(i).setOverFood(check[i]);
+		}
+		
+		return check;
+	}
 	
 	/* ========================== User ========================================= */
 
@@ -222,6 +249,8 @@ public class MainController {
 		List<Food> foods = food.selectAll();
 		logger.trace("foods :: " + foods);
 		model.addAttribute("list", foods);
+		boolean[] checkOver = checkOver(foods);
+		System.out.println("넘음?" + Arrays.toString(checkOver));
 		return "food/foodHome";
 	}
 
@@ -313,6 +342,7 @@ public class MainController {
 	@ResponseBody
 	public int addEatDetail(Model model, HttpServletRequest req, RedirectAttributes redir, HttpSession session) {
 		logger.trace("addEat : {}");
+		
 		User info = (User) session.getAttribute("loginUser");
 		Eat eatNew = new Eat(info.getId(), Integer.parseInt(req.getParameter("code")));
 		int result = eat.insert(eatNew);
@@ -340,16 +370,89 @@ public class MainController {
 		logger.trace("chart 조회 결과 : {}", list);
 		return list;
 	}
-	
+
+//	@PostMapping("/deleteMyFood")
+//	public String deleteMyFood(Model model, HttpServletRequest req, RedirectAttributes redir) {
+//		Integer[] nums = (Integer[])req.getParameterValues("check");
+//		ArrayList<Integer> numsL = new ArrayList<Integer>(Arrays.asList(nums));
+//		   	
+//		if(nums != null && nums.length > 0) {
+//			eat.deleteMyFood(nums);
+//			redir.addFlashAttribute("alarm", "삭제 성공!");
+//		}else {
+//			redir.addFlashAttribute("alarm", "삭제할 음식을 선택해주세요.");
+//		}
+//		return "redirect:searchMyList";
+//	}
 	/* ========================== Like ========================================= */
 
+	@GetMapping("/searchLikeList")
+	public String LikeList(Model model, HttpSession session) {
+		logger.trace("LikeList 방문.");
+		User info = (User) session.getAttribute("loginUser");
+		List<Food> foods = foodLike.selectAll(info.getId());
+		logger.trace("foods :: " + foods);
+		model.addAttribute("likefoodlist", foods);
+		return "like/likeList";
+	}
+	
 	@GetMapping("/addLike")
 	public String addLike(Model model, int code, RedirectAttributes redir, HttpSession session) {
-		logger.trace("addLike : {}", code);
+		logger.trace("addLike : {}");
 		User info = (User) session.getAttribute("loginUser");
 		LikeFood like= new LikeFood(1,info.getId(), code);
 		foodLike.insert(like);
 		return "redirect:home";
+	}
+	
+	@GetMapping("/daySum")
+	public String selectSumDay(Model model, HttpServletRequest req, RedirectAttributes redir, HttpSession session) {
+		logger.trace("daySum : {}");
+		String[] likeCheck = req.getParameterValues("likeCheck");
+		logger.trace(Arrays.toString(likeCheck)); 
+		User info = (User) session.getAttribute("loginUser");
+		Date date = new Date();
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String to = transFormat.format(date);
+		
+		logger.trace("daySum : "+to);
+		Food foodSum = food.selectSumDay(info.getId(), to);
+		/* logger.trace("foods :: " + foodSum); */
+		model.addAttribute("foodSum", foodSum);
+		
+		//afterfoodsum
+		
+		Food afterSum = food.selectSumDay(info.getId(), to);
+		for(int i=0;i<likeCheck.length;i++) {
+			Food newFood = food.selectCode(Integer.parseInt(likeCheck[i]));
+			afterSum.setSupportpereat(afterSum.getSupportpereat() + newFood.getSupportpereat());
+			afterSum.setCalory(afterSum.getCalory() + newFood.getCalory());
+			afterSum.setCarbo(afterSum.getCarbo()+newFood.getCarbo());
+			afterSum.setProtein(afterSum.getProtein()+newFood.getProtein());
+			afterSum.setFat(afterSum.getFat()+newFood.getFat());
+			afterSum.setSugar(afterSum.getSugar()+newFood.getSugar());
+			afterSum.setNatrium(afterSum.getNatrium()+newFood.getNatrium());
+			afterSum.setChole(afterSum.getChole()+newFood.getChole());
+			afterSum.setFattyacid(afterSum.getFattyacid()+newFood.getFattyacid());
+			afterSum.setTransfat(afterSum.getTransfat()+newFood.getTransfat());
+		}
+		model.addAttribute("afterSum", afterSum);
+
+		///////////////////////////////
+		List<Food> foods = foodLike.selectAll(info.getId());
+		logger.trace("foods :: " + foods);
+		model.addAttribute("likefoodlist", foods);
+		return "like/likeList";
+	}
+	
+	/* =========================== best ==========================================*/
+	
+	@GetMapping("/bestList")
+	public String best(Model model) {
+		logger.trace("best 방문.");
+		List<Food> foods = food.selectRank();
+		model.addAttribute("rankFoods", foods);
+		return "best/bestFood";
 	}
 	
 	/* ========================== Review =========================================*/

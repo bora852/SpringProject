@@ -26,4 +26,9 @@ public class LikeFoodServiceImpl implements LikeFoodService {
 	public List<Food> selectAll(String userId) {
 		return likeFoodRepo.selectAll(userId);
 	}
+	
+	@Override
+	public int delete(LikeFood likefood) {
+		return likeFoodRepo.delete(likefood);
+	}
 }

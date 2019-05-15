@@ -35,7 +35,8 @@ public class Food {
 	protected String srtDate;
 	protected String endDate;
 	protected String dates;
-
+	protected String content;
+	protected boolean overFood;
 
 	public Food() {
 	}
@@ -232,6 +233,22 @@ public class Food {
 
 	public void setDates(String dates) {
 		this.dates = dates;
+	}
+	
+	public String getContent() {
+		return content;
+	}
+	
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public boolean getOverFood() {
+		return overFood;
+	}
+	
+	public void setOverFood(boolean overFood) {
+		this.overFood = overFood;
 	}
 
 	@Override

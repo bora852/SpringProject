@@ -77,5 +77,10 @@
 		 group by substr(eat_date,1,7)
 	</select>
 	
-	<!-- <delete id="deleteMyFood" -->
+	<delete id="deleteMyFood" parameterType="list">
+		delete from usereat where userEat_idx in
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
 </mapper>

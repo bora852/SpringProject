@@ -28,6 +28,8 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 
+<!-- 구글 폰트 -->
+<link href="https://fonts.googleapis.com/css?family=Do+Hyeon" rel="stylesheet">
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -73,56 +75,45 @@ div.jumbotron:hover div.for_hover {
 .label-danger {
 	background-color: #d9534f;
 }
+
+.liek_img {
+	height: 150px;
+	width: 150px;
+}
+
 .fleft {
 	float:left;
 }
 .clear {
 	clear: both;
 }
-.item_content{
-	width: 500px;
-	height: 300px;
-}
-.rank_content {
-	height: 300px;
-}
 </style>
 </head>
 <body>
-
-<header>
+<!-- Navigation -->
+	<header>
 		<jsp:include page="../include/Navbar2.jsp" />
-</header>
+	</header>
 	
 	<div class="container main_block">
-	<c:set var="rank" value="1" />
-	<c:forEach var="rankFood" items="${rankFoods }">
-	<div class="clear rank_content">
-		        <div class="col p-4 d-flex flex-column position-static item_content fleft">
-		          <c:url value="/static/img/rank${rank }.png" var="rankimg"></c:url>
-		          <c:set var="rank" value="${rank + 1}"/>
-		          <img width="50" height="80" src="${rankimg }">
-		        <!--   <strong class="d-inline-block mb-2 text-primary">World</strong>
-		         -->  <h3 class="mb-0">${rankFood.name }</h3>
-		             <p class="card-text mb-auto">${rankFood.content }</p>
-		        <div class="col p-6 fleft" style="margin-left: 300px">
-		       <c:url value="/addEat?code=${rankFood.getCode() }" var="addEat"></c:url>
-									<button type="button" id="addButton"
-										class="btn btn_d btn-outline-info"
-										onclick="location.href='${addEat}'">추가</button>
-				
-									<c:url value="/addLike?code=${rankFood.getCode() }" var="addLike"></c:url>
-									<button type="button" onclick="location.href='${addLike}'" class="btn btn_d btn-outline-info">찜</button>
-		        </div>
-		        </div>
-		        <div class="col-auto d-none d-lg-block fleft">
-		        <c:url value="/static/${rankFood.img }" var="rankFoodimg"></c:url>
-		        <img class="bd-placeholder-img"  width="200" height="250" src="${rankFoodimg }">
-		         <!--  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> 
-		  -->     </div>
-	</div>
-	<hr/>
-	</c:forEach>
+		<h2>찜한 상품 목록</h2>
+		<c:forEach var="food" items="${likefoodlist }">
+		 	<c:url value="/static/${food.img }" var="foodimg"></c:url>
+		 	<div class="card fleft" style="width:300px; margin: 10px;">
+		 	<img class="card-img-top" src="${foodimg }" style="width:100%">
+		 	<div class="card-body" style="background-color: #F6F6F6">
+		 		<h4 class="card-title" style="font-family: 'Do Hyeon', sans-serif;">${food.name }</h4> 
+		 		<p class="card-text">${food.content }</p>
+		 	    <c:url value="/likeDelete?code=${food.getCode() }" var="likeDelete"></c:url>
+				<button type="button" id="deleteButton"class="btn btn_d btn-danger"
+					onclick="location.href='${likeDelete}'">삭제</button>
+		 	</div>
+		 	</div>
+		</c:forEach>
 	</div>
 </body>
+<script>
+	
+</script>
+
 </html>

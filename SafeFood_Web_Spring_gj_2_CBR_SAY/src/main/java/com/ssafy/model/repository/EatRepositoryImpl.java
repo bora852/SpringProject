@@ -94,4 +94,11 @@ public class EatRepositoryImpl implements EatRepository {
 		map.put("userId",userId);
 		return template.selectList(statement, map);
 	}
+	@Override
+	public int deleteMyFood(List<Integer> num) {
+		logger.trace("deleteMyFood : {}", num);
+		String statement = ns + "deleteMyFood";
+		int result = template.delete(statement, num);
+		return result;
+	}
 }

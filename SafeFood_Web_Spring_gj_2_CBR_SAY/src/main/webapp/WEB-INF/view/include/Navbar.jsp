@@ -107,15 +107,17 @@
 				<c:url value="/productinfo" var="productinfo"></c:url>
 				<li><a href="${productinfo }" class="menu_a">상품 정보</a></li>
 				<c:if test="${!empty loginUser}">
-				<c:url value="/bestList" var="bestList"></c:url>
-				<li><a href="${bestList }" class="menu_a">베스트 섭취 정보</a></li>
-				<c:url value="/searchMyList" var="searchMyList"></c:url>
-				<li><a href="${searchMyList }" class="menu_a">내 섭취 정보</a></li>
-				<c:url value="/searchLikeList" var="searchLikeList"></c:url>
-				<li><a href="${searchLikeList }" class="menu_a">예상 섭취 정보</a></li>
-				<c:url value="/qna" var="qna"></c:url>
-				<li><a href="${qna}" class="menu_a">QnA</a>
-			</c:if>
+					<c:url value="/bestList" var="bestList"></c:url>
+					<li><a href="${bestList }" class="menu_a">베스트 섭취 정보</a></li>
+					<c:url value="/searchMyList" var="searchMyList"></c:url>
+					<li><a href="${searchMyList }" class="menu_a">내 섭취 정보</a></li>
+					<c:url value="/likeList" var="likeList"></c:url>
+					<li><a href="${likeList }" class="menu_a">찜한 목록</a></li>
+					<c:url value="/searchLikeList" var="searchLikeList"></c:url>
+					<li><a href="${searchLikeList }" class="menu_a">예상 섭취 정보</a></li>
+					<c:url value="/qna" var="qna"></c:url>
+					<li><a href="${qna}" class="menu_a">QnA</a>
+				</c:if>
 			</ul>
 		</div>
 	</div>
