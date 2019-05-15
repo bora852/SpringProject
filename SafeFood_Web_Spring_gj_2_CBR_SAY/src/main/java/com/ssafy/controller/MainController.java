@@ -322,6 +322,41 @@ public class MainController {
 		return result;
 	}
 
+	//내 섭취 정보 - 차트 데이터 조회
+	@ResponseBody
+	@GetMapping("/chartSearch/{type}/{srtDate}/{endDate}")
+	public List<Food> chartDay(Food foods, Model model, HttpSession session, @PathVariable String type, @PathVariable String srtDate, @PathVariable String endDate, HttpServletRequest req) {
+		foods.setSrtDate(srtDate);
+		foods.setEndDate(endDate);
+		logger.trace("chart 조회 : {}", foods);
+		String by = req.getParameter("type");
+		logger.trace("type 조회 : {}", type);
+		User info = (User)session.getAttribute("loginUser");
+		List<Food> list = null; 
+		if(type.equals("day")) {
+			list = eat.selectChartDay(foods, info.getId());
+		}else if(type.equals("week")) {
+			list = eat.selectChartWeek(foods, info.getId());
+		}else {
+			list = eat.selectChartMonth(foods, info.getId());
+		}
+		logger.trace("chart 조회 결과 : {}", list);
+		return list;
+	}
+
+//	@PostMapping("/deleteMyFood")
+//	public String deleteMyFood(Model model, HttpServletRequest req, RedirectAttributes redir) {
+//		Integer[] nums = (Integer[])req.getParameterValues("check");
+//		ArrayList<Integer> numsL = new ArrayList<Integer>(Arrays.asList(nums));
+//		   	
+//		if(nums != null && nums.length > 0) {
+//			eat.deleteMyFood(nums);
+//			redir.addFlashAttribute("alarm", "삭제 성공!");
+//		}else {
+//			redir.addFlashAttribute("alarm", "삭제할 음식을 선택해주세요.");
+//		}
+//		return "redirect:searchMyList";
+//	}
 	/* ========================== Like ========================================= */
 
 	@GetMapping("/searchLikeList")

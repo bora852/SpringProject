@@ -79,15 +79,19 @@
 <body>
 	<!-- Navigation -->
 	<header>
-		<jsp:include page="../include/Navbar.jsp" />
+		<jsp:include page="../include/Navbar2.jsp" />
 	</header>
 
 	<!-- Page Content -->
 	<div class="container">
 
 		<!-- Page Heading/Breadcrumbs -->
-		<h1 class="mt-4 mb-3">내 섭취 정보</h1>
-
+		<c:url value="/static/img/rice.png" var="rice"></c:url>
+		<div style="padding:10px">
+			<img src=${rice } style="width:100px; height:100px;">
+			<span style="font-size:40px; vertical-align: bottom;">내 섭취 정보</span>
+		</div>
+		<hr>
 		<div class="mb-4" id="accordion" role="tablist"
 			aria-multiselectable="true">
 
@@ -218,7 +222,7 @@
 	let myChart = new Chart(ctx, {
 		type : 'line',
 		data : {
-			 labels : [ /* '1월', '2월', 'Yellow', 'Green', 'Purple', 'Orange'  */],
+			 labels : [  '1월', '2월'/*, 'Yellow', 'Green', 'Purple', 'Orange'  */],
 			datasets : [ 
 				/* new FoodInfo( nutri[0],  [10, 20, 30, 40, 50, 10], backg[0], backg[0]) */
 				/*  ,	{
@@ -259,7 +263,6 @@
 		methods:{
 			search(){
 				let type = "";
-				console.log(this.strDate);
 				if(this.chartMode == "일별"){
 					type = "day";
 				}else if(this.chartMod == "월별"){
@@ -270,20 +273,13 @@
 				
 				axios.get("/SF_WS_03/chartSearch/"+type+"/"+this.strDate+"/"+this.endDate)
 				.then(res => {
-					console.log(res.data);
-					console.log(res.data.length);
 					
-					/* for(let i = 0; i < res.data.length; i++){
+/* 					 for(let i = 0; i < res.data.length; i++){
 						let chartvalue = new Array();
-						
-						console.log("i : ",i);
 						
 						let test =  res.data[i];
 						for(let j = 0; j < 8; j++){
-							chartvalue[i] = test[nutri_order[j]];
-							
-							
-							
+							chartvalue[j] = test[nutri_order[i]];
 						}
 						
 						console.log("제발아아 : ", chartvalue);
@@ -291,25 +287,36 @@
 						myChart.data.labels.push(test.dates);		
 						myChart.data.datasets.push(new FoodInfo(nutri[i], chartvalue, backg[i], borderC[i]));
 						console.log("chart data ",myChart.data.datasets); 
-						
-						myChart.data.datasets.push(new FoodInfo( nutri[0],  [10, 20, 30, 40, 50, 10, 200, 100], backg[5], backg[5]));
-						
 						myChart.update();
-					} */
+					}  */
 					
-					for(let i = 0; i < 8; j++){
-						let chartvalue = new Array();
-						let test =  res.data[i];
+					let chartvalue = new Array();
+				 	for(let i = 0; i < 8; i++){
+						
+						//let test =  res.data[i];
 						
 						for(let j = 0; j < res.data.length; j++){
-							chartvalue[i] = test[nutri_order[j]];							
+							console.log("res.data[j] : ",res.data[j]);
+							chartvalue[j] = res.data[j][nutri_order[i]];
+							
+							console.log("왜 쓸데없는게 들어갈까..j :",j);
+							console.log("chartvalue[i] : ",chartvalue[i]);
+							
+							//console.log("carbo :: ",res.data[j].carbo);
+							//console.log("res.data[j].nutri_order[i] :: ",res.data[j][nutri_order[i]]);
 						}
 						
 						console.log("chartvalue : ", chartvalue);
-						myChart.data.labels.push(test.dates);		
 						myChart.data.datasets.push(new FoodInfo(nutri[i], chartvalue, backg[i], borderC[i]));
 					}
+					/* let labelArr = new Array();
+					for(let j = 0; j < res.data.length; j++){
+						labelArr[j] = res.data[j].dates;
+					}
+					console.log("labelArr :: ",labelArr.join(','));
+					myChart.data.labels.push(labelArr.join(',')); */
 					myChart.update();
+					console.log("chart data ",myChart.data.datasets);
 					
 				}).catch(error => {
 					console.log(error);

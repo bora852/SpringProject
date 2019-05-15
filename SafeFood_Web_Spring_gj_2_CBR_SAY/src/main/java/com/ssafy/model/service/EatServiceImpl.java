@@ -69,4 +69,10 @@ public class EatServiceImpl implements EatService {
 		return eatRepo.selectChartMonth(food, userId);
 	}
 
+	@Override
+	public int deleteMyFood(List<Integer> num) {
+		logger.trace("deleteMyFood : ", num);
+		return eatRepo.deleteMyFood(num);
+	}
+
 }
