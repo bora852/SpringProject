@@ -130,38 +130,6 @@
 	</div>
 </div>
 
-<c:url value="/search" var="searchUrl"></c:url>
-<form action = "${searchUrl}" method="post">
-	<div id="search_place">
-		<div class="container">
-			<div id="search_box">
-				<div id="condition" class="search_div">
-					<h5>검색 조건</h5>
-					<select id="selected" name="by" style="width: 100px; height: 30px; font-size: 15px;">
-						<option class="s_option" style="width: 100px; height: 30px; font-size: 15px;">상품명</option>
-						<option class="s_option" style="width: 100px; height: 30px; font-size: 15px;">제조사</option>
-						<option class="s_option" style="width: 100px; height: 30px; font-size: 15px;">재료명</option>
-					</select>
-				</div>
-				<div id="search_word" class="search_div">
-					<h5>검색 단어</h5>
-					<div id="text_button">
-						<input id="search_input" name = "search_input" type="text" class="float_left" size="40" style="width: 300px; height: 30px; font-size: 15px;"> 
-						<button id="search_bt" type="submit" class="float_left"  style="width: 80px; height: 30px; margin-left: 15px;">검색</button>
-					</div>
-					<div id="apps">
-						<p style="color:white; width:450px; clear:both;">
-						인기검색어 : 
-							<template v-for="search in searchs">
-								<a href="#" style="color: white; text-decoration: none; padding:4px"><span v-text="search.name" @click="doDetail(search.name)"></span></a>
-							</template>
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</form>
 <script src=" https://unpkg.com/vue"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 <script>

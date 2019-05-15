@@ -1,8 +1,11 @@
 package com.ssafy.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.LikeFood;
 import com.ssafy.model.repository.LikeFoodRepository;
 
@@ -17,8 +20,10 @@ public class LikeFoodServiceImpl implements LikeFoodService {
 
 	@Override
 	public int insert(LikeFood likefood) {
-		// TODO Auto-generated method stub
 		return likeFoodRepo.insert(likefood);
 	}
-
+	@Override
+	public List<Food> selectAll(String userId) {
+		return likeFoodRepo.selectAll(userId);
+	}
 }

@@ -322,6 +322,16 @@ public class MainController2 {
 
 	/* ========================== Like ========================================= */
 
+	@GetMapping("/searchLikeList")
+	public String LikeList(Model model, HttpSession session) {
+		logger.trace("LikeList 방문.");
+		User info = (User) session.getAttribute("loginUser");
+		List<Food> foods = foodLike.selectAll(info.getId());
+		logger.trace("foods :: " + foods);
+		model.addAttribute("likefoodlist", foods);
+		return "like/likeList";
+	}
+	
 	@GetMapping("/addLike")
 	public String addLike(Model model, int code, RedirectAttributes redir, HttpSession session) {
 		logger.trace("addLike : {}");
