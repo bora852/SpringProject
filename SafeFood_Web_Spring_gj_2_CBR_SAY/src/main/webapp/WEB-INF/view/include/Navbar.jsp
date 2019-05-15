@@ -95,12 +95,10 @@
 </nav>
 <nav id="menu_place">
 	<div class="container">
-		<%-- <div id="img_place">
 		
 		<c:url value="/static/img/ssafy_Mark.jpg" var="image"></c:url>
 			<a href="index.jsp"><img src="${image }" width=100px
 				height=70px></a>
-		</div> --%>
 
 		<div id="menu_nav">
 			<ul>

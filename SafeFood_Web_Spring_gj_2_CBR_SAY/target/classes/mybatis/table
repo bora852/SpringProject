@@ -1,5 +1,3 @@
-create database mydb;
-use mydb;
 CREATE TABLE `food` (
   `code` int(11) NOT NULL,
   `supportpereat` decimal(5,2) DEFAULT NULL,
@@ -19,17 +17,7 @@ CREATE TABLE `food` (
   eat_cnt int,
   search_cnt int,
   PRIMARY KEY (`code`)
-);
-
-CREATE TABLE `user` (
-  `id` varchar(45) NOT NULL,
-  `pw` varchar(45) NOT NULL,
-  `name` varchar(45) NOT NULL,
-  `addr` varchar(45) NOT NULL,
-  `tel` varchar(45) DEFAULT NULL,
-  `allergy` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `qna` (
   `qna_idx` int(11) NOT NULL AUTO_INCREMENT,
@@ -44,6 +32,16 @@ CREATE TABLE `qna` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `qna_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 );
+insert into qna(category, title, content, user_id, answer ) values("1", "title", "content", "cbr", "answer" );
+CREATE TABLE `user` (
+  `id` varchar(45) NOT NULL,
+  `pw` varchar(45) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `addr` varchar(45) NOT NULL,
+  `tel` varchar(45) DEFAULT NULL,
+  `allergy` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `usereat` (
   `eat_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -55,7 +53,7 @@ CREATE TABLE `usereat` (
   KEY `usereat_ibfk_2` (`food_code`),
   CONSTRAINT `usereat_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `usereat_ibfk_2` FOREIGN KEY (`food_code`) REFERENCES `food` (`code`)
-);
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 
 create table likefood(
@@ -70,11 +68,43 @@ create table reviews(
   , `food_code` int(11) NOT NULL  
   , reviews_content varchar(1000)
 );
-
+use mydb;
 alter table food add eat_cnt int;
 alter table food add search_cnt int;
 alter table user add email varchar(100) not null;
 
+CREATE TABLE notice (	
+    notice_idx INT AUTO_INCREMENT PRIMARY KEY, -- 글번호
+    user_id VARCHAR(20) REFERENCES user(id),  -- 작성자
+    title VARCHAR(100) NOT NULL,  -- 제목
+    content varchar(1000) DEFAULT NULL, -- 본문
+    create_date datetime DEFAULT CURRENT_TIMESTAMP, -- 작성일 
+    hit_cnt INT DEFAULT 0  -- 조회수
+);
+
+select * from notice;
+insert into notice(user_id, title, content)  values("cbr", "공지사항1", "내용1");
+desc notice;
+
+# 조회수가 null이라서 0으로 초기화
+update food set search_cnt = 0;
+update food set eat_cnt = 0;
+
+# food를 추가할 때 food의 eat_cnt에 +1씩 추가.
+update food set eat_cnt = eat_cnt + 1 where code = 1 
+ ;
+ 
+# update notice set hit_cnt = hit_cnt + 1 where user_id=#{userId}
+
 select * from food;
 select * from user;
+desc user;
 select * from usereat;
+select * from qna;
+
+
+select *
+  from food
+ order by search_cnt desc
+ limit 3
+  ;
