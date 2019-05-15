@@ -73,85 +73,38 @@ div.jumbotron:hover div.for_hover {
 .label-danger {
 	background-color: #d9534f;
 }
-
-.liek_img {
-	height: 150px;
-	width: 150px;
-}
-
 .fleft {
 	float:left;
 }
 .clear {
 	clear: both;
 }
+.item_content{
+	width: 500px;
+	height: 300px;
+}
 </style>
 </head>
 <body>
-<!-- Navigation -->
-	<header>
-		<jsp:include page="../include/Navbar2.jsp" />
-	</header>
+
+<header>
+		<jsp:include page="../include/Navbar.jsp" />
+</header>
 	
 	<div class="container main_block">
-		<h2>상품 목록</h2>
-		<div id = "likelist">
-		<c:url value="/daySum" var="daySum"></c:url>
-		<form id="target" action="daySum" method="get">
-		<c:forEach var="food" items="${likefoodlist }">
-		 	<c:url value="/static/${food.img }" var="foodimg"></c:url>
-		 	<div class="fleft">
-				<img class="liek_img" src="${foodimg }"> 
-				<input type="checkbox" name="likeCheck" value="${food.code }"> 
-			</div>
-		</c:forEach>
-		<button type="input">예상 그래프 보기</button>
-		</form>
-		</div>
-		<div class = "clear">
-		<c:if test="${!empty foodSum}">
-			<h2>예상 섭취 그래프</h2>
-			<div id="chart_div" style="width:900px; height: 500px;"></div>
-			</div>
-		</c:if>
+	<%--  <c:forEach> --%>
+	<div class="clear">
+		        <div class="col p-4 d-flex flex-column position-static item_content fleft">
+		          <strong class="d-inline-block mb-2 text-primary">World</strong>
+		          <h3 class="mb-0">Featured post</h3>
+		          <div class="mb-1 text-muted">Nov 12</div>
+		          <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+		        </div>
+		        <div class="col-auto d-none d-lg-block fleft">
+		          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> 
+		      </div>
+	</div>
+	<%-- </c:forEach>--%>
 	</div>
 </body>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-		google.charts.load('current', {'packages':['corechart']});
-		google.charts.setOnLoadCallback(drawVisualization);
-	
-		function drawVisualization() { 
-			var data = google.visualization.arrayToDataTable([
-					['nutrient', '현재', '섭취 후'],
-					//['supportpereat',  ${foodSum.supportpereat},      938],
-					['calory',  ${foodSum.calory}, ${afterSum.calory}],
-					['carbo',  ${foodSum.carbo},  ${afterSum.carbo}],
-					['protein',  ${foodSum.protein}, ${afterSum.protein}],
-					['fat',  ${foodSum.fat}, ${afterSum.fat}],
-					['sugar',  ${foodSum.sugar}, ${afterSum.sugar}],
-					['natrium',  ${foodSum.natrium}, ${afterSum.natrium}],
-					['chole',  ${foodSum.chole},  ${afterSum.chole}],
-					['fattyacid',  ${foodSum.fattyacid}, ${afterSum.fattyacid}],
-					['transfat',  ${foodSum.transfat},  ${afterSum.transfat}]
-				]);
-			var options = {
-					title : '예상 섭취 그래프',
-					vAxis: {title: '섭취량'},
-					hAxis: {title: '영양소'}, 
-					seriesType: 'bars',
-					series: {300: {type: 'line'}}
-				};
-			
-			var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
-			chart.draw(data, options);
-		}
-		
-		let t = document.getElementById('target'); 
-		t.addEventListener('change', function(event){ 
-			console.log("aa");
-		});
-
-</script>
-
 </html>

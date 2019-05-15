@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 import com.ssafy.model.dto.Eat;
 import com.ssafy.model.dto.Food;
 import com.ssafy.model.dto.LikeFood;
@@ -344,8 +345,10 @@ public class MainController2 {
 	}
 	
 	@GetMapping("/daySum")
-	public String selectSumDay(Model model, RedirectAttributes redir, HttpSession session) {
+	public String selectSumDay(Model model, HttpServletRequest req, RedirectAttributes redir, HttpSession session) {
 		logger.trace("daySum : {}");
+		String[] likeCheck = req.getParameterValues("likeCheck");
+		logger.trace(Arrays.toString(likeCheck)); 
 		User info = (User) session.getAttribute("loginUser");
 		Date date = new Date();
 		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -356,11 +359,39 @@ public class MainController2 {
 		/* logger.trace("foods :: " + foodSum); */
 		model.addAttribute("foodSum", foodSum);
 		
+		//afterfoodsum
+		
+		Food afterSum = food.selectSumDay(info.getId(), to);
+		for(int i=0;i<likeCheck.length;i++) {
+			Food newFood = food.selectCode(Integer.parseInt(likeCheck[i]));
+			afterSum.setSupportpereat(afterSum.getSupportpereat() + newFood.getSupportpereat());
+			afterSum.setCalory(afterSum.getCalory() + newFood.getCalory());
+			afterSum.setCarbo(afterSum.getCarbo()+newFood.getCarbo());
+			afterSum.setProtein(afterSum.getProtein()+newFood.getProtein());
+			afterSum.setFat(afterSum.getFat()+newFood.getFat());
+			afterSum.setSugar(afterSum.getSugar()+newFood.getSugar());
+			afterSum.setNatrium(afterSum.getNatrium()+newFood.getNatrium());
+			afterSum.setChole(afterSum.getChole()+newFood.getChole());
+			afterSum.setFattyacid(afterSum.getFattyacid()+newFood.getFattyacid());
+			afterSum.setTransfat(afterSum.getTransfat()+newFood.getTransfat());
+		}
+		model.addAttribute("afterSum", afterSum);
+
+		///////////////////////////////
 		List<Food> foods = foodLike.selectAll(info.getId());
 		logger.trace("foods :: " + foods);
 		model.addAttribute("likefoodlist", foods);
 		return "like/likeList";
 	}
+	
+	/* =========================== best ==========================================*/
+	
+	@GetMapping("/bestList")
+	public String best(Model model) {
+		logger.trace("best 방문.");
+		return "best/bestFood";
+	}
+	
 	/* ========================== Review =========================================*/
 	
 	/* ========================== Notice =========================================*/
