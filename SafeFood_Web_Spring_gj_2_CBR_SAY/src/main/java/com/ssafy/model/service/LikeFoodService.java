@@ -11,4 +11,5 @@ import com.ssafy.model.dto.LikeFood;
 public interface LikeFoodService {
 	public int insert(LikeFood likefood);
 	public List<Food> selectAll(String userId);
+	public int delete(LikeFood likefood);
 }

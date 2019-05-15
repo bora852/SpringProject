@@ -12,6 +12,9 @@
 		select * from food where code in (select food_code from likefood where user_id = #{userId} )
 	</select>
 	
+	<delete id="delete" parameterType="likefood">
+		delete from likefood where user_id=#{userId} and food_code=#{foodCode}
+	</delete>
 	<!-- <select id="selectUser" resultType="food" parameterType="map">
 		<bind name="pattern" value="'%' + _parameter.get(name) + '%'" />
 		select f.* from usereat e, food f where e.user_id = #{id} and e.food_code = f.code and f.name like #{pattern}

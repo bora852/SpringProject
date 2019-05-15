@@ -31,4 +31,10 @@ public class LikeFoodRepositoryImpl implements LikeFoodRepository {
 		String statement = ns + "selectAll";
 		return template.selectList(statement, userId);
 	}
+	
+	@Override
+	public int delete(LikeFood likefood) {
+		String statement = ns + "delete";
+		return template.delete(statement, likefood);
+	}
 }

@@ -23,7 +23,8 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 	crossorigin="anonymous"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
+	
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <!-- 부가적인 테마 -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
@@ -55,6 +56,22 @@
 <script src="https://www.amcharts.com/lib/4/charts.js"></script>
 <script src="https://www.amcharts.com/lib/4/themes/frozen.js"></script>
 <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<style>
+.fleft {
+	float:left;
+}
+
+.add_info {}
+
+.add_info:hover {
+	padding-bottom:10px;
+	border-bottom:4px solid #5CA3FF
+}
+
+.clearboth {
+	clear: both;
+}
+</style>
 </head>
 
 <body>
@@ -144,12 +161,15 @@
 			</div>
 
 		</div>
-		<div>
-			<h2>영양 정보</h2>
+		
+		<div class="add_info">
+			<h2 id="add_click1" class = "fleft" style="margin-right: 20px">영양 정보</h2>
+			<c:url value="/static/img/arrow.png" var="arrow"></c:url>
+			<img src="${arrow}">
 		</div>
-		<div class="row chart_block">
+		<div class="row chart_block" id="add_info1">
 			<div id="chartdiv" class="col-lg-8"></div>
-			<div id="nut_info" class="col-lg-4">
+			<div id="nut_info" class="col-lg-4"> 
 				<div class="mat_info_table row border_line">
 					<div class="col-lg-6 ">Serving Size</div>
 					<div class="col-lg-6 ss_info">${food.getSupportpereat()}</div>
@@ -192,7 +212,20 @@
 				</div>
 			</div>
 		</div>
+		
+		<div class = "clearboth"></div>
+		
+		<div class="add_info">
+			<h2 id="add_click2" class = "fleft" style="margin-right: 20px">원산지 정보</h2>
+			<c:url value="/static/img/arrow.png" var="arrow"></c:url>
+			<img src="${arrow}">
+		</div>
+		<div class="row chart_block" id="add_info2">
+			<div id="chartdiv2" class="col-lg-8"></div>
+		</div>
 	</div>
+	
+	
 	<!-- /.container -->
 
 	<footer>
@@ -208,7 +241,7 @@
 	am4core.useTheme(am4themes_frozen);
 	am4core.useTheme(am4themes_animated);
 	// Themes end
-	
+	 
  	$("#eatFood").click(function(){  
 		let code = 'code='+'${food.getCode()}';
 		console.log("code : ",code);
@@ -234,7 +267,6 @@
 		dataType : "json",
 		data : "code=${food.getCode()}",
 		success : function(res) {
-			console.log(res);
 			chart.data = [ {
 				"nutrition" : "Kcal",
 				"kcal" : res.calory
@@ -263,11 +295,10 @@
 				"nutrition" : "transfat",
 				"kcal" : res.transfat
 			} ];
+			console.log(chart)
 		}
 	});
 
-	console.log(chart.data);
-	
 	var pieSeries = chart.series.push(new am4charts.PieSeries());
 	pieSeries.dataFields.value = "kcal";
 	pieSeries.dataFields.category = "nutrition";
@@ -279,6 +310,85 @@
 	pieSeries.hiddenState.properties.opacity = 1;
 	pieSeries.hiddenState.properties.endAngle = -90;
 	pieSeries.hiddenState.properties.startAngle = -90;
+
+ 	var chart2 = am4core.create("chartdiv2", am4charts.PieChart);
+	$.ajax({
+		<c:url value="/chartNation" var="chartNation"/>
+		url : "${chartNation}",
+		type : "POST",
+		dataType : "json",
+		data : "code=${food.getCode()}",
+		success : function(res) {
+			chart2.data = [];
+			$.each(res, function(key,value){
+				chart2.data.push({"Nation" : ""+key+"", "Country" : ""+value+""}); 
+			}); 
+			console.log(chart2)
+		}
+	});
+	
+	var pieSeries2 = chart2.series.push(new am4charts.PieSeries());
+	pieSeries2.dataFields.value = "Country";
+	pieSeries2.dataFields.category = "Nation";
+	pieSeries2.slices.template.stroke = am4core.color("#fff");
+	pieSeries2.slices.template.strokeWidth = 2;
+	pieSeries2.slices.template.strokeOpacity = 1;
+
+	// This creates initial animation
+	pieSeries2.hiddenState.properties.opacity = 1;
+	pieSeries2.hiddenState.properties.endAngle = -90;
+	pieSeries2.hiddenState.properties.startAngle = -90;
+
+	 
+	
+	/*  var chart2;
+	 var chartData2=[];
+	 $.ajax({
+			<c:url value="/chartNation" var="chartNation"/>
+			url : "${chartNation}",
+			type : "POST",
+			dataType : "json",
+			data : "code=${food.getCode()}",
+			success : function(res) {
+				$.each(res, function(key,value){
+					chartData2.push({"category" : key, "amount" : value}); 
+				});
+			}
+		});
+		
+	 chart2 = new AmCharts.AmPieChart(); 
+	 chart2.dataProvider = chartData2;
+
+	 chart = new AmCharts.AmPieChart();
+	 chart.dataProvider = chartData;
+	 chart.titleField = "category";
+	 chart.valueField = "amount";
+	 chart.outlineColor = "#FFFFFF";
+	 chart.colorField = "color";
+	 chart.outlineAlpha = 0.8;
+	 chart.outlineThickness = 2;
+	 chart.labelRadius = -15;
+	 chart.labelText="[[category]]"; 
+	 chart.balloonText="[[amount]]%"; 
+	 chart.startDuration = 0;
+	 chart.fontSize = 13; 
+	 chart.fontFamily = "NanumGothic"; 
+	 chart.depth3D = 0; 
+	 chart.autoMargins = true; 
+	 chart.marginTop = 15; 
+	 chart.marginBottom = 30; 
+	 chart.marginLeft = -10; 
+	 chart.marginRight = 0; 
+	 chart.pullOutRadius = 0; 
+	 chart.write(_this.portletId+"_chartdiv2"); 
+ */
+	$("#add_click1").click(function(){
+		$("#add_info1").toggle(); 
+	})  
+	
+	$("#add_click2").click(function(){
+		$("#add_info2").toggle(); 
+	}) 
 </script>
 
 </html>
