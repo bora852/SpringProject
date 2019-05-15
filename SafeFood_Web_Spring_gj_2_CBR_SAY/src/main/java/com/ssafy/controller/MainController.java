@@ -56,6 +56,31 @@ public class MainController {
 	@Autowired
 	NoticeService noticeService;
 	
+	public boolean[] checkOver(List<Food> foods) {
+		boolean[] check = new boolean[20];
+		for(int i=0;i<20;i++) {
+			check[i] = true;
+			if(foods.get(i).getCalory() > 1300) {
+				check[i] = false;
+			}
+			if(foods.get(i).getCarbo() > 230) {
+				check[i] = false;
+			}
+			if(foods.get(i).getProtein() > 27.5) {
+				check[i] = false;
+			}
+			if(foods.get(i).getFat() > 800) {
+				check[i] = false;
+			}
+			if(foods.get(i).getNatrium() > 750) {
+				check[i] = false;
+			}
+			foods.get(i).setOverFood(check[i]);
+		}
+		
+		return check;
+	}
+	
 	/* ========================== User ========================================= */
 
 	// 로그인
@@ -224,6 +249,8 @@ public class MainController {
 		List<Food> foods = food.selectAll();
 		logger.trace("foods :: " + foods);
 		model.addAttribute("list", foods);
+		boolean[] checkOver = checkOver(foods);
+		System.out.println("넘음?" + Arrays.toString(checkOver));
 		return "food/foodHome";
 	}
 
