@@ -251,16 +251,14 @@
 		},
 		mounted(){
 			// axios를 통해서 데이터 조회 후 사용
-			 /* console.log("chart data ",myChart.data.datasets)
+			/* console.log("chart data ",myChart.data.datasets)
 			myChart.data.datasets.push(new FoodInfo("test",  [10, 20, 30, 40, 50, 60], [ 'rgba(255, 99, 132, 0.2)']));
-			
-			console.log("chart data ",myChart.data.datasets);  */
+			*/
+			/* console.log("chart data ",myChart.data.datasets);  */
 		},
 		methods:{
 			search(){
-				myChart.data.datasets.push(new FoodInfo("test",  [10, 20, 30, 40, 50, 60], [ 'rgba(255, 99, 132, 0.2)']));
-				console.log("chart data ",myChart.data.datasets); 
-/* 				let type = "";
+				let type = "";
 				console.log(this.strDate);
 				if(this.chartMode == "일별"){
 					type = "day";
@@ -275,29 +273,47 @@
 					console.log(res.data);
 					console.log(res.data.length);
 					
-					for(let i = 0; i < res.data.length; i++){
+					/* for(let i = 0; i < res.data.length; i++){
 						let chartvalue = new Array();
 						
 						console.log("i : ",i);
 						
 						let test =  res.data[i];
 						for(let j = 0; j < 8; j++){
-							/* console.log("vvvaaalll : ", test[nutri_order[j]]); 
-							chartvalue[j] = test[nutri_order[j]];
+							chartvalue[i] = test[nutri_order[j]];
+							
+							
+							
 						}
 						
 						console.log("제발아아 : ", chartvalue);
 						
-						
 						myChart.data.labels.push(test.dates);		
-						console.log("날짜 :: ",test.dates);
 						myChart.data.datasets.push(new FoodInfo(nutri[i], chartvalue, backg[i], borderC[i]));
 						console.log("chart data ",myChart.data.datasets); 
+						
+						myChart.data.datasets.push(new FoodInfo( nutri[0],  [10, 20, 30, 40, 50, 10, 200, 100], backg[5], backg[5]));
+						
+						myChart.update();
+					} */
+					
+					for(let i = 0; i < 8; j++){
+						let chartvalue = new Array();
+						let test =  res.data[i];
+						
+						for(let j = 0; j < res.data.length; j++){
+							chartvalue[i] = test[nutri_order[j]];							
+						}
+						
+						console.log("chartvalue : ", chartvalue);
+						myChart.data.labels.push(test.dates);		
+						myChart.data.datasets.push(new FoodInfo(nutri[i], chartvalue, backg[i], borderC[i]));
 					}
+					myChart.update();
 					
 				}).catch(error => {
 					console.log(error);
-				}); */
+				});
 			}
 		}
 	});

@@ -76,4 +76,6 @@
 		   and substr(eat_date,1,10) between #{srtDate} and #{endDate}
 		 group by substr(eat_date,1,7)
 	</select>
+	
+	<!-- <delete id="deleteMyFood" -->
 </mapper>
