@@ -248,7 +248,7 @@
 			},
 			mounted:function(){
 				axios
-				.get('http://localhost:9090/api/qnas')
+				.get('http://121.147.32.111:9090/api/qnas')
 				.then((res) => {
 					this.qnalist = res.data.data;
 				})
@@ -271,7 +271,7 @@
 					
 					if(this.searchValue == ''){
 						axios
-						.get('http://localhost:9090/api/qnas')
+						.get('http://121.147.32.111:9090/api/qnas')
 						.then((res) => {
 							this.qnalist = res.data.data;
 						})
@@ -281,7 +281,7 @@
 						})
 						.finally(() => this.loading=false)
 					}else{
-						axios.get("http://localhost:9090/api/search/" + searchMode + "/" + this.searchValue)
+						axios.get("http://121.147.32.111:9090/api/search/" + searchMode + "/" + this.searchValue)
 						.then(response => {
 							this.qnalist = response.data.data;
 							this.maxPage = Math.ceil(response.data.maxPage/10);
@@ -312,7 +312,7 @@
 					
 					console.log(this.qcontents);
 					
-					axios.post('http://localhost:9090/api/qnas', { //121.147.32.111
+					axios.post('http://121.147.32.111:9090/api/qnas', { //121.147.32.111
 						user_id : this.quserId,
 						title : this.qtitle,
 						content : this.qcontents
@@ -341,7 +341,7 @@
 				}
 			},
 			mounted : function(){
-				axios.get("http://localhost:9090/api/qnas/"+this.$route.params.id)
+				axios.get("http://121.147.32.111:9090/api/qnas/"+this.$route.params.id)
 				.then(res => {
 					this.qna = res.data.data;
 					console.log(this.qna)
@@ -351,7 +351,7 @@
 			},
 			methods:{
 				updatQna(){
-					axios.put("http://localhost:9090/api/qnas", this.qna)
+					axios.put("http://121.147.32.111:9090/api/qnas", this.qna)
 					.then(res => {
 						alert('글이 수정되었습니다.');
 						router.push({path:'/route4/'+this.qna.qna_idx});
@@ -372,7 +372,7 @@
 				}
 			},
 			mounted:function(){
-				axios.get("http://localhost:9090/api/qnas/"+this.$route.params.id)
+				axios.get("http://121.147.32.111:9090/api/qnas/"+this.$route.params.id)
 				.then(res => {
 					this.qna = res.data.data;
 					console.log(this.qna)
@@ -386,7 +386,7 @@
 					router.push({path:'/route3/'+idx});
 				},
 				deleteQna(idx){
-					axios.delete("http://localhost:9090/api/qnas/"+idx)
+					axios.delete("http://121.147.32.111:9090/api/qnas/"+idx)
 					.then(res => {
 						alert("삭제되었습니다.");
 						location.href="/SF_WS_03/notice#/";
