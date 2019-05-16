@@ -41,7 +41,7 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 	crossorigin="anonymous"></script>
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/paper/bootstrap.min.css" rel="stylesheet"/>
 <!-- Custom styles for this template -->
 <c:url value="/static/css/heroic-features.css" var="heroiccss"></c:url>
 <c:url value="/static/css/main.css" var="maincss"></c:url>
@@ -82,6 +82,10 @@ div.jumbotron:hover div.for_hover {
 .fleft {
 	float:left;
 }
+
+.fright {
+	float:right;
+}
 .clear {
 	clear: both;
 }
@@ -97,15 +101,17 @@ div.jumbotron:hover div.for_hover {
 		<h2>상품 목록</h2>
 		<div id = "likelist">
 		<c:url value="/daySum" var="daySum"></c:url>
-		<form id="target" action="daySum" method="get">
+		<form id="target" action="daySum" method="get" style="padding: 30px">
 		<c:forEach var="food" items="${likefoodlist }">
 		 	<c:url value="/static/${food.img }" var="foodimg"></c:url>
-		 	<div class="fleft">
+		 	<div class="fleft" style="margin: 15px;">
 				<img class="liek_img" src="${foodimg }"> 
-				<input type="checkbox" name="likeCheck" value="${food.code }"> 
+					<div class="checkbox">
+						<input type="checkbox" class=" class="custom-control-input" name="likeCheck" value="${food.code }">
+					</div>
 			</div>
 		</c:forEach>
-		<button type="input">예상 그래프 보기</button>
+		<button type="input" class="btn btn-primary fright" style="margin-top: 50px%; margin-right: 30px;">예상 그래프 보기</button>
 		</form>
 		</div>
 		<div class = "clear">
@@ -123,24 +129,28 @@ div.jumbotron:hover div.for_hover {
 	
 		function drawVisualization() { 
 			var data = google.visualization.arrayToDataTable([
-					['nutrient', '현재', '섭취 후'],
+					['nutrient', '현재', '섭취 후', "하루 권장량"],
 					//['supportpereat',  ${foodSum.supportpereat},      938],
-					['calory',  ${foodSum.calory}, ${afterSum.calory}],
-					['carbo',  ${foodSum.carbo},  ${afterSum.carbo}],
-					['protein',  ${foodSum.protein}, ${afterSum.protein}],
-					['fat',  ${foodSum.fat}, ${afterSum.fat}],
-					['sugar',  ${foodSum.sugar}, ${afterSum.sugar}],
-					['natrium',  ${foodSum.natrium}, ${afterSum.natrium}],
-					['chole',  ${foodSum.chole},  ${afterSum.chole}],
-					['fattyacid',  ${foodSum.fattyacid}, ${afterSum.fattyacid}],
-					['transfat',  ${foodSum.transfat},  ${afterSum.transfat}]
+					['calory',  ${foodSum.calory}, ${afterSum.calory}, 2600],
+					['carbo',  ${foodSum.carbo},  ${afterSum.carbo}, 460],
+					['protein',  ${foodSum.protein}, ${afterSum.protein}, 55],
+					['fat',  ${foodSum.fat}, ${afterSum.fat}, 1600],
+					['sugar',  ${foodSum.sugar}, ${afterSum.sugar}, 25],
+					['natrium',  ${foodSum.natrium}, ${afterSum.natrium}, 1500],
+					['chole',  ${foodSum.chole},  ${afterSum.chole}, 300],
+					['fattyacid',  ${foodSum.fattyacid}, ${afterSum.fattyacid}, 15],
+					['transfat',  ${foodSum.transfat},  ${afterSum.transfat}, 2.2]
 				]);
 			var options = {
 					title : '예상 섭취 그래프',
 					vAxis: {title: '섭취량'},
 					hAxis: {title: '영양소'}, 
 					seriesType: 'bars',
-					series: {300: {type: 'line'}}
+					series: {
+						0: { color: '#a561bd' },
+			            1: { color: '#c784de' },
+			            2: { color: '#f1ca3a' }
+					}
 				};
 			
 			var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
