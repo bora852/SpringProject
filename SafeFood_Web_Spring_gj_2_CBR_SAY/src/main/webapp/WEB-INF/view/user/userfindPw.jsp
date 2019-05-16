@@ -49,8 +49,9 @@
 <body>
 	<!-- Navigation -->
 	<header>
-		<jsp:include page="../include/Navbar.jsp" />
+		<jsp:include page="../include/Navbar2.jsp" />
 	</header>
+<div class="container">
 	<h2>비밀번호 찾기</h2>
 	<c:url value="/userfindPw" var="userfindPw"/>
 	<form method="post" action="${userfindPw}" id="findPwForm">
@@ -65,6 +66,7 @@
 		</div>
 		<input type="submit" value="비밀번호 찾기" style="width:150px; height:30px;font-size:15px; background:#343a40; color:white; border-radius: 5px;">
 	</form>
+</div>
 	<!-- /.container -->
 
 	<!-- Footer -->

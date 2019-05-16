@@ -95,7 +95,7 @@
 		<div class="mb-4" id="accordion" role="tablist"
 			aria-multiselectable="true">
 
-			<div class="card">
+			<div class="card" >
 				<div class="card-header" role="tab" id="headingThree">
 					<h5 class="mb-0">
 						<a class="collapsed" data-toggle="collapse"

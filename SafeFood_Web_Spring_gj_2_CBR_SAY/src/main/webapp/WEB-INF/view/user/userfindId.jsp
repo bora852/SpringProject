@@ -49,8 +49,9 @@
 <body>
 	<!-- Navigation -->
 	<header>
-		<jsp:include page="../include/Navbar.jsp" />
+		<jsp:include page="../include/Navbar2.jsp" />
 	</header>
+<div class="container">
 <div id="app">
 	<h2>아이디 찾기</h2>
 	<div class="w3-content w3-container w3-margin-top">
@@ -75,6 +76,7 @@
 			</template>
 		</div>
 	</div>
+</div>
 </div>
 	<!-- /.container -->
 

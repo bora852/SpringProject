@@ -98,7 +98,7 @@ div.jumbotron:hover div.for_hover {
 	</header>
 	
 	<div class="container main_block">
-		<h2 style="padding : 20px">상품 목록</h2>
+		<h2>상품 목록</h2>
 		<div id = "likelist">
 		<c:url value="/daySum" var="daySum"></c:url>
 		<form id="target" action="daySum" method="get" style="padding: 30px">
@@ -111,11 +111,7 @@ div.jumbotron:hover div.for_hover {
 					</div>
 			</div>
 		</c:forEach>
-<<<<<<< HEAD
-		<button class="btn btn-sm btn-primary" type="input" >예상 그래프 보기</button>
-=======
 		<button type="input" class="btn btn-primary fright" style="margin-top: 50px%; margin-right: 30px;">예상 그래프 보기</button>
->>>>>>> branch 'master' of https://lab.ssafy.com/ayoung/safefood_web_spring_gj_2_cbr_say.git
 		</form>
 		</div>
 		<div class = "clear">
