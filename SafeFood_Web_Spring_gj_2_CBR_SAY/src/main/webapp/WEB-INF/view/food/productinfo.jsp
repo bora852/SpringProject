@@ -119,6 +119,10 @@ div.jumbotron:hover div.for_hover {
 						<div class="col-lg-9">
 							<div class="main_name border_line row">
 								<h2 class="p_name" id="detail_name" >${food.name }</h2>
+								<c:if test="${!food.overFood }">
+										<span class="label label-danger">영양소 과다 주의</span>
+										<c:set var="loop_flag" value="true" />
+									</c:if>
 								<c:if test="${!empty loginUser }">
 									<c:set var="loop_flag" value="false" />
 									<c:forEach var="allergyitem" items="${allergy }" >

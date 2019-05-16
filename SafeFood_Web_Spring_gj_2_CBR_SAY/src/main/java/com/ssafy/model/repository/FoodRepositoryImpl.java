@@ -81,7 +81,12 @@ public class FoodRepositoryImpl implements FoodRepository {
 		Map<String, String> map = new HashMap<>();
 		map.put("userId", userId);
 		map.put("date", date);
-		return template.selectOne(statement,map);
+		Food food = template.selectOne(statement,map);
+		if(food==null) {
+			food = new Food(0, "", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", "", "");
+		}
+		
+		return food;
 	}
 	
 	@Override

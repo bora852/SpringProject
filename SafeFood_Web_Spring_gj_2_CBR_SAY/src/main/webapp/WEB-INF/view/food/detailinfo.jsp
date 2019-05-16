@@ -236,12 +236,6 @@
 </body>
 <script>
 
-	// <!-- Chart code -->
-	// Themes begin
-	am4core.useTheme(am4themes_frozen);
-	am4core.useTheme(am4themes_animated);
-	// Themes end
-	 
  	$("#eatFood").click(function(){  
 		let code = 'code='+'${food.getCode()}';
 		console.log("code : ",code);
@@ -258,6 +252,37 @@
 			}
 		});
 	});
+	
+ 	post_test();
+ 	
+ 	function proc_test() {
+ 		var chartdata2 = [];
+ 		$.ajax({
+ 			<c:url value="/chartNation" var="chartNation"/>
+ 			url : "${chartNation}",
+ 			type : "POST",
+ 			dataType : "json",
+ 			data : "code=${food.getCode()}",
+ 			success : function(res) {
+
+ 				$.each(res, function(key,value){
+ 					chartdata2.push({"Nation" : key, "Country" : value*100}); 
+ 				}); 
+ 				
+ 			}
+ 		});
+ 		return chartdata2;
+ 	}
+ 	
+ 	function post_test() {
+ 	   var chartdata2 = proc_test();
+ 	   console.log("aaa"+chartdata2)
+ 	// <!-- Chart code -->
+ 		// Themes begin
+ 		am4core.useTheme(am4themes_frozen);
+ 		am4core.useTheme(am4themes_animated);
+ 		// Themes end
+ 	
 	// Create chart instance
 	var chart = am4core.create("chartdiv", am4charts.PieChart);
 	$.ajax({
@@ -295,10 +320,9 @@
 				"nutrition" : "transfat",
 				"kcal" : res.transfat
 			} ];
-			console.log(chart)
 		}
 	});
-
+	console.log(chart)
 	var pieSeries = chart.series.push(new am4charts.PieSeries());
 	pieSeries.dataFields.value = "kcal";
 	pieSeries.dataFields.category = "nutrition";
@@ -319,17 +343,17 @@
 		dataType : "json",
 		data : "code=${food.getCode()}",
 		success : function(res) {
-			chart2.data = [];
-			$.each(res, function(key,value){
-				chart2.data.push({"Nation" : ""+key+"", "Country" : ""+value+""}); 
+			chart.data = chartdata2;
+			/* $.each(res, function(key,value){
+				chart2.data.push({"Nation" : key, "Country" : value*100}); 
 			}); 
-			console.log(chart2)
+			 */
 		}
 	});
-	
+	console.log(chart2)
 	var pieSeries2 = chart2.series.push(new am4charts.PieSeries());
-	pieSeries2.dataFields.value = "Country";
-	pieSeries2.dataFields.category = "Nation";
+	pieSeries2.dataFields.value = "Nation";
+	pieSeries2.dataFields.category = "Country";
 	pieSeries2.slices.template.stroke = am4core.color("#fff");
 	pieSeries2.slices.template.strokeWidth = 2;
 	pieSeries2.slices.template.strokeOpacity = 1;
@@ -339,49 +363,7 @@
 	pieSeries2.hiddenState.properties.endAngle = -90;
 	pieSeries2.hiddenState.properties.startAngle = -90;
 
-	 
-	
-	/*  var chart2;
-	 var chartData2=[];
-	 $.ajax({
-			<c:url value="/chartNation" var="chartNation"/>
-			url : "${chartNation}",
-			type : "POST",
-			dataType : "json",
-			data : "code=${food.getCode()}",
-			success : function(res) {
-				$.each(res, function(key,value){
-					chartData2.push({"category" : key, "amount" : value}); 
-				});
-			}
-		});
-		
-	 chart2 = new AmCharts.AmPieChart(); 
-	 chart2.dataProvider = chartData2;
-
-	 chart = new AmCharts.AmPieChart();
-	 chart.dataProvider = chartData;
-	 chart.titleField = "category";
-	 chart.valueField = "amount";
-	 chart.outlineColor = "#FFFFFF";
-	 chart.colorField = "color";
-	 chart.outlineAlpha = 0.8;
-	 chart.outlineThickness = 2;
-	 chart.labelRadius = -15;
-	 chart.labelText="[[category]]"; 
-	 chart.balloonText="[[amount]]%"; 
-	 chart.startDuration = 0;
-	 chart.fontSize = 13; 
-	 chart.fontFamily = "NanumGothic"; 
-	 chart.depth3D = 0; 
-	 chart.autoMargins = true; 
-	 chart.marginTop = 15; 
-	 chart.marginBottom = 30; 
-	 chart.marginLeft = -10; 
-	 chart.marginRight = 0; 
-	 chart.pullOutRadius = 0; 
-	 chart.write(_this.portletId+"_chartdiv2"); 
- */
+ 	}
 	$("#add_click1").click(function(){
 		$("#add_info1").toggle(); 
 	})  

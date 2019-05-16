@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,24 @@ public class MainController {
 	
 	@Autowired
 	NoticeService noticeService;
+	
+	public String nations[]= {"국산","국내산","수입","가나","가이아나","감비아","과테말라","그리스",
+			"나이지리아","남아프리카 공화국","네덜란드","네팔","노르웨이","뉴질랜드","니제르",
+			"덴마크","도미니카","도미니카 공화국","독일","동티모르","라오스","라이베리아","라트비아","러시아","레바논",
+			"루마니아","룩셈부르크","리비아","리투아니아","리히텐슈타인","마케도니아 공화국",
+			"말레이시아","멕시코","모나코","모로코","몽골","미국",
+			"미얀마","바레인","바베이도스","바하마","방글라데시","베네수엘라","베트남","벨기에","벨라루스",
+			"볼리비아","불가리아","브라질","브루나이",
+			"사우디아라비아","세네갈","세르비아",
+			"소말리아","수단","스리랑카","스와질란드","스웨덴","스위스","스페인","슬로바키아","슬로베니아","시리아","싱가포르",
+			"아랍에미리트","아르메니아","아르헨티나","아이슬란드","아이티","아일랜드","아제르바이잔","아프가니스탄","안도라","알바니아","알제리",
+			"앙골라","에리트레아","에스토니아","에스파냐","에콰도르","에티오피아","엘살바도르","영국","예멘","오만","호주",
+			"오스트리아","온두라스","요르단","우간다","우루과이","우즈베키스탄","우크라이나","이라크","이란","이스라엘","이집트","이탈리아","인도",
+			"인도네시아","일본","자메이카","잠비아","중국","짐바브웨","체코","칠레",
+			"카자흐스탄","카타르","캄보디아","캐나다","케냐","코스타리카","콜롬비아","콩고 공화국",
+			"콩고 민주 공화국","쿠바","쿠웨이트","크로아티아","키르기스스탄","타이","타이완","탄자니아","터키",
+			"튀니지","트리니다드 토바고","파나마","파라과이","파키스탄","페루","포르투갈","폴란드",
+			"프랑스","피지","핀란드","필리핀","헝가리"};
 	
 	public boolean[] checkOver(List<Food> foods) {
 		boolean[] check = new boolean[20];
@@ -319,6 +338,32 @@ public class MainController {
 		return foods;
 	}
 	
+	@ResponseBody
+	@PostMapping("/chartNation")
+	public Map chartNation(Model model, int code) {
+		Food foods = food.selectCode(code);
+		
+		Map<String, Integer> nationsMap = new HashMap<>();
+		int occurance = 0;
+		occurance += StringUtils.countOccurrencesOf(foods.getMaterial(), "(국산");	
+		occurance += StringUtils.countOccurrencesOf(foods.getMaterial(), "(국내산");
+		
+		occurance += StringUtils.countOccurrencesOf(foods.getMaterial(), " 국산");
+		occurance += StringUtils.countOccurrencesOf(foods.getMaterial(), " 국내산");
+		
+		occurance += StringUtils.countOccurrencesOf(foods.getMaterial(), ";국산");
+		
+		nationsMap.put("국산", occurance);
+		
+		for(int i = 2 ; i < nations.length; i++) {
+			occurance =  StringUtils.countOccurrencesOf(foods.getMaterial(), nations[i]);
+			if(occurance!=0)
+				nationsMap.put(nations[i], occurance);
+		}
+		
+		return nationsMap;
+	}
+	
 	//인기검색어 
 	@ResponseBody
 	@GetMapping("/oftenSearch")
@@ -386,6 +431,16 @@ public class MainController {
 //	}
 	/* ========================== Like ========================================= */
 
+	@GetMapping("/likeList")
+	public String LikeList1(Model model, HttpSession session) {
+		logger.trace("LikeList 방문.");
+		User info = (User) session.getAttribute("loginUser");
+		List<Food> foods = foodLike.selectAll(info.getId());
+		logger.trace("foods :: " + foods);
+		model.addAttribute("likefoodlist", foods);
+		return "like/likeHome";
+	}
+	
 	@GetMapping("/searchLikeList")
 	public String LikeList(Model model, HttpSession session) {
 		logger.trace("LikeList 방문.");
@@ -402,7 +457,7 @@ public class MainController {
 		User info = (User) session.getAttribute("loginUser");
 		LikeFood like= new LikeFood(1,info.getId(), code);
 		foodLike.insert(like);
-		return "redirect:home";
+		return "redirect:likeList";
 	}
 	
 	@GetMapping("/daySum")
@@ -423,18 +478,20 @@ public class MainController {
 		//afterfoodsum
 		
 		Food afterSum = food.selectSumDay(info.getId(), to);
-		for(int i=0;i<likeCheck.length;i++) {
-			Food newFood = food.selectCode(Integer.parseInt(likeCheck[i]));
-			afterSum.setSupportpereat(afterSum.getSupportpereat() + newFood.getSupportpereat());
-			afterSum.setCalory(afterSum.getCalory() + newFood.getCalory());
-			afterSum.setCarbo(afterSum.getCarbo()+newFood.getCarbo());
-			afterSum.setProtein(afterSum.getProtein()+newFood.getProtein());
-			afterSum.setFat(afterSum.getFat()+newFood.getFat());
-			afterSum.setSugar(afterSum.getSugar()+newFood.getSugar());
-			afterSum.setNatrium(afterSum.getNatrium()+newFood.getNatrium());
-			afterSum.setChole(afterSum.getChole()+newFood.getChole());
-			afterSum.setFattyacid(afterSum.getFattyacid()+newFood.getFattyacid());
-			afterSum.setTransfat(afterSum.getTransfat()+newFood.getTransfat());
+		if(likeCheck != null) {
+			for(int i=0;i<likeCheck.length;i++) {
+				Food newFood = food.selectCode(Integer.parseInt(likeCheck[i]));
+				afterSum.setSupportpereat(afterSum.getSupportpereat() + newFood.getSupportpereat());
+				afterSum.setCalory(afterSum.getCalory() + newFood.getCalory());
+				afterSum.setCarbo(afterSum.getCarbo()+newFood.getCarbo());
+				afterSum.setProtein(afterSum.getProtein()+newFood.getProtein());
+				afterSum.setFat(afterSum.getFat()+newFood.getFat());
+				afterSum.setSugar(afterSum.getSugar()+newFood.getSugar());
+				afterSum.setNatrium(afterSum.getNatrium()+newFood.getNatrium());
+				afterSum.setChole(afterSum.getChole()+newFood.getChole());
+				afterSum.setFattyacid(afterSum.getFattyacid()+newFood.getFattyacid());
+				afterSum.setTransfat(afterSum.getTransfat()+newFood.getTransfat());
+			}
 		}
 		model.addAttribute("afterSum", afterSum);
 
@@ -443,6 +500,15 @@ public class MainController {
 		logger.trace("foods :: " + foods);
 		model.addAttribute("likefoodlist", foods);
 		return "like/likeList";
+	}
+	
+	@GetMapping("/likeDelete")
+	public String likeDelete(Model model, int code, RedirectAttributes redir, HttpSession session ) {
+		logger.trace("likeDelete : {}");
+		User info = (User) session.getAttribute("loginUser");
+		LikeFood like= new LikeFood(1,info.getId(), code);
+		foodLike.delete(like);
+		return "redirect:likeList";
 	}
 	
 	/* =========================== best ==========================================*/
