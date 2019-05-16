@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -409,26 +410,36 @@ public class MainController {
 			list = eat.selectChartDay(foods, info.getId());
 		}else if(type.equals("week")) {
 			list = eat.selectChartWeek(foods, info.getId());
-		}else {
+		}else if(type.equals("month")) {
+			logger.trace("selectChartMonth 조회 : {}", type);
 			list = eat.selectChartMonth(foods, info.getId());
 		}
 		logger.trace("chart 조회 결과 : {}", list);
 		return list;
 	}
 
-//	@PostMapping("/deleteMyFood")
-//	public String deleteMyFood(Model model, HttpServletRequest req, RedirectAttributes redir) {
-//		Integer[] nums = (Integer[])req.getParameterValues("check");
-//		ArrayList<Integer> numsL = new ArrayList<Integer>(Arrays.asList(nums));
-//		   	
-//		if(nums != null && nums.length > 0) {
-//			eat.deleteMyFood(nums);
-//			redir.addFlashAttribute("alarm", "삭제 성공!");
-//		}else {
-//			redir.addFlashAttribute("alarm", "삭제할 음식을 선택해주세요.");
-//		}
-//		return "redirect:searchMyList";
-//	}
+	//내 섭취 식품 삭제
+	@PostMapping("/deleteMyFood")
+	public String deleteMyFood(Model model, HttpServletRequest req, RedirectAttributes redir) {
+		String[] checks = req.getParameterValues("check");
+		int[] checkNum = new int[checks.length];
+		
+		for(int i = 0; i < checks.length; i++) {
+			checkNum[i] = Integer.parseInt(checks[i]);
+		}
+		
+		List<Integer> intList = Arrays.stream(checkNum).boxed().collect(Collectors.toList());
+		
+		logger.trace("deleteMyFood : {}", intList);
+		
+		if(checks != null && checks.length > 0) {
+			eat.deleteMyFood(intList);
+			redir.addFlashAttribute("alarm", "삭제 성공!");
+		}else {
+			redir.addFlashAttribute("alarm", "삭제할 음식을 선택해주세요.");
+		}
+		return "redirect:searchMyList";
+	}
 	/* ========================== Like ========================================= */
 
 	@GetMapping("/likeList")

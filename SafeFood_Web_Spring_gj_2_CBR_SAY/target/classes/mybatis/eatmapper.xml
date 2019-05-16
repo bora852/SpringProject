@@ -70,8 +70,8 @@
 		<bind name="p_userId" value="_parameter.get('userId')"/>
 		 select substr(eat_date,1,7) dates, sum(carbo) carbo, sum(protein) protein, sum(fat) fat, sum(sugar) sugar
 			 , sum(natrium) natrium, sum(chole) chole, sum(fattyacid) fattyacid, sum(transfat) transfat
-		  from food f, usereat e
-		 where f.code = e.food_code
+		  from food f, usereat u
+		 where f.code = u.food_code
 		   and u.user_id = #{userId}
 		   and substr(eat_date,1,10) between #{srtDate} and #{endDate}
 		 group by substr(eat_date,1,7)

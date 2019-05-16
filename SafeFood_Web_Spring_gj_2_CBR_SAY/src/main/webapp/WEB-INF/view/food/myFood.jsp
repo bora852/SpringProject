@@ -108,60 +108,65 @@
 					<div class="card-body">
 						<div id="app" style="text-align: center; margin:10px;">
 							<select v-model="chartMode">
-								<option>일별</option>
-								<option>주별</option>
-								<option>월별</option>
+								<option value="일별">일별</option>
+								<option value="주별">주별</option>
+								<option value="월별">월별</option>
 							</select>
 							<input id="fromDate" type="date" v-model="strDate"> ~ 
 							<input id="toDate" type="date" v-model="endDate">
 							<input type="button" class="btn btn-info btn-sm" value="차트검색" @click="search">
 						</div>
 						<!-- 차트 -->
-						<canvas id="myChart" width="400" height="400"></canvas>
+						<canvas id="myChart" width="300" height="300"></canvas>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<table class="table table-hover">
-			<colgroup>
-				<col style="width: 5%;" />
-				<col style="width: 25%;" />
-				<col style="width: auto;" />
-				<col style="width: 10%;" />
-			</colgroup>
-
-			<thead>
-				<tr>
-					<th></th>
-					<th scope="col">날짜</th>
-					<th scope="col">먹은 음식</th>
-					<th scope="col"><input type="checkbox" name="all"
-						class="check-all"></th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:choose>
-					<c:when test="${eatList ne null }">
-						<c:forEach var="eat" begin="0" end="${eatList.size()-1 }">
-							<tr>
-								<td></td>
-								<td scope="row">${eatList[eat].getEatDate()}</td>
-								<td>${foodList[eat].getName()}</td>
-								<td><input type="checkbox" name="${eat }" class="allSel"></td>
-							</tr>
-						</c:forEach>
-					</c:when>
-				</c:choose>
-
-			</tbody>
-		</table>
-
-		<div style="text-align: right;">
-			<c:url value="/writeNotice" var="writeNotice"></c:url>
-			<button type="button" class="btn btn-sm btn-primary"
-				id="btnWriteForm" onclick="location.href='${writeNotice}'">삭제</button>
-		</div>
+		<c:url value="/deleteMyFood" var="deleteMyFood"></c:url>
+		<form method="post" action="${deleteMyFood }">
+			<table class="table table-hover">
+				<colgroup>
+					<col style="width: 5%;" />
+					<col style="width: 25%;" />
+					<col style="width: auto;" />
+					<col style="width: 10%;" />
+				</colgroup>
+	
+				<thead>
+					<tr>
+						<th></th>
+						<th scope="col">날짜</th>
+						<th scope="col">먹은 음식</th>
+						<th scope="col"><input type="checkbox" name="all"
+							class="check-all"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:choose>
+						<c:when test="${eatList ne null }">
+						 <c:set var="endNum" value="${eatList.size()-1 }"/>
+							<c:if test="${endNum  ne -1 }">
+								<c:forEach var="eat" begin="0" end="${eatList.size()-1 }">
+									<tr>
+										<td></td>
+										<td scope="row">${eatList[eat].getEatDate()}</td>
+										<td>${foodList[eat].getName()}</td>
+										<%-- <td><input type="checkbox" name="${eat }" class="allSel"></td> --%>
+										<td><input type="checkbox" name="check" class="allSel" value="${eatList[eat].getUserEatIdx()}"></td>
+									</tr>
+									
+								</c:forEach>
+							</c:if>
+						</c:when>
+					</c:choose>
+	
+				</tbody>
+			</table>
+			<div style="text-align: right;">
+				<input type="submit" class="btn btn-sm btn-primary" id="btnWriteForm" value="삭제"/>
+			</div>
+		</form>
 	</div>
 	<!-- /.container -->
 
@@ -217,34 +222,8 @@
 	
 	
 	
-	//charts.js
-	let ctx = document.getElementById('myChart').getContext('2d');
-	let myChart = new Chart(ctx, {
-		type : 'line',
-		data : {
-			 labels : [  '1월', '2월'/*, 'Yellow', 'Green', 'Purple', 'Orange'  */],
-			datasets : [ 
-				/* new FoodInfo( nutri[0],  [10, 20, 30, 40, 50, 10], backg[0], backg[0]) */
-				/*  ,	{
-				label : nutri[0],
-				data : [10, 20, 30, 40, 50, 60],
-				backgroundColor : [ 'rgba(255, 99, 132, 0.2)'],
-				borderColor : [ 'rgba(255, 99, 132, 1)'],
-				borderWidth : 1
-			}   */
-			
-			] 
-		},
-		options : {
-			scales : {
-				yAxes : [ {
-					ticks : {
-						beginAtZero : true
-					}
-				} ]
-			}
-		}
-	});
+	
+	
 	
 	let vi = new Vue({
 		el:"#app",
@@ -253,19 +232,15 @@
 			strDate : "",
 			endDate : ""
 		},
-		mounted(){
-			// axios를 통해서 데이터 조회 후 사용
-			/* console.log("chart data ",myChart.data.datasets)
-			myChart.data.datasets.push(new FoodInfo("test",  [10, 20, 30, 40, 50, 60], [ 'rgba(255, 99, 132, 0.2)']));
-			*/
-			/* console.log("chart data ",myChart.data.datasets);  */
-		},
 		methods:{
 			search(){
 				let type = "";
-				if(this.chartMode == "일별"){
+				if(this.strDate==''){alert('시작 날짜를 선택하세요.');return;}
+				if(this.endDate==''){alert('종료 날짜를 선택하세요.');return;}
+				
+				if(this.chartMode === "일별"){
 					type = "day";
-				}else if(this.chartMod == "월별"){
+				}else if(this.chartMode === "월별"){
 					type = "month";
 				}else{
 					type = "week";
@@ -274,47 +249,41 @@
 				axios.get("/SF_WS_03/chartSearch/"+type+"/"+this.strDate+"/"+this.endDate)
 				.then(res => {
 					
-/* 					 for(let i = 0; i < res.data.length; i++){
-						let chartvalue = new Array();
-						
-						let test =  res.data[i];
-						for(let j = 0; j < 8; j++){
-							chartvalue[j] = test[nutri_order[i]];
+					//charts.js
+					let ctx = document.getElementById('myChart').getContext('2d');
+					let myChart = new Chart(ctx, {
+						type : 'line',
+						data : {
+							 labels : [],
+							datasets : [] 
+						},
+						options : {
+							scales : {
+								yAxes : [ {
+									ticks : {
+										beginAtZero : true
+									}
+								} ]
+							}
 						}
-						
-						console.log("제발아아 : ", chartvalue);
-						
-						myChart.data.labels.push(test.dates);		
-						myChart.data.datasets.push(new FoodInfo(nutri[i], chartvalue, backg[i], borderC[i]));
-						console.log("chart data ",myChart.data.datasets); 
-						myChart.update();
-					}  */
+					});
 					
-					let chartvalue = new Array();
+				   //labels - x축 값 설정
+					for(let j = 0; j < res.data.length; j++){
+						myChart.data.labels.push(res.data[j].dates); 
+					}
+					
 				 	for(let i = 0; i < 8; i++){
 						
-						//let test =  res.data[i];
-						
+						let chartvalue = new Array();
 						for(let j = 0; j < res.data.length; j++){
-							console.log("res.data[j] : ",res.data[j]);
 							chartvalue[j] = res.data[j][nutri_order[i]];
-							
-							console.log("왜 쓸데없는게 들어갈까..j :",j);
-							console.log("chartvalue[i] : ",chartvalue[i]);
-							
-							//console.log("carbo :: ",res.data[j].carbo);
-							//console.log("res.data[j].nutri_order[i] :: ",res.data[j][nutri_order[i]]);
 						}
 						
-						console.log("chartvalue : ", chartvalue);
 						myChart.data.datasets.push(new FoodInfo(nutri[i], chartvalue, backg[i], borderC[i]));
+													//new FoodInfo( nutri[0],  [10, 20], backg[0], borderC[0]) 
 					}
-					/* let labelArr = new Array();
-					for(let j = 0; j < res.data.length; j++){
-						labelArr[j] = res.data[j].dates;
-					}
-					console.log("labelArr :: ",labelArr.join(','));
-					myChart.data.labels.push(labelArr.join(',')); */
+				 	
 					myChart.update();
 					console.log("chart data ",myChart.data.datasets);
 					
