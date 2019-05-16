@@ -96,8 +96,8 @@
 				<li><a href="${searchMyList }" class="menu_a">내 섭취 정보</a></li>
 				<c:url value="/searchLikeList" var="searchLikeList"></c:url>
 				<li><a href="${searchLikeList }" class="menu_a">예상 섭취 정보</a></li>
-				<c:url value="/qna" var="qna"></c:url>
-				<li><a href="${qna}" class="menu_a">QnA</a>
+				<!--<c:url value="/qna" var="qna"></c:url>
+				<li><a href="${qna}" class="menu_a">QnA</a>-->
 			</c:if>
 			</ul>
 		</div>

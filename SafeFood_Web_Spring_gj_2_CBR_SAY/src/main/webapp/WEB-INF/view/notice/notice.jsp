@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<title>QnA</title>
+<title>공지사항</title>
 
 <!-- js, jquery -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -52,19 +52,28 @@
 <link href="${commoncss }" rel="stylesheet">
 <script src="http://www.w3schools.com/lib/w3data.js"></script>
 
-<c:url value="/static/css/table.css" var="tablecss"></c:url>
-<link rel="stylesheet" type="text/css" href="${tablecss }"/>
-
+<%-- <c:url value="/static/css/table.css" var="tablecss"></c:url>
+<link rel="stylesheet" type="text/css" href="${tablecss }"/> --%>
+<style>
+	.pagination {
+   		justify-content: center;
+	}
+</style>
 </head>
 <body>
 	<!-- Navigation -->
 	<header>
-		<jsp:include page="../include/Navbar.jsp" />
+		<jsp:include page="../include/Navbar2.jsp" />
 	</header>
+	
 	<!--   container -->
 	<div class="container">
 		<div id="app">
-			<h1>- QnA -</h1>
+			<c:url value="/static/img/notice.png" var="rice"></c:url>
+			<div style="padding:10px">
+			<img src=${rice } style="width:100px; height:100px;">
+			<span style="font-size:40px; vertical-align:middle;">공지사항</span>
+		</div>
 			<router-view></router-view>
 		</div>
 	</div>
@@ -75,78 +84,76 @@
 		<jsp:include page="../include/footer.jsp" />
 	</footer>
 
-<!-- QnA 리스트 화면 -->
+<!-- 공지사항 리스트 화면 -->
 <script type="text/x-template" id="list-temp">
-<div>
+<div class="container">
+	<span v-if="'${loginUser.id }' === 'admin'">
 	<div style="text-align:right; margin:10px;">
-		<button class="btn btn-info btn-sm"><router-link to = "/route2">문의하기</router-link></button>
+		<button class="btn btn-info btn-sm"><router-link to = "/route2">글쓰기</router-link></button>
 	</div>
+	</span>
 	<div>
-		<table class='list_table'>
-			<col width="15%"><col width="70%"><col width="20%">
-			<c:url value="/static/img/question.png" var="question"></c:url>
-			<tr>
+		<table class="table table-hover" style="text-align: center;">
+			<col width="15%"><col width="50%"><col width="20%"><col width="20%">
+			<tr class="active">
 			  <th>번호</th>
 			  <th>제목</th>
+			  <th>조회수</th>
 			  <th>날짜</th>
 			</tr>
 			<tr v-for="qna in qnalist">
-			  <td><img src="${question }" width="30px" height="30px">{{qna.qna_idx}}</td>
+			  <td>{{qna.qna_idx}}</td>
 			  <td @click="show_detail(qna.qna_idx)"><a href="#">{{qna.title}}</a></td>
+ 			  <td v-html="qna.views"></td>
 			  <td v-html="qna.qna_date"></td>
 			</tr>
 		</table>
 	</div>
-<div style="text-align: center; margin:10px;">
-	<select v-model="searchMode">
-		<option>질문제목</option>
+	<ul class="pagination">
+		<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+		<li class="page-item"><a class="page-link" href="#">1</a></li>
+		<li class="page-item"><a class="page-link" href="#">2</a></li>
+		<li class="page-item"><a class="page-link" href="#">3</a></li>
+		<li class="page-item"><a class="page-link" href="#">4</a></li>
+		<li class="page-item"><a class="page-link" href="#">5</a></li>
+		<li class="page-item"><a class="page-link" href="#">Next</a></li>
+	</ul>
+<div style="text-align: center; margin:15px;">
+	<select v-model="searchMode" style="height:30px;">
+		<option>제목</option>
 		<option>내용</option>
 	</select>
 	<input type="text" placeholder="검색어 입력" v-model:value="searchValue" @keyup.enter="search">
 	<input type="button" class="btn btn-info btn-sm" value="검색" @click="search">
 </div>
+
 <div>
 </script>
 
-<!-- QnA 추가 화면 -->
+<!-- 공지사항추가 화면 -->
 <script type="text/x-template" id="add-temp">
 <div>
 	<form action="" method="post" id="_frmForm" name="qnaForm" @submit.prevent="addQna">
-		<table class="content_table">
-			<colgroup>
-					<col style="width:30%;" />
-					<col style="width:70%;" />							
-			</colgroup>	
-			<tr>
-				<th>문의유형</th>
-				<td>
-					<select name="job" id="_category" v-model="qcategory">
-				    	<option value="">문의 유형 선택</option>
-				    	<option value="1">음식1</option>
-				    	<option value="2">음식2</option>
-				    	<option value="3">음식3</option>
-					</select>
-			</td>
-			</tr>
-			<tr>
-				<th>제목</th>
-				<td><input data-msg="제목" type="text" name="title"  id="_title" size="30" v-model="qtitle"/></td>  
-			</tr>
-			<tr>
-				<th>문의내용</th>
-				<td><input data-msg="문의내용" type="contents"  id="_contents" size="30" v-model="qcontents"/></td>
-			</tr>
-			<tr>
-				<td colspan="2" style="height:50px; text-align:center;">
-				<button type="submit" name="button">등록</button></td>
-				<button><router-link to = "/">목록</router-link></button>
-			</tr>
-		</table>
+		<input type="hidden" name="userId" value="관리자">
+		<div class="mb-3">
+			<label for="title">제목</label>
+			<input type="text" class="form-control" v-model="qtitle" name="title" id="title" placeholder="제목을 입력해 주세요">
+		</div>
+
+		<div class="mb-3">
+			<label for="content">내용</label>
+			<textarea class="form-control" v-model="qcontents" rows="5" name="content" id="content" placeholder="내용을 입력해 주세요" ></textarea>
+		</div>
+
+		<div style="text-align: center; margin:10px;">
+			<button type="submit"  class="btn btn-info btn-sm"  name="button">등록</button></td>
+			<button  class="btn btn-info btn-sm" ><router-link to = "/">목록</router-link></button>
+		</div>
 	</form>
 </div>
 </script>
 
-<!-- QnA 수정 화면 -->
+<!-- 공지사항수정 화면 -->
 <script type="text/x-template" id="update-temp">
 <div>
 <article  id="body">
@@ -167,38 +174,52 @@
 				
 				<input type="submit" class="btn btn-sm btn-primary" value="저장" id="btnSave" />
 				
-				<c:url value="/qna" var="qna"></c:url>
-				<button type="button" class="btn btn-sm btn-primary" id="btnList" onclick="location.href='${qna}'">목록</button>
+				<c:url value="/notice" var="notice"></c:url>
+				<button type="button" class="btn btn-sm btn-primary" id="btnList" onclick="location.href='${notice}'">목록</button>
 			</form>
 		</div>
 	</article>
 </div>
 </script>
 
-<!-- QnA 상세보기 화면 -->
+<!-- 공지사항상세보기 화면 -->
 <script type="text/x-template" id="detail-temp">
 <div>
 <article  id="body">
 		<div class="container" role="main">
 			<h3>공지사항 상세보기</h3>
-			<!--<c:url value="/writeNotice" var="writeNotice"></c:url>-->
-			<!--<form name="form" id="form" role="form" method="post">-->
-				<input type="hidden" name="userId" value="관리자" >
-				<div class="mb-3">
-					<label for="title">제목</label>
-					<p v-html="qna.title"></p>
-				</div>
-
-				<div class="mb-3">
-					<label for="content">내용</label>
-					<p v-html="qna.content"></p>
-				</div>
-					 <!-- onclick="location.href='/SF_WS_03/qna#/route3'" -->
-				<button class="btn btn-sm btn-primary" id="btnSave" @click="show_update(qna.qna_idx)">수정</button>
-				<c:url value="/qna" var="qna"></c:url>
+				
+				<table class="table table-bordered">
+					<col width="15%"><col width="70%">
+					<tr>
+						<th>번호</th>
+						<td><p v-html="qna.qna_idx"></p></td>
+					</tr>
+					<tr>
+						<th>제목</th>
+						<td><p v-html="qna.title"></p></td>
+					</tr>
+					<tr>
+						<th>내용</th>
+						<td><p v-html="qna.content"></p></td>
+					</tr>
+					<tr>
+					<th>작성자</th>
+						<td><p v-html="qna.user_id"></p></td>
+					</tr>
+					<th>작성일</th>
+						<td><p v-html="qna.qna_date"></p></td>
+					</tr>
+				</table>
+				<!-- onclick="location.href='/SF_WS_03/notice#/route3'" -->
+				<span v-if="'${loginUser.id }' === 'admin'">
+					<button class="btn btn-sm btn-primary" id="btnSave" @click="show_update(qna.qna_idx)">수정</button>
+				</span>
+				<c:url value="/notice" var="qna"></c:url>
 				<button type="button" class="btn btn-sm btn-primary" id="btnList" onclick="location.href='${qna}'">목록</button>
-				<button class="btn btn-sm btn-primary" id="btnDelete" @click="deleteQna(qna.qna_idx)">삭제</button>
-			<!--</form>-->
+				<span v-if="'${loginUser.id }' === 'admin'">
+					<button class="btn btn-sm btn-primary" id="btnDelete" @click="deleteQna(qna.qna_idx)">삭제</button>
+				</span>
 		</div>
 	</article>
 </div>
@@ -220,7 +241,7 @@
 					qnalist : [],
 					loading : true,
 					errored : false,
-					searchMode:"질문제목",
+					searchMode:"제목",
 					searchValue:"",
 					maxPage:0
 				}
@@ -243,19 +264,32 @@
 				},
 				search() {
 					let searchMode = "";
-					if(this.searchMode === '질문제목')
+					if(this.searchMode === '제목')
 						searchMode = "title";
 					else
 						searchMode = "content";
 					
-					axios.get("http://localhost:9090/api/search/" + searchMode + "/" + this.searchValue)
-					.then(response => {
-						this.qnalist = response.data.data;
-						this.maxPage = Math.ceil(response.data.maxPage/10);
-						console.log(this.maxPage);
-					}).catch(error => {
-						console.log(error);
-					});
+					if(this.searchValue == ''){
+						axios
+						.get('http://localhost:9090/api/qnas')
+						.then((res) => {
+							this.qnalist = res.data.data;
+						})
+						.catch((error) => {
+							console.log(error);
+							this.errored = true;
+						})
+						.finally(() => this.loading=false)
+					}else{
+						axios.get("http://localhost:9090/api/search/" + searchMode + "/" + this.searchValue)
+						.then(response => {
+							this.qnalist = response.data.data;
+							this.maxPage = Math.ceil(response.data.maxPage/10);
+							console.log(this.maxPage);
+						}).catch(error => {
+							console.log(error);
+						});
+					}
 				}
 			}
 		});
@@ -273,7 +307,6 @@
 			},
 			methods:{
 				addQna:function(){
-					if(this.qcategory==''){alert('카테고리를 선택하세요.');return;}
 					if(this.qtitle==''){alert('제목을 입력하세요.');return;}
 					if(this.qcontents==''){alert('내용을 입력하세요.');return;}
 					
@@ -281,7 +314,6 @@
 					
 					axios.post('http://localhost:9090/api/qnas', { //121.147.32.111
 						user_id : this.quserId,
-						category : this.qcategory,
 						title : this.qtitle,
 						content : this.qcontents
 					}
@@ -289,7 +321,7 @@
 					.then((res) =>{
 						this.qans = res.data.data;
 						alert('글이 등록되었습니다.');
-						location.href="/SF_WS_03/qna#/"; 
+						location.href="/SF_WS_03/notice#/"; 
 					}).catch(error => {
 						console.log(error);
 						this.errored = true;
@@ -300,7 +332,7 @@
 			}
 		});
 		
-		/* QnA 수정  */
+		/* 공지사항수정  */
 		let updateView = Vue.component('updateView', {
 			template : '#update-temp',
 			data: function(){
@@ -331,7 +363,7 @@
 			
 		});
 		
-		/* QnA 상세보기*/
+		/* 공지사항상세보기*/
 		let detailView = Vue.component('detailView', {
 			template : '#detail-temp',
 			data : function(){
@@ -357,7 +389,7 @@
 					axios.delete("http://localhost:9090/api/qnas/"+idx)
 					.then(res => {
 						alert("삭제되었습니다.");
-						location.href="/SF_WS_03/qna#/";
+						location.href="/SF_WS_03/notice#/";
 					}).catch(error => {
 						console.log(error);
 					})

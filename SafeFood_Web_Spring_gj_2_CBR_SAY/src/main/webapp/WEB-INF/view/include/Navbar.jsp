@@ -4,23 +4,6 @@
 <nav id="login_place">
 	<div class="container">
 	
-	<%-- <div id="new_menu_nav">
-			<ul>
-				<c:url value="/notice" var="notice"></c:url>
-				<li><a href="${notice }" class="menu_a">공지 사항</a></li>
-				<c:url value="/productinfo" var="productinfo"></c:url>
-				<li><a href="${productinfo }" class="menu_a">상품 정보</a></li>
-			<c:if test="${!empty loginUser}">
-				<li><a href="#" class="menu_a">베스트 섭취 정보</a></li>
-				<c:url value="/searchMyList" var="searchMyList"></c:url>
-				<li><a href="${searchMyList }" class="menu_a">내 섭취 정보</a></li>
-				<li><a href="#" class="menu_a">예상 섭취 정보</a></li>
-				<c:url value="/qna" var="qna"></c:url>
-				<li><a href="${qna}" class="menu_a">QnA</a>
-			</c:if>
-			</ul>
-		</div> --%>s
-	
 		<div id="login_nav">
 			<c:if test="${empty loginUser}">
 				<button type="button"
@@ -115,8 +98,8 @@
 					<li><a href="${likeList }" class="menu_a">찜한 목록</a></li>
 					<c:url value="/searchLikeList" var="searchLikeList"></c:url>
 					<li><a href="${searchLikeList }" class="menu_a">예상 섭취 정보</a></li>
-					<c:url value="/qna" var="qna"></c:url>
-					<li><a href="${qna}" class="menu_a">QnA</a>
+					<%-- <c:url value="/qna" var="qna"></c:url>
+					<li><a href="${qna}" class="menu_a">QnA</a> --%>
 				</c:if>
 			</ul>
 		</div>

@@ -540,13 +540,13 @@ public class MainController {
 	@GetMapping("/notice")
 	public String noticeForm(Model model){
 		model.addAttribute("noticeList", noticeService.selectAll());
-		return "menu/notice";
+		return "notice/notice";
 	}
 	
 	//공지사항 등록폼
 	@GetMapping("/writeNotice")
 	public String writeNoticeForm(Model model) {
-		return "menu/noticeWrite";
+		return "notice/____noticeWrite";
 	}
 	
 	//공지사항 등록
@@ -557,6 +557,20 @@ public class MainController {
 		return "redirect:/notice";
 	}
 	
+//	@GetMapping("/qna")
+//	public String qna(Model model) {
+//		return "menu/qna";
+//	}
+//	
+//	@GetMapping("/qnas")
+//	public String qnas(Model model) {
+//		return "menu/qnas";
+//	}
+//	
+//	@GetMapping("/cancel")
+//	public String cancel() {
+//		return "redirect:home";
+//	}
 	/* ========================== etc ========================================= */
 
 	// 에러 페이지 연결
@@ -565,18 +579,4 @@ public class MainController {
 		return "include/Error";
 	}
 
-	@GetMapping("/qna")
-	public String qna(Model model) {
-		return "menu/qna";
-	}
-	
-	@GetMapping("/qnas")
-	public String qnas(Model model) {
-		return "menu/qnas";
-	}
-	
-	@GetMapping("/cancel")
-	public String cancel() {
-		return "redirect:home";
-	}
 }
