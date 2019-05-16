@@ -103,7 +103,7 @@
 						<h3>제품명</h3>
 					</div>
 					<div class="detail_b col-lg-10 detail_name">
-						<h3>${food.getName()}</h3>
+						<h3>${food.name}</h3>
 					</div>
 				</div>
 				<div class="border_line row">
@@ -111,7 +111,7 @@
 						<h3>제조사</h3>
 					</div>
 					<div class="detail_b col-lg-10 detail_com">
-						<h3>${food.getMaker()}</h3>
+						<h3>${food.maker}</h3>
 					</div>
 				</div>
 				<div class="border_line row">
@@ -119,7 +119,7 @@
 						<h3>원재료</h3>
 					</div>
 					<div class="detail_b col-lg-10 detail_mat">
-						<a>${food.getMaterial()}</a>
+						<a>${food.material}</a>
 					</div>
 				</div>
 				<div class="border_line row">
@@ -127,17 +127,30 @@
 						<h3>알레르기성분</h3>
 					</div>
 					<div class="detail_b col-lg-10">
-						<%-- <%
-							if (alg != null) {
-								for (int i = 0; i < alg.size(); i++) {
-									if(f.getMaterial().contains(alg.get(i))){
-									%>
-									<a><%=alg.get(i) %> ,</a>
-									<%
-									}
-								}
-							}
-						%> --%>
+						<c:set var="arrayUser" value=""></c:set>
+						<c:if test="${!empty loginUser }">
+							<c:forEach var="allergyitem" items="${loginUser.allergy_arr }" >
+							<c:if test="${fn:contains(food.material,allergyitem)}">
+								<span style="color: red">${allergyitem }</span>
+							<c:set var="arrayUser" value="${arrayUser } ${allergyitem }"></c:set>
+							
+							</c:if>
+							</c:forEach>
+							<c:set var="array">밀, 대두, 계란, 우유, 쇠고기, 돼지고기, 닭고기</c:set>
+						</c:if>
+						
+						<c:forEach var="item" items="${array}"> 
+							<c:choose>
+								<c:when test="${fn:contains(arrayUser,item)}">
+								</c:when>
+								<c:otherwise>
+									<c:if test="${fn:contains(food.material,item)}">
+										<span>${item}</span>
+									</c:if>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach> 
+						
 					</div>
 				</div>
 				<div class="row" style="margin-bottom: 10px;">
