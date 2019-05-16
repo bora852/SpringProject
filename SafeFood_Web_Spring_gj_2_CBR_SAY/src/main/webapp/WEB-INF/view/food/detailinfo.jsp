@@ -253,7 +253,7 @@
 		});
 	});
 	
- 	post_test();
+ 	proc_test();
  	
  	function proc_test() {
  		var chartdata2 = [];
@@ -266,17 +266,16 @@
  			success : function(res) {
 
  				$.each(res, function(key,value){
- 					chartdata2.push({"Nation" : key, "Country" : value*100}); 
+ 					chartdata2.push({"Nation" : key, "Country" : value}); 
  				}); 
- 				
+ 				post_test(chartdata2);
  			}
  		});
- 		return chartdata2;
  	}
  	
- 	function post_test() {
- 	   var chartdata2 = proc_test();
- 	   console.log("aaa"+chartdata2)
+ 	function post_test(dataChart) {
+ 	   var chartdata2 = dataChart;
+ 	   console.log("aaa",chartdata2)
  	// <!-- Chart code -->
  		// Themes begin
  		am4core.useTheme(am4themes_frozen);
@@ -322,7 +321,6 @@
 			} ];
 		}
 	});
-	console.log(chart)
 	var pieSeries = chart.series.push(new am4charts.PieSeries());
 	pieSeries.dataFields.value = "kcal";
 	pieSeries.dataFields.category = "nutrition";
@@ -336,24 +334,12 @@
 	pieSeries.hiddenState.properties.startAngle = -90;
 
  	var chart2 = am4core.create("chartdiv2", am4charts.PieChart);
-	$.ajax({
-		<c:url value="/chartNation" var="chartNation"/>
-		url : "${chartNation}",
-		type : "POST",
-		dataType : "json",
-		data : "code=${food.getCode()}",
-		success : function(res) {
-			chart.data = chartdata2;
-			/* $.each(res, function(key,value){
-				chart2.data.push({"Nation" : key, "Country" : value*100}); 
-			}); 
-			 */
-		}
-	});
+ 	chart2.data = chartdata2;
+
 	console.log(chart2)
 	var pieSeries2 = chart2.series.push(new am4charts.PieSeries());
-	pieSeries2.dataFields.value = "Nation";
-	pieSeries2.dataFields.category = "Country";
+	pieSeries2.dataFields.value = "Country";
+	pieSeries2.dataFields.category = "Nation";
 	pieSeries2.slices.template.stroke = am4core.color("#fff");
 	pieSeries2.slices.template.strokeWidth = 2;
 	pieSeries2.slices.template.strokeOpacity = 1;

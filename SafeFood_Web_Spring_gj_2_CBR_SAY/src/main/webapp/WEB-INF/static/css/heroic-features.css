@@ -116,6 +116,11 @@ h4.p_name:hover {
 	height: 500px;
 }
 
+#chartdiv2 {
+	width: 100%;
+	height: 500px;
+}
+
 .chart_block {
 	margin-top: 70px;
 }
