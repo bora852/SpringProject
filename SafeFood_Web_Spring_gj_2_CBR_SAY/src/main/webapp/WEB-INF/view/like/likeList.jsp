@@ -94,7 +94,7 @@ div.jumbotron:hover div.for_hover {
 	</header>
 	
 	<div class="container main_block">
-		<h2>상품 목록</h2>
+		<h2 style="padding : 20px">상품 목록</h2>
 		<div id = "likelist">
 		<c:url value="/daySum" var="daySum"></c:url>
 		<form id="target" action="daySum" method="get">
@@ -105,7 +105,7 @@ div.jumbotron:hover div.for_hover {
 				<input type="checkbox" name="likeCheck" value="${food.code }"> 
 			</div>
 		</c:forEach>
-		<button type="input">예상 그래프 보기</button>
+		<button class="btn btn-sm btn-primary" type="input" >예상 그래프 보기</button>
 		</form>
 		</div>
 		<div class = "clear">
