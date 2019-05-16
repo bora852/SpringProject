@@ -125,7 +125,7 @@ div.jumbotron:hover div.for_hover {
 									</c:if>
 								<c:if test="${!empty loginUser }">
 									<c:set var="loop_flag" value="false" />
-									<c:forEach var="allergyitem" items="${allergy }" >
+									<c:forEach var="allergyitem" items="${loginUser.allergy_arr }" >
 										<c:if test="${not loop_flag }">
 											<c:if test="${fn:contains(food.material,allergyitem)}">
 												<span class="label label-danger">알레르기주의</span>

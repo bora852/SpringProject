@@ -136,8 +136,8 @@
 							
 							</c:if>
 							</c:forEach>
-							<c:set var="array">밀, 대두, 계란, 우유, 쇠고기, 돼지고기, 닭고기</c:set>
 						</c:if>
+						<c:set var="array">밀, 대두, 계란, 우유, 쇠고기, 돼지고기, 닭고기</c:set>
 						
 						<c:forEach var="item" items="${array}"> 
 							<c:choose>
@@ -151,9 +151,11 @@
 							</c:choose>
 						</c:forEach> 
 						
+						<p style="color: gray;">*빨강 : 사용자별 알레르기 주의 성분, *검정 : 일반 알레르기 주의 성분</p>
+						<br/><br/>
 					</div>
 				</div>
-				<div class="row" style="margin-bottom: 10px;">
+				<!-- <div class="row" style="margin-bottom: 10px;">
 					<div class="col-lg-4">
 						<h2>Quantity</h2>
 					</div>
@@ -169,7 +171,7 @@
 						<button type="button" class="btn btn_d btn-outline-info"  id="eatFood">섭취</button>
 						<button type="button" class="btn btn_d btn-outline-info">찜</button>
 					</div>
-				</div>
+				</div> -->
 
 			</div>
 

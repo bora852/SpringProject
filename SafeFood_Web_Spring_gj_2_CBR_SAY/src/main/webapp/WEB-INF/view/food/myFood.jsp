@@ -130,6 +130,7 @@
 					<col style="width: 5%;" />
 					<col style="width: 25%;" />
 					<col style="width: auto;" />
+					<col style="width: auto;" />
 					<col style="width: 10%;" />
 				</colgroup>
 	
@@ -138,6 +139,7 @@
 						<th></th>
 						<th scope="col">날짜</th>
 						<th scope="col">먹은 음식</th>
+						<th scope="col">알러지 유발</th>
 						<th scope="col"><input type="checkbox" name="all"
 							class="check-all"></th>
 					</tr>
@@ -152,6 +154,13 @@
 										<td></td>
 										<td scope="row">${eatList[eat].getEatDate()}</td>
 										<td>${foodList[eat].getName()}</td>
+										<td>
+											<c:forEach var="allergyitem" items="${loginUser.allergy_arr }" >
+												<c:if test="${fn:contains(foodList[eat].material,allergyitem)}">
+													<span>${allergyitem } </span>
+												</c:if>
+											</c:forEach>
+										</td>
 										<%-- <td><input type="checkbox" name="${eat }" class="allSel"></td> --%>
 										<td><input type="checkbox" name="check" class="allSel" value="${eatList[eat].getUserEatIdx()}"></td>
 									</tr>
